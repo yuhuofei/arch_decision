@@ -180,10 +180,6 @@
         "reason": "no strong condition satisfied (no independent scaling/deployment/ownership need)"
       },
       {
-        "option": "MySQL",
-        "reason": "greenfield project without MySQL constraint; PostgreSQL is the relational default"
-      },
-      {
         "option": "Redis",
         "reason": "no cache/session/rate-limit requirement yet; introducing it adds +1 complexity for nothing"
       }

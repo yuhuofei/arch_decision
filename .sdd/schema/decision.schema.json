@@ -171,7 +171,7 @@
           "items": { "type": "string", "minLength": 2 }
         },
         "alternatives": {
-          "description": "被认真考虑过的其他候选（modv2.md §6）。与 rejected 的区别：alternatives 保留理由，rejected 是淘汰结论。",
+          "description": "被认真考虑过、未被淘汰但最终未选的可行候选及其权衡（modv2.md §6）。与 rejected 的边界：alternatives 是仍成立的可行备选，rejected 是被淘汰的结论；同一候选只应出现在二者之一，避免「到底被考虑还是被淘汰」的歧义。",
           "type": "array",
           "items": {
             "type": "object",
@@ -261,6 +261,7 @@
           }
         },
         "rejected": {
+          "description": "被淘汰的候选结论及理由（Hard Constraint 失败 / 明显劣势）。与 alternatives 的边界：rejected 是淘汰结论，alternatives 是仍成立的可行备选；同一候选只应出现在二者之一。与 deferred 的区别（REJECTED=不适用 与 DEFERRED=当前不需要、条件出现重评）见 .sdd/templates/technology-selection.md——当前示例的 rejected/deferred 边界尚未收敛，见 REVIEW-2026-09-19.md 的「四审未做的事」。minItems=1 的放宽判据亦见该处。",
           "type": "array",
           "minItems": 1,
           "items": {

@@ -74,7 +74,9 @@ Architecture Proposal
    ↓
 Human Confirmation（仅对 REQUIRE_CONFIRMATION 项）
    ↓
-固化进 plan.md + decision.json + ADR
+固化 decision.json + plan.md
+   ↓
+如存在重要 Architecture Decision，再创建 adr/（**按需**，判据见 `LAYOUT.md §1.2`）
 ```
 
 **清单之外的不阻塞**（`mod_gpt.md §2`）：
