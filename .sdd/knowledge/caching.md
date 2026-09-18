@@ -1,6 +1,6 @@
 # Knowledge: Caching & Search（缓存与搜索）
 
-> 来源：Matrix §23（Caching Matrix）、§17（Search Engine Matrix）、§13（Redis Matrix）；res.md §71-§73。
+> 来源：Matrix §23（Caching Matrix）、§17（Search Engine Matrix）、§13（Redis Matrix）；res.md §38（SEARCH）,§71-§73；知识库 §30（搜索）。
 > 治理：`.sdd/decision-trees/decision-protocol.md`　决策树：`.sdd/decision-trees/infrastructure.md` §4
 > 关联：`database.md` §5（Redis 条件）
 

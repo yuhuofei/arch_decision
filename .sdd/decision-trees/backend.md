@@ -42,13 +42,22 @@ Existing Gin                → Preserve Gin
 ```
 > Go 标准库 `net/http` 已能构建完整 HTTP 服务，Agent 不应默认引入第三方 framework。
 
-## 4. TypeScript 框架（Matrix §7）
+## 4. TypeScript 框架（Matrix §7 / res.md §13,§81）
+**纯 TS 后端服务**（API-only / BFF，无前端）：
+```
+default                     → NestJS      # 默认 AUTO（模块化 + DI + Guard/Interceptor）
+轻量 / 低开销 / schema-first → Fastify     # 备选
+Edge / Serverless / 极小体积 → Hono        # 备选
+存量 Express                → Preserve    # 仅当已用且无迁移诉求
+```
+**含前端的 Fullstack Web**（Matrix §7）：
 ```
 Fullstack Web               → Next.js
 React frontend only         → React + Vite
 Vue application             → Vue + Vite
 Existing Next.js / Vue      → Preserve
 ```
+> **不要把 Next.js 当纯后端框架**：它是 fullstack web framework，API-only 服务用 Next.js 属于过度设计。语言判定给出 `TypeScript`（本文件 §1）后，必须落到上面两组之一，否则选型未决。
 
 ## 5. Java/Kotlin 框架
 ```

@@ -3,7 +3,7 @@
 本目录是 Agent 在 SDD 模式下进行项目框架选择与技术选型的**可解释决策系统**。
 它不是"把 Python+FastAPI+PostgreSQL 当最佳实践硬塞给 Agent"，而是一套让 Agent 依据项目上下文选择技术、并把选择固化进 `technology-selection.md` 与 `spec.md` 的规则库。
 
-## 设计原则（对应 FINAL PRINCIPLE，res.md §120）
+## 设计原则（res.md §120 FINAL PRINCIPLE / 知识库 §2,§2.1）
 技术、架构、Framework、SDD 都不是目的；目标是 Correctness / Maintainability / Simplicity / Testability / Observability / Security / Evolvability。
 无明确需求 → 最简单、成熟、可维护、易验证的方案；复杂需求 → 满足需求并**记录必要性**。
 
@@ -14,7 +14,7 @@
 ├── README.md                 # 本文件
 ├── LAYOUT.md                  # ⭐ 目录约定唯一权威（4 套来源约定的取舍与映射表）
 ├── CONVENTIONS.md             # ⭐ 引用编号与命名约定（避免 §N 歧义）
-├── TRACEABILITY.md            # ⭐ res.md 120 条 → 落点文件的反向索引
+├── TRACEABILITY.md            # ⭐ 三份源文档 → 落点文件反向索引（res.md 121+11 / Matrix 45+14 / 知识库 89+14，见 知识库 §86）
 ├── schema/                    # 机器可校验的 JSON Schema
 │   └── decision.schema.json
 ├── knowledge/                 # 技术知识库（"选什么、何时选"的参考）

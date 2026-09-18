@@ -1,7 +1,7 @@
 # Decision Protocol（决策治理协议）
 
 > 本文件是跨领域决策的"元规则"，应用于所有 decision-trees 与 knowledge 文件。
-> 来源：Matrix §1-§2, §32, §36, §40-§44；知识库 §71-§73, §81, §85。
+> 来源：Matrix §1-§2,§3.1-§3.2,§32,§36,§40-§44；知识库 §64（MVP 默认）,§71-§74,§81,§85。
 > 引用约定见 `.sdd/CONVENTIONS.md`：`Matrix §N` = Matrix 文档章节；`res.md §N` = res.md 规则条号。
 > 配套：`.sdd/decision-trees/*.md`（领域树）、`.sdd/templates/technology-selection.md`（输出 schema）。
 

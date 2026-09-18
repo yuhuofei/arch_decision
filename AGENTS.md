@@ -1,7 +1,7 @@
 # AGENTS.md — General Agent Engineering Rules
 
 > 通用 Agent 软件工程与 Spec-Driven Development 规则。详细知识库见 `.sdd/`。
-> 来源：`sources/v1.0/res.md`（120 条）+ `Matrix` + `知识库`。
+> 来源：`sources/v1.0/res.md`（顶层 121 条 + 子条目 11）+ `Matrix`（45 + 14）+ `知识库`（89 + 14）；Agent 总指令见 `知识库 §87`。
 > 引用约定见 `.sdd/CONVENTIONS.md`；目录约定见 `.sdd/LAYOUT.md`。
 
 ## 0. READ ORDER（读什么、什么顺序）
@@ -41,24 +41,34 @@
 - **冲突仲裁顺序**：`decision-protocol` > `decision-trees` > `knowledge` > 默认值（见 `decision-protocol.md` §10）。
 
 ## 默认技术矩阵（res.md §110 / 知识库 §59,§82）
+> res.md §110 的落地版。此前漏掉 `Enterprise Backend` 与 `TS Backend` 两行，导致语言判定可输出 TypeScript（`decision-trees/backend.md` §1）却无框架可依 —— 见 `res.md §13,§81`。
 | Category | Default | Alternatives |
 | --- | --- | --- |
 | Architecture | Modular Monolith | Microservices |
 | Backend | Python（AI/Data/CRUD/API）| Go（高并发/Infra）/ TS / Java |
 | Python API | FastAPI | Django / Flask |
+| Enterprise Backend | Spring Boot | NestJS |
 | Go API | net/http（小服务）/ Gin | Echo |
+| TS Backend | **NestJS** | Fastify / Hono |
 | Frontend | Vue 3 + TS + Vite | React / Next.js |
+| React SSR | Next.js | — |
 | DB | PostgreSQL | MySQL / SQLite / MongoDB |
 | Cache | None | Redis |
 | Vector | pgvector | Qdrant/Milvus |
 | API | REST + OpenAPI | GraphQL / gRPC |
+| Queue | None | RabbitMQ |
+| Streaming | None | Kafka |
+| Search | PostgreSQL FTS | OpenSearch / Elasticsearch |
+| Object Storage | S3 | 本地磁盘 |
+| Internal RPC | gRPC | REST |
 | Auth | Session / OIDC | JWT |
+| Testing | pytest + Vitest + Playwright | — |
 | CI/CD | GitHub Actions | GitLab CI |
 | Observability | OpenTelemetry | Vendor SDK |
 | LLM | 单供应商 direct SDK | 多供应商 → Provider Abstraction |
 | 数据编排 | 无依赖 → cron | 有 DAG/回填 → Airflow/Dagster/Prefect |
 
-## 最重要的规则（知识库 §85，节选）
+## 最重要的规则（知识库 §85 / res.md §1.2-§1.4，节选）
 1. 不因技术流行而选技术。
 2. 不为未来假设需求增加复杂度。
 3. 存量项目优先保持已有技术栈。

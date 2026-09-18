@@ -1,124 +1,149 @@
 #!/usr/bin/env python3
 """由源文档与规则库自动生成 `.sdd/TRACEABILITY.md`（源规则 → 落点反向索引）。
 
+引用解析规则统一在 `scripts/sdd_refs.py`（逗号压缩、区间展开、子条目 `§N.M`、
+按最近前置来源名归属）。修改扫描范围或解析规则时**只改那个模块**。
+
 用法：
     python3 scripts/gen_traceability.py
+退出码：0 = 无越界引用；1 = 存在引用了不存在条号的位置。
 """
 
 from __future__ import annotations
 
-import re
+import sys
 from collections import defaultdict
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
-SRC = ROOT / "sources" / "v1.0"
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from sdd_refs import (  # noqa: E402
+    ROOT,
+    SOURCES,
+    Key,
+    fmt_ref,
+    iter_refs,
+    parse_titles,
+    targets,
+)
+
 OUT = ROOT / ".sdd" / "TRACEABILITY.md"
 
-SOURCES = {
-    "res.md": SRC / "res.md",
-    "Matrix": SRC / "AI Architecture Decision Matrix.md",
-    "知识库": SRC / "AI Coding SDD 项目技术架构与框架选择知识库.md",
-}
-
-SCAN_DIRS = [".sdd", "specs"]
-SKIP_FILES = {"TRACEABILITY.md", "REVIEW-2026-09-19.md"}
+# 已知的真实落点缺失：内容在本仓确无对应物。人工分诊后登记于此，
+# 使「未引用」清单不至于把真实缺口淹在噪声里。格式：(来源, 条号, 说明)
+#
+# 2026-09-19 一审登记 res.md §13/§81（NestJS 默认选型在本仓无落点），
+# 二审已修复（AGENTS.md 默认矩阵 + decision-trees/backend.md §4 + knowledge/backend.md），故清空。
+KNOWN_GAPS: list[tuple[str, Key, str]] = []
 
 
-def parse_titles(name: str, path: Path) -> dict[int, str]:
-    """抽取 `N. TITLE` 形式的条目标题（只取每个 N 的首次出现）。
-
-    源文档格式不统一，需分别处理：
-    * `res.md`：部分条目写作 `# N. TITLE`，部分写作裸 `N. TITLE`（全大写英文）；
-      同时 §0 / §117 / §118 内部含有编号列表，必须排除。
-    * `Matrix` / `知识库`：条目均为 Markdown 标题（`#` 开头），标题可为中文。
-    """
-    titles: dict[int, str] = {}
-    cjk = re.compile(r"[\u4e00-\u9fff]")
-    for line in path.read_text(encoding="utf-8").split("\n"):
-        m = re.match(r"^#*\s*(\d+)\.\s+(.+?)\s*$", line)
-        if not m:
-            continue
-        if line.lstrip().startswith("#"):
-            ok = True
-        elif name == "res.md":
-            # res.md 的裸条目为英文全大写标题；借"无 CJK"排除 §0 的中文编号列表。
-            # §117/§118 的英文编号列表由"每个 N 只取首次出现"规则自动排除。
-            ok = not cjk.search(m.group(2))
-        else:
-            ok = False
-        if not ok:
-            continue
-        n = int(m.group(1))
-        title = m.group(2).strip()
-        if n not in titles and len(title) < 70:
-            titles[n] = title
-    return titles
+def collect_refs() -> dict[str, dict[Key, set[str]]]:
+    """返回 {来源: {条号: {直接引用该条号的文件}}}。"""
+    refs: dict[str, dict[Key, set[str]]] = {k: defaultdict(set) for k in SOURCES}
+    for p in targets():
+        rel = str(p.relative_to(ROOT))
+        for name, key in iter_refs(p.read_text(encoding="utf-8")):
+            refs[name][key].add(rel)
+    return {k: dict(v) for k, v in refs.items()}
 
 
-def collect_refs() -> tuple[dict[str, dict[int, set[str]]], dict[str, set[int]]]:
-    """返回 {来源: {条号: {引用文件}}} 与 {来源: {显式引用过的条号}}。"""
-    refs: dict[str, dict[int, set[str]]] = {k: defaultdict(set) for k in SOURCES}
-    pattern = re.compile(r"(res\.md|Matrix|知识库) §(\d+)")
-    for d in SCAN_DIRS:
-        for p in sorted((ROOT / d).rglob("*.md")):
-            if p.name in SKIP_FILES:
-                continue
-            rel = str(p.relative_to(ROOT))
-            for m in pattern.finditer(p.read_text(encoding="utf-8")):
-                refs[m.group(1)][int(m.group(2))].add(rel)
-    return refs, {k: set(v) for k, v in refs.items()}  # type: ignore[return-value]
+def rollup(refs: dict[Key, set[str]]) -> dict[Key, bool]:
+    """顶层条目是否「已覆盖」——它自身或其任一子条目被引用即算覆盖。"""
+    covered: dict[Key, bool] = {}
+    for key in refs:
+        covered[key] = True
+        if key[1] > 0:
+            covered[(key[0], 0)] = True
+    return covered
 
 
 def main() -> int:
     titles = {name: parse_titles(name, path) for name, path in SOURCES.items()}
-    refs, _ = collect_refs()
+    refs = collect_refs()
 
     lines: list[str] = []
     lines.append("# TRACEABILITY.md — 源规则 → 落点反向索引\n")
     lines.append("> 本文件由 `scripts/gen_traceability.py` **自动生成，请勿手工编辑**。\n")
     lines.append("> 用途：源文档升级时快速评估影响面——某条规则被本仓哪些文件引用。\n")
-    lines.append("> 引用约定见 `.sdd/CONVENTIONS.md` §1。\n")
+    lines.append(
+        "> 引用解析（`§A,§B` 压缩、`§A-§B` 区间、`§N.M` 子条目）见 `scripts/sdd_refs.py`；"
+        "书写约定见 `.sdd/CONVENTIONS.md` §1。\n"
+    )
+    lines.append(
+        "> 读表约定：**（未引用）** = 无文件写明该条号为出处；"
+        "**（未直接引用；见子条目）** = 只有它的 `§N.M` 被引用，父条目本身未出现。\n"
+    )
     lines.append("\n---\n")
 
-    for name in ("res.md", "Matrix", "知识库"):
+    stats: list[tuple[str, int, int]] = []
+    for name in SOURCES:
         t = titles[name]
         r = refs[name]
-        lines.append(f"\n## {name}（共 {max(t) if t else 0} 条）\n")
+        covered = rollup(r)
+
+        lines.append(f"\n## {name}（条目 {len(t)} 条，含子条目）\n")
         lines.append("| 源规则 | 标题 | 落点文件 |")
         lines.append("| --- | --- | --- |")
-        for n in sorted(t):
-            files = sorted(r.get(n, ()))
-            cell = "<br>".join(f"`{f}`" for f in files) if files else "**（未引用）**"
-            lines.append(f"| `{name} §{n}` | {t[n]} | {cell} |")
-        missing = sorted(set(t) - set(r))
-        lines.append(
-            f"\n**未被显式引用的条号（{len(missing)} 条，非缺陷，仅供覆盖率参考）**："
-        )
-        lines.append(
-            "、".join(f"{name} §{n}" for n in missing) if missing else "（无）"
-        )
-        lines.append("")
+        for key in sorted(t):
+            files = sorted(r.get(key, ()))
+            if files:
+                cell = "<br>".join(f"`{f}`" for f in files)
+            elif key[1] == 0 and covered.get(key):
+                cell = "**（未直接引用；见子条目）**"
+            else:
+                cell = "**（未引用）**"
+            label = fmt_ref(name, key)
+            indent = "　" if key[1] > 0 else ""
+            lines.append(f"| `{label}` | {indent}{t[key]} | {cell} |")
 
-    # 反向：本仓有无引用不存在的条号
+        missing = [
+            k for k in sorted(t) if not (k in r or (k[1] == 0 and covered.get(k)))
+        ]
+        lines.append(f"\n**未被引用（顶层 自身及子条目均未出现 / 子条目 未出现）：{len(missing)} 条**\n")
+        if missing:
+            lines.append("　")
+            lines.append("　".join(f"`{fmt_ref(name, k)}`" for k in missing))
+        else:
+            lines.append("（无）")
+        lines.append("")
+        stats.append((name, len(t) - len(missing), len(t)))
+
+    lines.append("\n---\n")
+    lines.append("## 关于「未被引用」\n")
+    lines.append("机器只能判断「有无写明出处」，不能判断「内容是否已被覆盖」。清单需人工分诊：\n")
+    lines.append("- **已覆盖未标注**：内容已在知识/决策文件中表达，只是没写来源条号 —— 补标注即可。")
+    lines.append("- **真实落点缺失**：该规则在本仓确无对应内容 —— 需新增落点，或在此显式登记为不适用。")
+    lines.append("")
+    lines.append(
+        "> **引用率 ≠ 内容覆盖率。** 下表全空只说明「每条源规则都至少被一处声明为来源」，"
+        "不说明该条已被完整、正确地落地。内容质量仍需人工评审。"
+    )
+    lines.append("")
+    if KNOWN_GAPS:
+        lines.append("**已确认的真实缺口**（人工分诊结果，登记于 `scripts/gen_traceability.py`）：\n")
+        for name, key, why in KNOWN_GAPS:
+            lines.append(f"- `{fmt_ref(name, key)}` —— {why}")
+    else:
+        lines.append("**已确认的真实缺口**：（无）")
+
     lines.append("\n---\n")
     lines.append("## 校验：引用了不存在的条号（应为空）\n")
-    problems = []
+    problems: list[str] = []
     for name in SOURCES:
-        for n in sorted(set(refs[name]) - set(titles[name])):
-            problems.append(f"- `{name} §{n}` → " + "、".join(sorted(refs[name][n])))
+        for key in sorted(set(refs[name]) - set(titles[name])):
+            problems.append(
+                f"- `{fmt_ref(name, key)}` → " + "、".join(sorted(refs[name][key]))
+            )
     lines.append("\n".join(problems) if problems else "（无）")
     lines.append("")
 
     OUT.write_text("\n".join(lines), encoding="utf-8")
 
-    total_cited = sum(len(refs[n]) for n in SOURCES)
     print(f"已生成 {OUT.relative_to(ROOT)}")
-    for name in SOURCES:
-        t, r = titles[name], refs[name]
-        print(f"  {name}: {len(t)} 条，被引用 {len(r)} 条，未引用 {len(set(t) - set(r))} 条")
+    for name, cov, total in stats:
+        print(f"  {name}: {cov}/{total} 条被引用（覆盖率 {cov * 100 // max(total, 1)}%）")
     print(f"  引用不存在的条号：{len(problems)} 处")
-    return 0
+    return 1 if problems else 0
 
 
 if __name__ == "__main__":

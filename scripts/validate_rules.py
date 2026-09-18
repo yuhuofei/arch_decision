@@ -4,6 +4,7 @@
 检查项：
   1. 引用编号   —— 全仓禁止裸写 `§N`（约定见 .sdd/CONVENTIONS.md §1）
   2. 来源条号   —— `res.md §N` / `Matrix §N` / `知识库 §N` 的 N 必须真实存在
+                    （识别 `§A,§B` 压缩与 `§A-§B` 区间写法，见 scripts/sdd_refs.py）
   3. 文件引用   —— 反引号内的 `.md` 路径必须真实存在（占位符与按需产物除外）
   4. 决策 Schema —— specs/ 下 Decision Output Schema 代码块的必填项
   5. 复杂度预算 —— complexity.score 不得大于 complexity.budget
@@ -20,17 +21,16 @@ import re
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
-SRC = ROOT / "sources" / "v1.0"
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-SKIP_DIRS = {"sources", ".workbuddy", ".git", "scripts", "node_modules"}
-SKIP_FILES = {"REVIEW-2026-09-19.md"}
-
-SOURCES = {
-    "res.md": SRC / "res.md",
-    "Matrix": SRC / "AI Architecture Decision Matrix.md",
-    "知识库": SRC / "AI Coding SDD 项目技术架构与框架选择知识库.md",
-}
+# 扫描范围与引用解析统一由 sdd_refs 提供，避免两个脚本各自维护正则而漂移
+from sdd_refs import (  # noqa: E402
+    ROOT,
+    SOURCES,
+    iter_refs,
+    parse_source_items,
+    targets,
+)
 
 LABELS = [
     "res.md", "res:", "Matrix", "知识库", "decision-protocol",
@@ -56,42 +56,11 @@ ALLOWED_MISSING = {
 
 SEP = re.compile(r"[；;。\n]")
 BARE = re.compile(r"§\d+(?!\.\d)")
-REF = re.compile(r"(res\.md|Matrix|知识库) §(\d+)")
 BACKTICK_MD = re.compile(r"`([A-Za-z0-9._\-/]*[A-Za-z0-9_\-]\.md)`")
 YAML_BLOCK = re.compile(r"```ya?ml\n(.*?)```", re.S)
 
 errors: list[str] = []
 warnings: list[str] = []
-
-
-def targets() -> list[Path]:
-    out: list[Path] = []
-    for p in sorted(ROOT.rglob("*.md")):
-        rel = p.relative_to(ROOT)
-        if p.name in SKIP_FILES:
-            continue
-        if any(part in SKIP_DIRS for part in rel.parts):
-            continue
-        out.append(p)
-    return out
-
-
-def parse_source_items(name: str, path: Path) -> set[int]:
-    items: set[int] = set()
-    cjk = re.compile(r"[\u4e00-\u9fff]")
-    for line in path.read_text(encoding="utf-8").split("\n"):
-        m = re.match(r"^#*\s*(\d+)\.\s+(.+?)\s*$", line)
-        if not m:
-            continue
-        if line.lstrip().startswith("#"):
-            pass
-        elif name == "res.md":
-            if cjk.search(m.group(2)):
-                continue
-        else:
-            continue
-        items.add(int(m.group(1)))
-    return items
 
 
 def check_bare_refs(files: list[Path]) -> None:
@@ -110,8 +79,8 @@ def check_bare_refs(files: list[Path]) -> None:
 def check_source_refs(files: list[Path], items: dict[str, set[int]]) -> None:
     for p in files:
         for i, line in enumerate(p.read_text(encoding="utf-8").split("\n"), 1):
-            for m in REF.finditer(line):
-                name, n = m.group(1), int(m.group(2))
+            # iter_refs 已展开 `§A,§B` 与 `§A-§B`，故压缩写法中的越界条号同样会被抓到
+            for name, n in iter_refs(line):
                 if n not in items[name]:
                     errors.append(
                         f"[来源条号不存在] {p.relative_to(ROOT)}:{i}  {name} §{n}"

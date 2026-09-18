@@ -4,6 +4,66 @@
 
 ---
 
+## [v1.2] — 2026-09-19
+
+二审：追踪矩阵本身失准，且 TS 后端线存在选型死胡同。
+
+### 修复（P1 — 追踪矩阵漏报，误导"该规则可安全删除"）
+
+1. **引用解析合并为唯一实现**
+   - 新增 `scripts/sdd_refs.py`，`gen_traceability.py` 与 `validate_rules.py` 共用。
+     此前两个脚本各自维护一份 `(res\.md|Matrix|知识库) §(\d+)` 正则，只认「来源名 + 紧随其后的单个条号」，
+     漏掉三类合法写法：逗号压缩 `Matrix §24,§25,§45`、区间 `res.md §50-§58`、子条目 `知识库 §6.1`。
+     库内共 **69 处压缩/区间写法、30+ 处子条目引用**被截断。
+   - **后果一（严重）**：`TRACEABILITY.md` 误报「（未引用）」。修复前 res.md 覆盖率 **64%**、知识库 **53%**；
+     修复后 **100% / 100% / 100%**。一份把 `Matrix §45` 标成"无人引用"的索引，会让源文档升级时的
+     影响面评估直接失效。
+   - **后果二**：校验脚本同样漏检压缩写法中的越界条号——**已抓到 1 处**（见下）。
+
+2. **修正越界引用**
+   - `.sdd/knowledge/architecture.md`：`Matrix §65-§69` → 该区间实属 `知识库`（微服务/EDA/CQRS/ES/DDD），
+     且下一组 `知识库 §65-§70` 已正确覆盖。`Matrix` 最大条号为 §45。**已删除误并项**。
+
+3. **扫描范围统一**
+   - `gen_traceability.py` 原先只扫 `.sdd/` 与 `specs/`，漏掉根目录的 `README.md` / `AGENTS.md` / `CLAUDE.md` / `CHANGELOG.md`；
+     而 `validate_rules.py` 是扫全仓的。范围改由 `sdd_refs.targets()` 统一提供。
+
+4. **小数区间支持**
+   - `§1.2-§1.4` 原先不展开（`§1.3` 因此被判"未覆盖"）。现支持同主号小数区间；跨主号小数区间语义不唯一，保留不展开。
+
+### 修复（P1 — TS 后端选型死胡同）
+
+5. **`AGENTS.md` 默认技术矩阵漏行**
+   - 该表声明来源为 `res.md §110`，却漏掉 `Enterprise Backend`（Spring Boot / NestJS）与
+     `TS Backend`（NestJS / Fastify / Hono）两行，以及 Queue / Streaming / Search / Object Storage / Internal RPC / Testing。
+     `res.md §110` 原文为 `TS Backend → NestJS（默认）/ Fastify / Hono`。
+
+6. **补齐 TS 后端判定**
+   - `.sdd/decision-trees/backend.md` §4：原先只列 Next.js / React+Vite / Vue+Vite 三个**前端**框架，
+     而 §1 的语言判定可以输出 `TypeScript` → **API-only 服务无框架可依**。现拆为两组：
+     纯 TS 后端 → NestJS（默认）/ Fastify / Hono；含前端的 fullstack → Next.js。并写明"不要把 Next.js 当纯后端框架"。
+   - `.sdd/knowledge/backend.md`：TypeScript 段补框架默认；§7 Repository Structure 补 `res.md §78-§82`。
+
+### 改进（引用完整性）
+
+7. **补齐 10 处「内容已有、未标出处」**：`knowledge/architecture.md`（`res.md §4.1`、`知识库 §4.1-§4.2,§12.1`）、
+   `knowledge/backend.md`（`知识库 §5.1,§6.1-§6.3,§8.1-§8.3`）、`knowledge/caching.md`（`res.md §38`、`知识库 §30`）、
+   `decision-trees/decision-protocol.md`（`Matrix §3.1-§3.2`、`知识库 §64,§74`）、`.sdd/README.md`（`知识库 §2,§2.1,§86`）、
+   `AGENTS.md`（`res.md §1.2-§1.4`、`知识库 §87`）、`CLAUDE.md`（`知识库 §87`）。
+
+8. **`LAYOUT.md` 映射表补第 5 套约定的归属**：`知识库 §89` 规定的 `ai-architecture-kb/` 与 `Matrix §45` 是**同一套**，
+   原表只归给了 `Matrix §45`。
+
+9. **`CONVENTIONS.md` §1/§5**：登记紧凑写法（逗号压缩 / 区间 / 小数区间）的展开语义与归属规则；
+   明确「引用解析只有一处实现」。
+
+### 说明
+
+- **引用率 ≠ 内容覆盖率**。三份源文档 100% 有落点，只证明「每条规则都至少被一处声明为来源」，
+  不证明该条已被完整正确落地。`TRACEABILITY.md` 已写明该限制。
+
+---
+
 ## [v1.1] — 2026-09-19
 
 ### 修复（P0 — 消除自相矛盾，避免 Agent 误判）

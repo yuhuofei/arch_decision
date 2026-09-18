@@ -1,6 +1,6 @@
 # Knowledge: Backend（后端语言与框架）
 
-> 来源：res.md §5-§15,§28,§54,§56,§57,§58,§59,§64,§88,§89；Matrix §6-§7,§14；知识库 §5-§11,§25,§47,§48
+> 来源：res.md §5-§15,§28,§54,§56,§57,§58,§59,§64,§78-§82,§88,§89；Matrix §6-§7,§14；知识库 §5-§11（含 §5.1,§6.1-§6.3,§8.1-§8.3）,§25,§47,§48
 > 决策树：`.sdd/decision-trees/backend.md`　治理：`.sdd/decision-trees/decision-protocol.md`
 
 ## 1. Backend Language Matrix（Matrix §6，正式条件）
@@ -25,6 +25,7 @@ THEN language = Go
 IF fullstack_web OR frontend OR node_backend THEN language = TypeScript
 ```
 适合 Web/BFF/Fullstack/Frontend-heavy。
+**框架默认**（res.md §110 / §81）：纯 TS 后端服务 → **NestJS**，备选 Fastify / Hono；含前端的 fullstack → Next.js。判定逻辑见 `decision-trees/backend.md` §4。
 
 ### Java / Kotlin（Matrix §6.4）
 ```
@@ -92,6 +93,6 @@ Django 选：Admin-heavy/CMS/Enterprise CRUD/ORM-heavy/server-rendered。新项�
 ## 6. 用户显式指定（res.md §1.5）
 用户指定即 Hard Constraint，不得擅自改（decision-protocol §3）。
 
-## 7. Repository Structure（知识库 §55-§56）
+## 7. Repository Structure（res.md §78-§82 / 知识库 §55-§56）
 - Python：`backend/app/{api,core,models,schemas,services,repositories}/main.py` + tests + migrations + pyproject.toml + Dockerfile
 - Go：`backend/cmd/server/` + `internal/{handler,service,repository,model,middleware}/` + migrations + go.mod + Dockerfile

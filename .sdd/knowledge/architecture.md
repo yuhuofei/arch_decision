@@ -1,6 +1,6 @@
 # Knowledge: Architecture（架构）
 
-> 来源：res.md §1.1,§3,§4,§21,§77；Matrix §3-§5,§22,§32,§65-§69；知识库 §3,§65-§70
+> 来源：res.md §1.1,§3,§4,§4.1,§21,§77；Matrix §3-§5,§22,§32；知识库 §3,§4.1-§4.2,§12.1,§65-§70
 > 决策树：`.sdd/decision-trees/architecture.md`　治理：`.sdd/decision-trees/decision-protocol.md`
 
 ## 0. 决策治理（先看）
