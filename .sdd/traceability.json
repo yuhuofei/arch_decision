@@ -1791,7 +1791,6 @@
         "refs": [
           ".sdd/decision-trees/impact-analysis.md",
           ".sdd/examples/brownfield.md",
-          ".sdd/workflows/new-project.md",
           "CHANGELOG.md",
           "specs/001-project/plan.md"
         ],
@@ -2694,8 +2693,7 @@
         "state": "IMPLEMENTED",
         "title": "Existing Project 特殊规则",
         "refs": [
-          ".sdd/examples/brownfield.md",
-          ".sdd/workflows/new-project.md"
+          ".sdd/examples/brownfield.md"
         ],
         "verified_by": null
       },
@@ -3025,6 +3023,7 @@
         "title": "P1：decision-protocol 的决策循环仍然没有真正升级到 v1.3",
         "refs": [
           ".sdd/decision-trees/decision-protocol.md",
+          ".sdd/workflows/new-project.md",
           "CHANGELOG.md",
           "REVIEW-2026-09-19.md"
         ],

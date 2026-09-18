@@ -215,7 +215,7 @@
 | `Matrix §31` | RAG Matrix | IMPLEMENTED | `.sdd/decision-trees/ai-llm.md`<br>`.sdd/knowledge/ai-llm.md`<br>`CHANGELOG.md`<br>`REVIEW-2026-09-19.md` |
 | `Matrix §32` | Architecture Complexity Budget | **VERIFIED**<br>`check_complexity_json` | `.sdd/CONVENTIONS.md`<br>`.sdd/decision-trees/architecture.md`<br>`.sdd/decision-trees/decision-protocol.md`<br>`.sdd/decision-trees/infrastructure.md`<br>`.sdd/knowledge/architecture.md`<br>`.sdd/templates/technology-selection.md`<br>`REVIEW-2026-09-19.md` |
 | `Matrix §33` | Infrastructure Introduction Rule | IMPLEMENTED | `.sdd/decision-trees/decision-protocol.md`<br>`.sdd/knowledge/configuration.md`<br>`.sdd/knowledge/messaging.md` |
-| `Matrix §34` | Existing Project Decision Matrix | IMPLEMENTED | `.sdd/decision-trees/impact-analysis.md`<br>`.sdd/examples/brownfield.md`<br>`.sdd/workflows/new-project.md`<br>`CHANGELOG.md`<br>`specs/001-project/plan.md` |
+| `Matrix §34` | Existing Project Decision Matrix | IMPLEMENTED | `.sdd/decision-trees/impact-analysis.md`<br>`.sdd/examples/brownfield.md`<br>`CHANGELOG.md`<br>`specs/001-project/plan.md` |
 | `Matrix §35` | Existing Stack Conflict | IMPLEMENTED | `.sdd/decision-trees/impact-analysis.md`<br>`.sdd/examples/brownfield.md`<br>`specs/001-project/plan.md` |
 | `Matrix §36` | Technology Selection Scoring | IMPLEMENTED | `.sdd/decision-trees/decision-protocol.md`<br>`.sdd/templates/technology-selection.md`<br>`AGENTS.md` |
 | `Matrix §37` | Example | IMPLEMENTED | `.sdd/examples/saas.md` |
@@ -327,7 +327,7 @@
 | `知识库 §72` | 技术选型评分模型 | IMPLEMENTED | `.sdd/decision-trees/decision-protocol.md`<br>`.sdd/templates/technology-selection.md` |
 | `知识库 §73` | 技术选择必须记录理由 | IMPLEMENTED | `.sdd/decision-trees/decision-protocol.md`<br>`.sdd/templates/adr.md` |
 | `知识库 §74` | Agent 技术选型规则 | IMPLEMENTED | `.sdd/decision-trees/decision-protocol.md`<br>`CHANGELOG.md` |
-| `知识库 §75` | Existing Project 特殊规则 | IMPLEMENTED | `.sdd/examples/brownfield.md`<br>`.sdd/workflows/new-project.md` |
+| `知识库 §75` | Existing Project 特殊规则 | IMPLEMENTED | `.sdd/examples/brownfield.md` |
 | `知识库 §76` | Agent 生成 spec.md 时必须包含的架构上下文 | IMPLEMENTED | `.sdd/templates/spec.md` |
 | `知识库 §77` | plan.md 必须包含 | IMPLEMENTED | `.sdd/templates/plan.md`<br>`.sdd/templates/spec.md` |
 | `知识库 §78` | 推荐的 SDD Artifact | IMPLEMENTED | `.sdd/LAYOUT.md`<br>`CHANGELOG.md`<br>`REVIEW-2026-09-19.md` |
@@ -384,7 +384,7 @@
 | `modv2.md §7` | P1：decision.json 的成本状态存在逻辑矛盾 | **VERIFIED**<br>`check_cost_consistency` | `.sdd/CONVENTIONS.md`<br>`.sdd/templates/technology-selection.md`<br>`CHANGELOG.md`<br>`REVIEW-2026-09-19.md` |
 | `modv2.md §8` | P1：RECOMMEND 的语义在 technology-selection.md 仍然是旧版 | IMPLEMENTED | `.sdd/templates/technology-selection.md`<br>`CHANGELOG.md` |
 | `modv2.md §9` | P1：plan.md 仍然保留了旧的 Human Confirmation 语义 | MAPPED | `CHANGELOG.md`<br>`REVIEW-2026-09-19.md` |
-| `modv2.md §10` | P1：decision-protocol 的决策循环仍然没有真正升级到 v1.3 | IMPLEMENTED | `.sdd/decision-trees/decision-protocol.md`<br>`CHANGELOG.md`<br>`REVIEW-2026-09-19.md` |
+| `modv2.md §10` | P1：decision-protocol 的决策循环仍然没有真正升级到 v1.3 | IMPLEMENTED | `.sdd/decision-trees/decision-protocol.md`<br>`.sdd/workflows/new-project.md`<br>`CHANGELOG.md`<br>`REVIEW-2026-09-19.md` |
 | `modv2.md §11` | P1：CAN_ASSUME 不应该要求 ADR | IMPLEMENTED | `.sdd/decision-trees/decision-protocol.md`<br>`CHANGELOG.md` |
 | `modv2.md §12` | P1：README / .sdd/README / CHANGELOG 版本号不一致 | **VERIFIED**<br>`check_version_consistency` | `.sdd/CONVENTIONS.md`<br>`CHANGELOG.md` |
 | `modv2.md §13` | P1：.sdd/README.md 仍然是旧流程 | MAPPED | `CHANGELOG.md`<br>`REVIEW-2026-09-19.md` |

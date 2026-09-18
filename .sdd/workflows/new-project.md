@@ -48,25 +48,19 @@ Convergence
 > **顺序不可交换**：先把 Spec 写出来（哪怕只是 Draft），再谈技术。
 > 反过来做就是 `Prompt → Tech Stack → Spec`，等于放弃 SDD（`mod_gpt.md §1`）。
 
-## Agent 决策循环（`Matrix §43`，已升级为 21 步 —— 见 `decision-protocol` §7）
-> 本循环对应上面骨架的 **第 3–4 步**，是"决策"这个子过程的展开；它发生在 **Draft Spec 之后**。
-```
-1. Read requirements             → 读 Draft spec.md（不是从零重读用户原话）
-2. Classify project              → knowledge/architecture.md §1（项目类型矩阵）
-3. Extract hard constraints      → decision-protocol.md §3.1（P0A / P0B）
-4. Extract soft constraints      → decision-protocol.md §3.2（P1-P3）
-5. Detect existing stack         → Brownfield 则 preserve（Matrix §34 / 知识库 §75）
-6. Generate candidates           → decision-trees/*.md（默认值只是候选先验，decision-protocol §3.4）
-7. Eliminate hard-constraint violations
-8. Score remaining candidates    → decision-protocol.md §4.1（仅当消除后仍 ≥2 且规则无法区分）
-9. Select simplest sufficient architecture
-10. Generate ADR                 → templates/adr.md（含 Status/Confidence）※按需
-11. Mark confidence / Decision Status
-12. Identify human-confirmation decisions  → decision-protocol.md §6
-13. Generate plan.md             → templates/plan.md
-14. Generate tasks.md            → templates/tasks.md
-15. Run consistency analysis     → spec.md ↔ plan.md ↔ tasks.md
-```
+## Agent 决策循环（唯一权威：`.sdd/decision-trees/decision-protocol.md` §7）
+
+> **本文件不复制 21 步。** 完整 21 步定义唯一以 `decision-protocol.md §7` 为准（概念源自 `Matrix §43`，
+> 全链路升级见 `modv2.md §10`）。旧版曾在此列出 15 步、却把标题写成"已升级为 21 步"，与 `decision-protocol.md §7`
+> 直接冲突；现按"规则归属唯一权威"原则（`CANONICAL.md`）移除第二份维护，避免双份漂移。
+
+本循环在 new-project workflow 中的**边界与产物**（不重复步骤）：
+
+- **入口**：第 2 步产出的 Draft Spec（`spec.md`，Status: Draft）已足以支撑架构判断（`mod_gpt.md §1`），进入该循环。
+- **对应骨架步骤**：上面 `## 流程骨架` 的 **第 3–4 步**（读决策材料 + Technology Selection），是"决策"子过程的展开。
+- **产物**：`technology-selection.md` + `decision.json`；按需 `design.md` / `adr/`（判据见 `LAYOUT.md §1`）。
+- **门槛**：仅 `REQUIRE_CONFIRMATION` / `BLOCKED` 阻塞（见 `decision-protocol.md §6.1` / `§6.2`），`AUTO` / `RECOMMEND` 不阻塞。
+- **进入时机**：完整说明见 `decision-protocol.md §1`（发生在 Draft Spec 之后，而非从零重读用户原话）。
 
 ## 人工确认门槛（已收窄）
 
