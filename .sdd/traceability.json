@@ -1,0 +1,3179 @@
+{
+  "_note": "由 scripts/gen_traceability.py 生成，勿手改。四态定义见 .sdd/CANONICAL.md 与 modv2.md §14。",
+  "sources": {
+    "res.md": {
+      "res.md §0": {
+        "state": "IMPLEMENTED",
+        "title": "CORE MISSION",
+        "refs": [
+          ".sdd/workflows/new-project.md",
+          "AGENTS.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §1": {
+        "state": "IMPLEMENTED",
+        "title": "GENERAL ENGINEERING PRINCIPLES",
+        "refs": [],
+        "verified_by": null
+      },
+      "res.md §1.1": {
+        "state": "IMPLEMENTED",
+        "title": "Simple Before Complex",
+        "refs": [
+          ".sdd/knowledge/architecture.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §1.2": {
+        "state": "IMPLEMENTED",
+        "title": "Prefer Boring Technology",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          "AGENTS.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §1.3": {
+        "state": "IMPLEMENTED",
+        "title": "Minimize Technology Diversity",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          "AGENTS.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §1.4": {
+        "state": "IMPLEMENTED",
+        "title": "Existing Project Takes Priority",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          "AGENTS.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §1.5": {
+        "state": "IMPLEMENTED",
+        "title": "Explicit User Decisions Have Highest Priority",
+        "refs": [
+          ".sdd/decision-trees/decision-protocol.md",
+          ".sdd/knowledge/backend.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §2": {
+        "state": "IMPLEMENTED",
+        "title": "PROJECT DISCOVERY",
+        "refs": [
+          ".sdd/templates/project-discovery.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §2.1": {
+        "state": "IMPLEMENTED",
+        "title": "Business",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          ".sdd/templates/project-discovery.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §2.2": {
+        "state": "IMPLEMENTED",
+        "title": "Users",
+        "refs": [
+          ".sdd/templates/project-discovery.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §2.3": {
+        "state": "IMPLEMENTED",
+        "title": "Traffic",
+        "refs": [
+          ".sdd/templates/project-discovery.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §2.4": {
+        "state": "IMPLEMENTED",
+        "title": "Data",
+        "refs": [
+          ".sdd/knowledge/data-lifecycle.md",
+          ".sdd/templates/project-discovery.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §2.5": {
+        "state": "IMPLEMENTED",
+        "title": "Non-functional Requirements",
+        "refs": [
+          ".sdd/knowledge/reliability.md",
+          ".sdd/templates/project-discovery.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §3": {
+        "state": "IMPLEMENTED",
+        "title": "PROJECT SCALE CLASSIFICATION",
+        "refs": [
+          ".sdd/decision-trees/architecture.md",
+          ".sdd/knowledge/architecture.md",
+          ".sdd/templates/project-discovery.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §4": {
+        "state": "IMPLEMENTED",
+        "title": "ARCHITECTURE STYLE",
+        "refs": [
+          ".sdd/knowledge/architecture.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §4.1": {
+        "state": "IMPLEMENTED",
+        "title": "Modular Monolith",
+        "refs": [
+          ".sdd/knowledge/architecture.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §5": {
+        "state": "IMPLEMENTED",
+        "title": "BACKEND LANGUAGE DECISION",
+        "refs": [
+          ".sdd/knowledge/backend.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §6": {
+        "state": "IMPLEMENTED",
+        "title": "PYTHON",
+        "refs": [
+          ".sdd/knowledge/backend.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §7": {
+        "state": "IMPLEMENTED",
+        "title": "FASTAPI",
+        "refs": [
+          ".sdd/knowledge/backend.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §8": {
+        "state": "IMPLEMENTED",
+        "title": "DJANGO",
+        "refs": [
+          ".sdd/knowledge/backend.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §9": {
+        "state": "IMPLEMENTED",
+        "title": "FLASK",
+        "refs": [
+          ".sdd/knowledge/backend.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §10": {
+        "state": "IMPLEMENTED",
+        "title": "GO",
+        "refs": [
+          ".sdd/knowledge/backend.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §11": {
+        "state": "IMPLEMENTED",
+        "title": "GO FRAMEWORK",
+        "refs": [
+          ".sdd/knowledge/backend.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §12": {
+        "state": "IMPLEMENTED",
+        "title": "TYPESCRIPT BACKEND",
+        "refs": [
+          ".sdd/knowledge/backend.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §13": {
+        "state": "IMPLEMENTED",
+        "title": "NESTJS",
+        "refs": [
+          ".sdd/decision-trees/backend.md",
+          ".sdd/knowledge/backend.md",
+          "AGENTS.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §14": {
+        "state": "IMPLEMENTED",
+        "title": "JAVA / KOTLIN",
+        "refs": [
+          ".sdd/knowledge/backend.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §15": {
+        "state": "IMPLEMENTED",
+        "title": "SPRING BOOT",
+        "refs": [
+          ".sdd/knowledge/backend.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §16": {
+        "state": "IMPLEMENTED",
+        "title": "FRONTEND DECISION",
+        "refs": [
+          ".sdd/knowledge/frontend.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §17": {
+        "state": "IMPLEMENTED",
+        "title": "VUE",
+        "refs": [
+          ".sdd/knowledge/frontend.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §18": {
+        "state": "IMPLEMENTED",
+        "title": "REACT",
+        "refs": [
+          ".sdd/knowledge/frontend.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §19": {
+        "state": "IMPLEMENTED",
+        "title": "NEXT.JS",
+        "refs": [
+          ".sdd/knowledge/frontend.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §20": {
+        "state": "IMPLEMENTED",
+        "title": "ANGULAR",
+        "refs": [
+          ".sdd/knowledge/frontend.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §21": {
+        "state": "IMPLEMENTED",
+        "title": "FRONTEND ARCHITECTURE",
+        "refs": [
+          ".sdd/knowledge/architecture.md",
+          ".sdd/knowledge/frontend.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §22": {
+        "state": "IMPLEMENTED",
+        "title": "DATABASE DECISION",
+        "refs": [
+          ".sdd/knowledge/database.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §23": {
+        "state": "IMPLEMENTED",
+        "title": "POSTGRESQL",
+        "refs": [
+          ".sdd/knowledge/database.md",
+          "specs/001-project/technology-selection.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §24": {
+        "state": "IMPLEMENTED",
+        "title": "MYSQL",
+        "refs": [
+          ".sdd/knowledge/database.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §25": {
+        "state": "IMPLEMENTED",
+        "title": "SQLITE",
+        "refs": [
+          ".sdd/knowledge/database.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §26": {
+        "state": "IMPLEMENTED",
+        "title": "MONGODB",
+        "refs": [
+          ".sdd/knowledge/database.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §27": {
+        "state": "IMPLEMENTED",
+        "title": "REDIS",
+        "refs": [
+          ".sdd/knowledge/database.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §28": {
+        "state": "IMPLEMENTED",
+        "title": "ORM",
+        "refs": [
+          ".sdd/knowledge/backend.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §29": {
+        "state": "IMPLEMENTED",
+        "title": "API STYLE",
+        "refs": [
+          ".sdd/knowledge/api.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §30": {
+        "state": "IMPLEMENTED",
+        "title": "REST",
+        "refs": [
+          ".sdd/knowledge/api.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §31": {
+        "state": "IMPLEMENTED",
+        "title": "GRAPHQL",
+        "refs": [
+          ".sdd/knowledge/api.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §32": {
+        "state": "IMPLEMENTED",
+        "title": "GRPC",
+        "refs": [
+          ".sdd/knowledge/api.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §33": {
+        "state": "IMPLEMENTED",
+        "title": "OPENAPI",
+        "refs": [
+          ".sdd/knowledge/api.md",
+          "specs/001-project/adr/ADR-002-fastapi.md",
+          "specs/001-project/design.md",
+          "specs/001-project/plan.md",
+          "specs/001-project/tasks.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §34": {
+        "state": "IMPLEMENTED",
+        "title": "MESSAGE QUEUE",
+        "refs": [
+          ".sdd/knowledge/messaging.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §35": {
+        "state": "IMPLEMENTED",
+        "title": "RABBITMQ",
+        "refs": [
+          ".sdd/knowledge/messaging.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §36": {
+        "state": "IMPLEMENTED",
+        "title": "KAFKA",
+        "refs": [
+          ".sdd/knowledge/messaging.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §37": {
+        "state": "IMPLEMENTED",
+        "title": "BACKGROUND JOBS",
+        "refs": [
+          ".sdd/knowledge/backend.md",
+          ".sdd/knowledge/messaging.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §38": {
+        "state": "IMPLEMENTED",
+        "title": "SEARCH",
+        "refs": [
+          ".sdd/knowledge/caching.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §39": {
+        "state": "IMPLEMENTED",
+        "title": "VECTOR SEARCH",
+        "refs": [
+          ".sdd/knowledge/database.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §40": {
+        "state": "IMPLEMENTED",
+        "title": "OBJECT STORAGE",
+        "refs": [
+          ".sdd/knowledge/database.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §41": {
+        "state": "IMPLEMENTED",
+        "title": "AUTHENTICATION",
+        "refs": [
+          ".sdd/knowledge/configuration.md",
+          ".sdd/knowledge/data-lifecycle.md",
+          ".sdd/knowledge/security.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §42": {
+        "state": "IMPLEMENTED",
+        "title": "SESSION",
+        "refs": [
+          ".sdd/knowledge/security.md",
+          "specs/001-project/design.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §43": {
+        "state": "IMPLEMENTED",
+        "title": "JWT",
+        "refs": [
+          ".sdd/knowledge/security.md",
+          "specs/001-project/design.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §44": {
+        "state": "IMPLEMENTED",
+        "title": "OIDC / OAuth",
+        "refs": [
+          ".sdd/decision-trees/decision-protocol.md",
+          ".sdd/knowledge/security.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §45": {
+        "state": "IMPLEMENTED",
+        "title": "SECURITY",
+        "refs": [
+          ".sdd/knowledge/configuration.md",
+          ".sdd/knowledge/data-lifecycle.md",
+          ".sdd/knowledge/dependency-management.md",
+          ".sdd/knowledge/security.md",
+          "specs/001-project/plan.md",
+          "specs/001-project/verification.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §46": {
+        "state": "IMPLEMENTED",
+        "title": "AUTHORIZATION",
+        "refs": [
+          ".sdd/knowledge/security.md",
+          "specs/001-project/design.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §47": {
+        "state": "IMPLEMENTED",
+        "title": "OBSERVABILITY",
+        "refs": [
+          ".sdd/knowledge/observability.md",
+          "specs/001-project/tasks.md",
+          "specs/001-project/verification.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §48": {
+        "state": "IMPLEMENTED",
+        "title": "LOGGING",
+        "refs": [
+          ".sdd/knowledge/configuration.md",
+          ".sdd/knowledge/data-lifecycle.md",
+          ".sdd/knowledge/observability.md",
+          ".sdd/workflows/small-change.md",
+          "specs/001-project/plan.md",
+          "specs/001-project/tasks.md",
+          "specs/001-project/verification.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §49": {
+        "state": "IMPLEMENTED",
+        "title": "DISTRIBUTED TRACING",
+        "refs": [
+          ".sdd/knowledge/observability.md",
+          "specs/001-project/plan.md",
+          "specs/001-project/tasks.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §50": {
+        "state": "IMPLEMENTED",
+        "title": "TESTING STRATEGY",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          ".sdd/knowledge/testing.md",
+          ".sdd/templates/tasks.md",
+          ".sdd/templates/verification.md",
+          ".sdd/workflows/refactor.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §51": {
+        "state": "IMPLEMENTED",
+        "title": "UNIT TEST",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          ".sdd/knowledge/testing.md",
+          ".sdd/templates/tasks.md",
+          ".sdd/templates/verification.md",
+          ".sdd/workflows/refactor.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md",
+          "specs/001-project/tasks.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §52": {
+        "state": "IMPLEMENTED",
+        "title": "INTEGRATION TEST",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          ".sdd/knowledge/testing.md",
+          ".sdd/templates/tasks.md",
+          ".sdd/templates/verification.md",
+          ".sdd/workflows/refactor.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md",
+          "specs/001-project/tasks.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §53": {
+        "state": "IMPLEMENTED",
+        "title": "E2E TEST",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          ".sdd/knowledge/testing.md",
+          ".sdd/templates/tasks.md",
+          ".sdd/templates/verification.md",
+          ".sdd/workflows/refactor.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md",
+          "specs/001-project/tasks.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §54": {
+        "state": "IMPLEMENTED",
+        "title": "PYTHON TESTING",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          ".sdd/knowledge/backend.md",
+          ".sdd/knowledge/testing.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §55": {
+        "state": "IMPLEMENTED",
+        "title": "FRONTEND TESTING",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          ".sdd/knowledge/testing.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §56": {
+        "state": "IMPLEMENTED",
+        "title": "GO TESTING",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          ".sdd/knowledge/backend.md",
+          ".sdd/knowledge/testing.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §57": {
+        "state": "IMPLEMENTED",
+        "title": "JAVA TESTING",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          ".sdd/knowledge/backend.md",
+          ".sdd/knowledge/testing.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §58": {
+        "state": "IMPLEMENTED",
+        "title": "CODE QUALITY",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          ".sdd/knowledge/backend.md",
+          ".sdd/knowledge/testing.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §59": {
+        "state": "IMPLEMENTED",
+        "title": "PACKAGE MANAGEMENT",
+        "refs": [
+          ".sdd/knowledge/backend.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §60": {
+        "state": "IMPLEMENTED",
+        "title": "CONTAINERIZATION",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          ".sdd/knowledge/deployment.md",
+          ".sdd/knowledge/versioning.md",
+          "specs/001-project/plan.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §61": {
+        "state": "IMPLEMENTED",
+        "title": "DOCKER COMPOSE",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          ".sdd/knowledge/deployment.md",
+          ".sdd/knowledge/versioning.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §62": {
+        "state": "IMPLEMENTED",
+        "title": "KUBERNETES",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          ".sdd/knowledge/deployment.md",
+          ".sdd/knowledge/versioning.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §63": {
+        "state": "IMPLEMENTED",
+        "title": "CI/CD",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          ".sdd/knowledge/deployment.md",
+          ".sdd/knowledge/versioning.md",
+          "specs/001-project/plan.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §64": {
+        "state": "IMPLEMENTED",
+        "title": "DATABASE MIGRATION",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          ".sdd/knowledge/backend.md",
+          ".sdd/knowledge/deployment.md",
+          ".sdd/knowledge/versioning.md",
+          ".sdd/workflows/small-change.md",
+          "specs/001-project/plan.md",
+          "specs/001-project/tasks.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §65": {
+        "state": "IMPLEMENTED",
+        "title": "BACKUP",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          ".sdd/knowledge/data-lifecycle.md",
+          ".sdd/knowledge/deployment.md",
+          ".sdd/knowledge/reliability.md",
+          ".sdd/knowledge/versioning.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §66": {
+        "state": "IMPLEMENTED",
+        "title": "DATABASE DESIGN RULES",
+        "refs": [
+          ".sdd/decision-trees/database.md",
+          ".sdd/knowledge/database.md",
+          "specs/001-project/design.md",
+          "specs/001-project/plan.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §67": {
+        "state": "IMPLEMENTED",
+        "title": "TRANSACTION RULES",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          ".sdd/decision-trees/database.md",
+          ".sdd/knowledge/database.md",
+          ".sdd/knowledge/multi-tenancy.md",
+          ".sdd/workflows/bugfix.md",
+          ".sdd/workflows/small-change.md",
+          "REVIEW-2026-09-19.md",
+          "specs/001-project/adr/ADR-001-postgres.md",
+          "specs/001-project/design.md",
+          "specs/001-project/plan.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §68": {
+        "state": "IMPLEMENTED",
+        "title": "ID STRATEGY",
+        "refs": [
+          ".sdd/decision-trees/database.md",
+          ".sdd/knowledge/database.md",
+          "specs/001-project/design.md",
+          "specs/001-project/plan.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §69": {
+        "state": "IMPLEMENTED",
+        "title": "TIME",
+        "refs": [
+          ".sdd/decision-trees/database.md",
+          ".sdd/knowledge/database.md",
+          "specs/001-project/plan.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §70": {
+        "state": "IMPLEMENTED",
+        "title": "API ERROR FORMAT",
+        "refs": [
+          ".sdd/knowledge/api.md",
+          "specs/001-project/design.md",
+          "specs/001-project/plan.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §71": {
+        "state": "IMPLEMENTED",
+        "title": "PAGINATION",
+        "refs": [
+          ".sdd/knowledge/api.md",
+          ".sdd/knowledge/caching.md",
+          "specs/001-project/design.md",
+          "specs/001-project/plan.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §72": {
+        "state": "IMPLEMENTED",
+        "title": "RATE LIMITING",
+        "refs": [
+          ".sdd/knowledge/api.md",
+          ".sdd/knowledge/caching.md",
+          ".sdd/knowledge/integration.md",
+          ".sdd/knowledge/reliability.md",
+          "specs/001-project/plan.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §73": {
+        "state": "IMPLEMENTED",
+        "title": "CACHING",
+        "refs": [
+          ".sdd/knowledge/api.md",
+          ".sdd/knowledge/caching.md",
+          "specs/001-project/design.md",
+          "specs/001-project/plan.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §74": {
+        "state": "IMPLEMENTED",
+        "title": "ASYNC ARCHITECTURE",
+        "refs": [
+          ".sdd/knowledge/messaging.md",
+          "specs/001-project/design.md",
+          "specs/001-project/plan.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §75": {
+        "state": "IMPLEMENTED",
+        "title": "FRONTEND STATE MANAGEMENT",
+        "refs": [
+          ".sdd/knowledge/frontend.md",
+          "specs/001-project/plan.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §76": {
+        "state": "IMPLEMENTED",
+        "title": "UI COMPONENT LIBRARY",
+        "refs": [
+          ".sdd/knowledge/frontend.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §77": {
+        "state": "IMPLEMENTED",
+        "title": "MONOREPO",
+        "refs": [
+          ".sdd/knowledge/architecture.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §78": {
+        "state": "IMPLEMENTED",
+        "title": "REPOSITORY STRUCTURE",
+        "refs": [
+          ".sdd/knowledge/backend.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md",
+          "specs/001-project/plan.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §79": {
+        "state": "IMPLEMENTED",
+        "title": "Django",
+        "refs": [
+          ".sdd/knowledge/backend.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §80": {
+        "state": "IMPLEMENTED",
+        "title": "Go",
+        "refs": [
+          ".sdd/knowledge/backend.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §81": {
+        "state": "IMPLEMENTED",
+        "title": "NestJS",
+        "refs": [
+          ".sdd/decision-trees/backend.md",
+          ".sdd/knowledge/backend.md",
+          "AGENTS.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §82": {
+        "state": "IMPLEMENTED",
+        "title": "Spring Boot",
+        "refs": [
+          ".sdd/knowledge/backend.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §83": {
+        "state": "IMPLEMENTED",
+        "title": "VUE",
+        "refs": [
+          ".sdd/knowledge/frontend.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §84": {
+        "state": "IMPLEMENTED",
+        "title": "REACT",
+        "refs": [
+          ".sdd/knowledge/frontend.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §85": {
+        "state": "IMPLEMENTED",
+        "title": "NEXT.JS",
+        "refs": [
+          ".sdd/knowledge/frontend.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §86": {
+        "state": "IMPLEMENTED",
+        "title": "CONFIGURATION",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          ".sdd/knowledge/configuration.md",
+          ".sdd/knowledge/deployment.md",
+          "CHANGELOG.md",
+          "specs/001-project/tasks.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §87": {
+        "state": "IMPLEMENTED",
+        "title": "SECRET MANAGEMENT",
+        "refs": [
+          ".sdd/knowledge/configuration.md",
+          ".sdd/knowledge/deployment.md",
+          ".sdd/knowledge/security.md",
+          "CHANGELOG.md",
+          "specs/001-project/plan.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §88": {
+        "state": "VERIFIED",
+        "title": "VERSION STRATEGY",
+        "refs": [
+          ".sdd/knowledge/backend.md",
+          ".sdd/knowledge/deployment.md",
+          ".sdd/knowledge/versioning.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": "check_version_consistency"
+      },
+      "res.md §89": {
+        "state": "IMPLEMENTED",
+        "title": "VERSION PINNING",
+        "refs": [
+          ".sdd/knowledge/backend.md",
+          ".sdd/knowledge/deployment.md",
+          ".sdd/knowledge/versioning.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §90": {
+        "state": "IMPLEMENTED",
+        "title": "DEPENDENCY DECISION",
+        "refs": [
+          ".sdd/README.md",
+          ".sdd/knowledge/dependency-management.md",
+          ".sdd/workflows/small-change.md",
+          "CHANGELOG.md",
+          "specs/002-demo-todo-cli/technology-selection.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §91": {
+        "state": "IMPLEMENTED",
+        "title": "SPEC-DRIVEN DEVELOPMENT",
+        "refs": [
+          ".sdd/templates/spec.md",
+          ".sdd/workflows/new-project.md",
+          "REVIEW-2026-09-19.md",
+          "specs/001-project/spec.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §92": {
+        "state": "IMPLEMENTED",
+        "title": "SPEC ARTIFACTS",
+        "refs": [
+          ".sdd/workflows/new-project.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §93": {
+        "state": "IMPLEMENTED",
+        "title": "PROJECT-LEVEL SPEC",
+        "refs": [
+          ".sdd/workflows/new-project.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §94": {
+        "state": "IMPLEMENTED",
+        "title": "TECHNOLOGY-SELECTION.MD",
+        "refs": [
+          ".sdd/templates/technology-selection.md",
+          ".sdd/workflows/new-project.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §95": {
+        "state": "IMPLEMENTED",
+        "title": "DECISION RECORD FORMAT",
+        "refs": [
+          ".sdd/templates/adr.md",
+          ".sdd/workflows/new-project.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §96": {
+        "state": "IMPLEMENTED",
+        "title": "REQUIREMENTS",
+        "refs": [
+          ".sdd/workflows/new-project.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §97": {
+        "state": "IMPLEMENTED",
+        "title": "ACCEPTANCE CRITERIA",
+        "refs": [
+          ".sdd/templates/verification.md",
+          ".sdd/workflows/new-project.md",
+          "REVIEW-2026-09-19.md",
+          "specs/001-project/verification.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §98": {
+        "state": "IMPLEMENTED",
+        "title": "DESIGN",
+        "refs": [
+          ".sdd/workflows/new-project.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md",
+          "specs/001-project/design.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §99": {
+        "state": "IMPLEMENTED",
+        "title": "TASKS",
+        "refs": [
+          ".sdd/templates/plan.md",
+          ".sdd/templates/tasks.md",
+          ".sdd/workflows/new-project.md",
+          "REVIEW-2026-09-19.md",
+          "specs/001-project/plan.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §100": {
+        "state": "IMPLEMENTED",
+        "title": "IMPLEMENTATION RULE",
+        "refs": [
+          ".sdd/templates/plan.md",
+          ".sdd/workflows/new-project.md",
+          "REVIEW-2026-09-19.md",
+          "specs/001-project/plan.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §101": {
+        "state": "IMPLEMENTED",
+        "title": "CHANGE MANAGEMENT",
+        "refs": [
+          ".sdd/decision-trees/impact-analysis.md",
+          ".sdd/templates/plan.md",
+          ".sdd/workflows/bugfix.md",
+          ".sdd/workflows/new-feature.md",
+          ".sdd/workflows/new-project.md",
+          "REVIEW-2026-09-19.md",
+          "specs/001-project/plan.md",
+          "specs/001-project/verification.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §102": {
+        "state": "IMPLEMENTED",
+        "title": "BROWNFIELD PROJECT",
+        "refs": [
+          ".sdd/decision-trees/impact-analysis.md",
+          ".sdd/templates/project-discovery.md",
+          ".sdd/workflows/new-project.md",
+          "AGENTS.md",
+          "CLAUDE.md",
+          "REVIEW-2026-09-19.md",
+          "specs/001-project/plan.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §103": {
+        "state": "IMPLEMENTED",
+        "title": "BROWNFIELD TECHNOLOGY RULE",
+        "refs": [
+          ".sdd/decision-trees/impact-analysis.md",
+          ".sdd/workflows/new-project.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §104": {
+        "state": "IMPLEMENTED",
+        "title": "FEATURE DEVELOPMENT FLOW",
+        "refs": [
+          ".sdd/workflows/new-feature.md",
+          ".sdd/workflows/new-project.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §105": {
+        "state": "IMPLEMENTED",
+        "title": "BUGFIX FLOW",
+        "refs": [
+          ".sdd/workflows/bugfix.md",
+          ".sdd/workflows/new-project.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §106": {
+        "state": "IMPLEMENTED",
+        "title": "REFACTOR FLOW",
+        "refs": [
+          ".sdd/workflows/new-project.md",
+          ".sdd/workflows/refactor.md",
+          ".sdd/workflows/small-change.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §107": {
+        "state": "IMPLEMENTED",
+        "title": "AGENT QUESTION POLICY",
+        "refs": [
+          ".sdd/workflows/new-project.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §108": {
+        "state": "IMPLEMENTED",
+        "title": "QUESTIONS CLASSIFICATION",
+        "refs": [
+          ".sdd/decision-trees/decision-protocol.md",
+          ".sdd/workflows/new-feature.md",
+          ".sdd/workflows/new-project.md",
+          "CLAUDE.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §109": {
+        "state": "IMPLEMENTED",
+        "title": "TECHNOLOGY DECISION OUTPUT",
+        "refs": [
+          ".sdd/templates/technology-selection.md",
+          ".sdd/workflows/new-project.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §110": {
+        "state": "IMPLEMENTED",
+        "title": "DEFAULT TECHNOLOGY MATRIX",
+        "refs": [
+          ".sdd/knowledge/backend.md",
+          ".sdd/workflows/new-project.md",
+          "AGENTS.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §111": {
+        "state": "IMPLEMENTED",
+        "title": "DEFAULT FULL STACK",
+        "refs": [
+          ".sdd/workflows/new-project.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §112": {
+        "state": "IMPLEMENTED",
+        "title": "DEFAULT AI APPLICATION STACK",
+        "refs": [
+          ".sdd/workflows/new-project.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §113": {
+        "state": "IMPLEMENTED",
+        "title": "DEFAULT ENTERPRISE STACK",
+        "refs": [
+          ".sdd/workflows/new-project.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §114": {
+        "state": "IMPLEMENTED",
+        "title": "DEFAULT HIGH-PERFORMANCE SERVICE",
+        "refs": [
+          ".sdd/workflows/new-project.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §115": {
+        "state": "IMPLEMENTED",
+        "title": "TECHNOLOGY INTRODUCTION CHECKLIST",
+        "refs": [
+          ".sdd/decision-trees/impact-analysis.md",
+          ".sdd/workflows/new-feature.md",
+          ".sdd/workflows/new-project.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §116": {
+        "state": "IMPLEMENTED",
+        "title": "ARCHITECTURE REVIEW CHECKLIST",
+        "refs": [
+          ".sdd/templates/verification.md",
+          ".sdd/workflows/new-project.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §117": {
+        "state": "IMPLEMENTED",
+        "title": "FINAL SPEC REQUIREMENTS",
+        "refs": [
+          ".sdd/README.md",
+          ".sdd/decision-trees/decision-protocol.md",
+          ".sdd/templates/spec.md",
+          ".sdd/workflows/new-project.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §118": {
+        "state": "IMPLEMENTED",
+        "title": "FINAL AGENT BEHAVIOR",
+        "refs": [
+          ".sdd/workflows/new-project.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §119": {
+        "state": "IMPLEMENTED",
+        "title": "GOLDEN RULE",
+        "refs": [
+          "CLAUDE.md"
+        ],
+        "verified_by": null
+      },
+      "res.md §120": {
+        "state": "IMPLEMENTED",
+        "title": "FINAL PRINCIPLE",
+        "refs": [
+          ".sdd/README.md",
+          "AGENTS.md",
+          "CLAUDE.md",
+          "README.md",
+          "specs/001-project/technology-selection.md"
+        ],
+        "verified_by": null
+      }
+    },
+    "Matrix": {
+      "Matrix §1": {
+        "state": "IMPLEMENTED",
+        "title": "Agent 总决策协议",
+        "refs": [
+          ".sdd/decision-trees/decision-protocol.md",
+          ".sdd/templates/adr.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §2": {
+        "state": "IMPLEMENTED",
+        "title": "决策优先级",
+        "refs": [
+          ".sdd/decision-trees/decision-protocol.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §3": {
+        "state": "IMPLEMENTED",
+        "title": "Hard Constraint / Soft Constraint",
+        "refs": [
+          ".sdd/decision-trees/decision-protocol.md",
+          ".sdd/knowledge/architecture.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §3.1": {
+        "state": "IMPLEMENTED",
+        "title": "Hard Constraint",
+        "refs": [
+          ".sdd/decision-trees/decision-protocol.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §3.2": {
+        "state": "IMPLEMENTED",
+        "title": "Soft Constraint",
+        "refs": [
+          ".sdd/decision-trees/decision-protocol.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §4": {
+        "state": "IMPLEMENTED",
+        "title": "项目类型矩阵",
+        "refs": [
+          ".sdd/decision-trees/architecture.md",
+          ".sdd/knowledge/architecture.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §5": {
+        "state": "IMPLEMENTED",
+        "title": "Architecture Decision Matrix",
+        "refs": [
+          ".sdd/decision-trees/architecture.md",
+          ".sdd/knowledge/architecture.md",
+          ".sdd/knowledge/multi-tenancy.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §5.1": {
+        "state": "IMPLEMENTED",
+        "title": "Monolith",
+        "refs": [
+          ".sdd/knowledge/architecture.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §5.2": {
+        "state": "IMPLEMENTED",
+        "title": "Modular Monolith",
+        "refs": [
+          ".sdd/knowledge/architecture.md",
+          "REVIEW-2026-09-19.md",
+          "specs/001-project/plan.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §5.3": {
+        "state": "IMPLEMENTED",
+        "title": "Microservices",
+        "refs": [
+          ".sdd/knowledge/architecture.md",
+          "REVIEW-2026-09-19.md",
+          "specs/001-project/plan.md",
+          "specs/001-project/technology-selection.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §6": {
+        "state": "IMPLEMENTED",
+        "title": "Backend Language Matrix",
+        "refs": [
+          ".sdd/decision-trees/backend.md",
+          ".sdd/knowledge/backend.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §6.1": {
+        "state": "IMPLEMENTED",
+        "title": "Python",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          ".sdd/knowledge/backend.md",
+          "REVIEW-2026-09-19.md",
+          "specs/001-project/adr/ADR-002-fastapi.md",
+          "specs/001-project/plan.md",
+          "specs/001-project/technology-selection.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §6.2": {
+        "state": "IMPLEMENTED",
+        "title": "Go",
+        "refs": [
+          ".sdd/examples/high-concurrency.md",
+          ".sdd/knowledge/backend.md",
+          "specs/001-project/adr/ADR-002-fastapi.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §6.3": {
+        "state": "IMPLEMENTED",
+        "title": "TypeScript",
+        "refs": [
+          ".sdd/knowledge/backend.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §6.4": {
+        "state": "IMPLEMENTED",
+        "title": "Java / Kotlin",
+        "refs": [
+          ".sdd/knowledge/backend.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §6.5": {
+        "state": "IMPLEMENTED",
+        "title": "Rust",
+        "refs": [
+          ".sdd/knowledge/backend.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §7": {
+        "state": "IMPLEMENTED",
+        "title": "Backend Framework Matrix",
+        "refs": [
+          ".sdd/decision-trees/backend.md",
+          ".sdd/knowledge/backend.md",
+          "specs/001-project/adr/ADR-002-fastapi.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §8": {
+        "state": "IMPLEMENTED",
+        "title": "Frontend Matrix",
+        "refs": [
+          ".sdd/decision-trees/frontend.md",
+          ".sdd/knowledge/frontend.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §8.1": {
+        "state": "IMPLEMENTED",
+        "title": "Vue",
+        "refs": [
+          ".sdd/knowledge/frontend.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §8.2": {
+        "state": "IMPLEMENTED",
+        "title": "React",
+        "refs": [
+          ".sdd/knowledge/frontend.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §8.3": {
+        "state": "IMPLEMENTED",
+        "title": "Next.js",
+        "refs": [
+          ".sdd/knowledge/frontend.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §8.4": {
+        "state": "IMPLEMENTED",
+        "title": "Angular",
+        "refs": [
+          ".sdd/knowledge/frontend.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §9": {
+        "state": "IMPLEMENTED",
+        "title": "Frontend / Backend Separation Matrix",
+        "refs": [
+          ".sdd/decision-trees/architecture.md",
+          ".sdd/decision-trees/frontend.md",
+          ".sdd/knowledge/architecture.md",
+          ".sdd/knowledge/frontend.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §10": {
+        "state": "IMPLEMENTED",
+        "title": "Database Matrix",
+        "refs": [
+          ".sdd/decision-trees/database.md",
+          ".sdd/knowledge/database.md",
+          "specs/001-project/adr/ADR-001-postgres.md",
+          "specs/001-project/technology-selection.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §11": {
+        "state": "IMPLEMENTED",
+        "title": "MySQL",
+        "refs": [
+          ".sdd/decision-trees/database.md",
+          ".sdd/knowledge/database.md",
+          "specs/001-project/adr/ADR-001-postgres.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §12": {
+        "state": "IMPLEMENTED",
+        "title": "SQLite",
+        "refs": [
+          ".sdd/decision-trees/database.md",
+          ".sdd/knowledge/database.md",
+          ".sdd/knowledge/frontend.md",
+          "specs/001-project/adr/ADR-001-postgres.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §13": {
+        "state": "IMPLEMENTED",
+        "title": "Redis Matrix",
+        "refs": [
+          ".sdd/decision-trees/database.md",
+          ".sdd/knowledge/caching.md",
+          ".sdd/knowledge/database.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §14": {
+        "state": "IMPLEMENTED",
+        "title": "ORM Matrix",
+        "refs": [
+          ".sdd/knowledge/backend.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §15": {
+        "state": "IMPLEMENTED",
+        "title": "API Protocol Matrix",
+        "refs": [
+          ".sdd/decision-trees/infrastructure.md",
+          ".sdd/knowledge/api.md",
+          ".sdd/knowledge/integration.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §16": {
+        "state": "IMPLEMENTED",
+        "title": "Message Queue Matrix",
+        "refs": [
+          ".sdd/decision-trees/infrastructure.md",
+          ".sdd/knowledge/integration.md",
+          ".sdd/knowledge/messaging.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §17": {
+        "state": "IMPLEMENTED",
+        "title": "Search Engine Matrix",
+        "refs": [
+          ".sdd/decision-trees/infrastructure.md",
+          ".sdd/knowledge/caching.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §18": {
+        "state": "IMPLEMENTED",
+        "title": "Vector Database Matrix",
+        "refs": [
+          ".sdd/decision-trees/database.md",
+          ".sdd/knowledge/database.md",
+          ".sdd/templates/adr.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §19": {
+        "state": "IMPLEMENTED",
+        "title": "Object Storage Matrix",
+        "refs": [
+          ".sdd/decision-trees/database.md",
+          ".sdd/knowledge/database.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §20": {
+        "state": "IMPLEMENTED",
+        "title": "Authentication Matrix",
+        "refs": [
+          ".sdd/decision-trees/infrastructure.md",
+          ".sdd/knowledge/security.md",
+          "specs/001-project/adr/ADR-003-session-auth.md",
+          "specs/001-project/plan.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §21": {
+        "state": "IMPLEMENTED",
+        "title": "Authorization Matrix",
+        "refs": [
+          ".sdd/decision-trees/infrastructure.md",
+          ".sdd/knowledge/security.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §22": {
+        "state": "IMPLEMENTED",
+        "title": "Multi-Tenant Matrix",
+        "refs": [
+          ".sdd/README.md",
+          ".sdd/decision-trees/architecture.md",
+          ".sdd/decision-trees/database.md",
+          ".sdd/knowledge/architecture.md",
+          ".sdd/knowledge/database.md",
+          ".sdd/knowledge/multi-tenancy.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §23": {
+        "state": "IMPLEMENTED",
+        "title": "Caching Matrix",
+        "refs": [
+          ".sdd/decision-trees/infrastructure.md",
+          ".sdd/knowledge/ai-llm.md",
+          ".sdd/knowledge/caching.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §24": {
+        "state": "IMPLEMENTED",
+        "title": "Deployment Matrix",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          ".sdd/decision-trees/infrastructure.md",
+          ".sdd/knowledge/deployment.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md",
+          "specs/001-project/plan.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §25": {
+        "state": "IMPLEMENTED",
+        "title": "Kubernetes Decision Rule",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          ".sdd/decision-trees/infrastructure.md",
+          ".sdd/knowledge/deployment.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md",
+          "specs/001-project/plan.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §26": {
+        "state": "IMPLEMENTED",
+        "title": "Observability Matrix",
+        "refs": [
+          ".sdd/knowledge/observability.md",
+          ".sdd/knowledge/reliability.md",
+          "specs/001-project/plan.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §27": {
+        "state": "IMPLEMENTED",
+        "title": "Testing Matrix",
+        "refs": [
+          ".sdd/knowledge/testing.md",
+          ".sdd/templates/verification.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §28": {
+        "state": "IMPLEMENTED",
+        "title": "Test Strategy Matrix",
+        "refs": [
+          ".sdd/knowledge/data.md",
+          ".sdd/knowledge/testing.md",
+          ".sdd/templates/verification.md",
+          "specs/001-project/plan.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §29": {
+        "state": "IMPLEMENTED",
+        "title": "AI Application Matrix",
+        "refs": [
+          ".sdd/decision-trees/ai-llm.md",
+          ".sdd/knowledge/ai-llm.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §30": {
+        "state": "IMPLEMENTED",
+        "title": "LLM Provider Architecture",
+        "refs": [
+          ".sdd/decision-trees/ai-llm.md",
+          ".sdd/examples/ai-saas.md",
+          ".sdd/knowledge/ai-llm.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §31": {
+        "state": "IMPLEMENTED",
+        "title": "RAG Matrix",
+        "refs": [
+          ".sdd/decision-trees/ai-llm.md",
+          ".sdd/knowledge/ai-llm.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §32": {
+        "state": "VERIFIED",
+        "title": "Architecture Complexity Budget",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          ".sdd/decision-trees/architecture.md",
+          ".sdd/decision-trees/decision-protocol.md",
+          ".sdd/decision-trees/infrastructure.md",
+          ".sdd/knowledge/architecture.md",
+          ".sdd/templates/technology-selection.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": "check_complexity_json"
+      },
+      "Matrix §33": {
+        "state": "IMPLEMENTED",
+        "title": "Infrastructure Introduction Rule",
+        "refs": [
+          ".sdd/decision-trees/decision-protocol.md",
+          ".sdd/knowledge/configuration.md",
+          ".sdd/knowledge/messaging.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §34": {
+        "state": "IMPLEMENTED",
+        "title": "Existing Project Decision Matrix",
+        "refs": [
+          ".sdd/decision-trees/impact-analysis.md",
+          ".sdd/examples/brownfield.md",
+          ".sdd/workflows/new-project.md",
+          "CHANGELOG.md",
+          "specs/001-project/plan.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §35": {
+        "state": "IMPLEMENTED",
+        "title": "Existing Stack Conflict",
+        "refs": [
+          ".sdd/decision-trees/impact-analysis.md",
+          ".sdd/examples/brownfield.md",
+          "specs/001-project/plan.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §36": {
+        "state": "IMPLEMENTED",
+        "title": "Technology Selection Scoring",
+        "refs": [
+          ".sdd/decision-trees/decision-protocol.md",
+          ".sdd/templates/technology-selection.md",
+          "AGENTS.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §37": {
+        "state": "IMPLEMENTED",
+        "title": "Example",
+        "refs": [
+          ".sdd/examples/saas.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §38": {
+        "state": "IMPLEMENTED",
+        "title": "Example: AI SaaS",
+        "refs": [
+          ".sdd/examples/ai-saas.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §39": {
+        "state": "IMPLEMENTED",
+        "title": "Example: High-Concurrency Service",
+        "refs": [
+          ".sdd/examples/high-concurrency.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §40": {
+        "state": "VERIFIED",
+        "title": "Decision Output Schema",
+        "refs": [
+          ".sdd/decision-trees/decision-protocol.md",
+          ".sdd/templates/technology-selection.md",
+          "specs/001-project/technology-selection.md"
+        ],
+        "verified_by": "check_decision_json"
+      },
+      "Matrix §41": {
+        "state": "IMPLEMENTED",
+        "title": "Decision Status",
+        "refs": [
+          ".sdd/decision-trees/decision-protocol.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §42": {
+        "state": "IMPLEMENTED",
+        "title": "哪些决策必须人工确认",
+        "refs": [
+          ".sdd/decision-trees/decision-protocol.md",
+          ".sdd/knowledge/security.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §43": {
+        "state": "IMPLEMENTED",
+        "title": "Agent Decision Loop",
+        "refs": [
+          ".sdd/decision-trees/decision-protocol.md",
+          ".sdd/workflows/new-project.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §44": {
+        "state": "IMPLEMENTED",
+        "title": "最终 Agent Rule",
+        "refs": [
+          ".sdd/decision-trees/decision-protocol.md",
+          ".sdd/knowledge/ai-llm.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "Matrix §45": {
+        "state": "IMPLEMENTED",
+        "title": "推荐最终目录",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          ".sdd/LAYOUT.md",
+          ".sdd/knowledge/deployment.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      }
+    },
+    "知识库": {
+      "知识库 §1": {
+        "state": "MAPPED",
+        "title": "文档目标",
+        "refs": [
+          ".sdd/README.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §2": {
+        "state": "MAPPED",
+        "title": "总体原则",
+        "refs": [
+          ".sdd/README.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §2.1": {
+        "state": "MAPPED",
+        "title": "默认原则",
+        "refs": [
+          ".sdd/README.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §3": {
+        "state": "IMPLEMENTED",
+        "title": "架构选择总决策树",
+        "refs": [
+          ".sdd/knowledge/architecture.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §4": {
+        "state": "IMPLEMENTED",
+        "title": "项目类型分类",
+        "refs": [
+          ".sdd/knowledge/architecture.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §4.1": {
+        "state": "IMPLEMENTED",
+        "title": "Web Application",
+        "refs": [
+          ".sdd/knowledge/architecture.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §4.2": {
+        "state": "IMPLEMENTED",
+        "title": "API / Backend Service",
+        "refs": [
+          ".sdd/knowledge/architecture.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §4.3": {
+        "state": "IMPLEMENTED",
+        "title": "Data / AI Application",
+        "refs": [
+          ".sdd/knowledge/ai-llm.md",
+          ".sdd/knowledge/data.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §4.4": {
+        "state": "IMPLEMENTED",
+        "title": "CLI / Automation",
+        "refs": [
+          ".sdd/knowledge/data.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §4.5": {
+        "state": "IMPLEMENTED",
+        "title": "Worker / Background Job",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          ".sdd/decision-trees/backend.md",
+          ".sdd/knowledge/backend.md",
+          ".sdd/knowledge/data.md",
+          ".sdd/knowledge/messaging.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §5": {
+        "state": "IMPLEMENTED",
+        "title": "编程语言选择",
+        "refs": [
+          ".sdd/knowledge/backend.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §5.1": {
+        "state": "IMPLEMENTED",
+        "title": "Python",
+        "refs": [
+          ".sdd/knowledge/backend.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §6": {
+        "state": "IMPLEMENTED",
+        "title": "Python Web Framework",
+        "refs": [
+          ".sdd/knowledge/backend.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §6.1": {
+        "state": "IMPLEMENTED",
+        "title": "FastAPI —— 默认 API 首选",
+        "refs": [
+          ".sdd/knowledge/backend.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §6.2": {
+        "state": "IMPLEMENTED",
+        "title": "Flask",
+        "refs": [
+          ".sdd/knowledge/backend.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §6.3": {
+        "state": "IMPLEMENTED",
+        "title": "Django",
+        "refs": [
+          ".sdd/knowledge/backend.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §7": {
+        "state": "IMPLEMENTED",
+        "title": "Go",
+        "refs": [
+          ".sdd/knowledge/backend.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §8": {
+        "state": "IMPLEMENTED",
+        "title": "Go Web Framework",
+        "refs": [
+          ".sdd/knowledge/backend.md",
+          ".sdd/knowledge/integration.md",
+          ".sdd/knowledge/reliability.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §8.1": {
+        "state": "IMPLEMENTED",
+        "title": "Gin",
+        "refs": [
+          ".sdd/knowledge/backend.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §8.2": {
+        "state": "IMPLEMENTED",
+        "title": "Echo",
+        "refs": [
+          ".sdd/knowledge/backend.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §8.3": {
+        "state": "IMPLEMENTED",
+        "title": "net/http",
+        "refs": [
+          ".sdd/knowledge/backend.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §9": {
+        "state": "IMPLEMENTED",
+        "title": "TypeScript / Node.js",
+        "refs": [
+          ".sdd/knowledge/backend.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §10": {
+        "state": "IMPLEMENTED",
+        "title": "Java / Kotlin",
+        "refs": [
+          ".sdd/knowledge/backend.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §11": {
+        "state": "IMPLEMENTED",
+        "title": "Rust",
+        "refs": [
+          ".sdd/knowledge/backend.md",
+          ".sdd/templates/verification.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §12": {
+        "state": "IMPLEMENTED",
+        "title": "前后端架构",
+        "refs": [
+          ".sdd/knowledge/frontend.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §12.1": {
+        "state": "IMPLEMENTED",
+        "title": "前后端分离",
+        "refs": [
+          ".sdd/knowledge/architecture.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §13": {
+        "state": "IMPLEMENTED",
+        "title": "前后端合并",
+        "refs": [
+          ".sdd/knowledge/frontend.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §14": {
+        "state": "IMPLEMENTED",
+        "title": "Vue",
+        "refs": [
+          ".sdd/knowledge/frontend.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §15": {
+        "state": "IMPLEMENTED",
+        "title": "React",
+        "refs": [
+          ".sdd/knowledge/frontend.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §16": {
+        "state": "IMPLEMENTED",
+        "title": "Next.js",
+        "refs": [
+          ".sdd/knowledge/frontend.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §17": {
+        "state": "IMPLEMENTED",
+        "title": "Angular",
+        "refs": [
+          ".sdd/knowledge/frontend.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §18": {
+        "state": "IMPLEMENTED",
+        "title": "CSS/UI 技术",
+        "refs": [
+          ".sdd/decision-trees/frontend.md",
+          ".sdd/knowledge/frontend.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §19": {
+        "state": "IMPLEMENTED",
+        "title": "UI Component Library",
+        "refs": [
+          ".sdd/decision-trees/frontend.md",
+          ".sdd/knowledge/frontend.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §20": {
+        "state": "IMPLEMENTED",
+        "title": "Database 选择",
+        "refs": [
+          ".sdd/knowledge/database.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §21": {
+        "state": "IMPLEMENTED",
+        "title": "PostgreSQL",
+        "refs": [
+          ".sdd/knowledge/database.md",
+          ".sdd/knowledge/multi-tenancy.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §22": {
+        "state": "IMPLEMENTED",
+        "title": "MySQL",
+        "refs": [
+          ".sdd/knowledge/database.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §23": {
+        "state": "IMPLEMENTED",
+        "title": "SQLite",
+        "refs": [
+          ".sdd/knowledge/database.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §24": {
+        "state": "IMPLEMENTED",
+        "title": "Redis",
+        "refs": [
+          ".sdd/knowledge/database.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §25": {
+        "state": "IMPLEMENTED",
+        "title": "ORM",
+        "refs": [
+          ".sdd/knowledge/backend.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §26": {
+        "state": "IMPLEMENTED",
+        "title": "API 风格",
+        "refs": [
+          ".sdd/knowledge/api.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §27": {
+        "state": "IMPLEMENTED",
+        "title": "GraphQL",
+        "refs": [
+          ".sdd/knowledge/api.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §28": {
+        "state": "IMPLEMENTED",
+        "title": "gRPC",
+        "refs": [
+          ".sdd/knowledge/api.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §29": {
+        "state": "IMPLEMENTED",
+        "title": "Message Queue",
+        "refs": [
+          ".sdd/knowledge/messaging.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §30": {
+        "state": "IMPLEMENTED",
+        "title": "搜索",
+        "refs": [
+          ".sdd/knowledge/caching.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §31": {
+        "state": "IMPLEMENTED",
+        "title": "Vector Database",
+        "refs": [
+          ".sdd/knowledge/database.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §32": {
+        "state": "IMPLEMENTED",
+        "title": "Object Storage",
+        "refs": [
+          ".sdd/knowledge/database.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §33": {
+        "state": "IMPLEMENTED",
+        "title": "Authentication",
+        "refs": [
+          ".sdd/knowledge/security.md",
+          "specs/001-project/adr/ADR-003-session-auth.md",
+          "specs/001-project/plan.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §34": {
+        "state": "IMPLEMENTED",
+        "title": "Authorization",
+        "refs": [
+          ".sdd/knowledge/messaging.md",
+          ".sdd/knowledge/security.md",
+          "specs/001-project/plan.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §35": {
+        "state": "IMPLEMENTED",
+        "title": "API Security",
+        "refs": [
+          ".sdd/knowledge/data-lifecycle.md",
+          ".sdd/knowledge/integration.md",
+          ".sdd/knowledge/security.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §36": {
+        "state": "IMPLEMENTED",
+        "title": "Configuration",
+        "refs": [
+          ".sdd/knowledge/configuration.md",
+          ".sdd/knowledge/security.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §37": {
+        "state": "IMPLEMENTED",
+        "title": "Logging",
+        "refs": [
+          ".sdd/knowledge/observability.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §38": {
+        "state": "IMPLEMENTED",
+        "title": "Observability",
+        "refs": [
+          ".sdd/knowledge/observability.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §39": {
+        "state": "IMPLEMENTED",
+        "title": "Testing",
+        "refs": [
+          ".sdd/knowledge/testing.md",
+          "specs/001-project/plan.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §40": {
+        "state": "IMPLEMENTED",
+        "title": "Python Testing",
+        "refs": [
+          ".sdd/knowledge/testing.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §41": {
+        "state": "IMPLEMENTED",
+        "title": "Frontend Testing",
+        "refs": [
+          ".sdd/knowledge/testing.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §42": {
+        "state": "IMPLEMENTED",
+        "title": "Go Testing",
+        "refs": [
+          ".sdd/knowledge/testing.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §43": {
+        "state": "IMPLEMENTED",
+        "title": "Java Testing",
+        "refs": [
+          ".sdd/knowledge/testing.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §44": {
+        "state": "IMPLEMENTED",
+        "title": "Container",
+        "refs": [
+          ".sdd/knowledge/deployment.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §45": {
+        "state": "IMPLEMENTED",
+        "title": "Kubernetes",
+        "refs": [
+          ".sdd/knowledge/deployment.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §46": {
+        "state": "IMPLEMENTED",
+        "title": "CI/CD",
+        "refs": [
+          ".sdd/knowledge/deployment.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §47": {
+        "state": "IMPLEMENTED",
+        "title": "Python 项目工具链",
+        "refs": [
+          ".sdd/knowledge/backend.md",
+          ".sdd/knowledge/deployment.md",
+          "specs/001-project/adr/ADR-002-fastapi.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §48": {
+        "state": "IMPLEMENTED",
+        "title": "Go 项目工具链",
+        "refs": [
+          ".sdd/knowledge/backend.md",
+          ".sdd/knowledge/deployment.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §49": {
+        "state": "IMPLEMENTED",
+        "title": "Frontend Vue 工具链",
+        "refs": [
+          ".sdd/knowledge/frontend.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §50": {
+        "state": "IMPLEMENTED",
+        "title": "Frontend React 工具链",
+        "refs": [
+          ".sdd/knowledge/frontend.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §51": {
+        "state": "IMPLEMENTED",
+        "title": "前端状态管理",
+        "refs": [
+          ".sdd/decision-trees/frontend.md",
+          ".sdd/knowledge/frontend.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §52": {
+        "state": "IMPLEMENTED",
+        "title": "API Client",
+        "refs": [
+          ".sdd/decision-trees/frontend.md",
+          ".sdd/knowledge/api.md",
+          ".sdd/knowledge/frontend.md",
+          "specs/001-project/adr/ADR-002-fastapi.md",
+          "specs/001-project/plan.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §53": {
+        "state": "IMPLEMENTED",
+        "title": "API Contract",
+        "refs": [
+          ".sdd/decision-trees/frontend.md",
+          ".sdd/knowledge/api.md",
+          ".sdd/knowledge/frontend.md",
+          "specs/001-project/adr/ADR-002-fastapi.md",
+          "specs/001-project/plan.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §54": {
+        "state": "IMPLEMENTED",
+        "title": "Monorepo",
+        "refs": [
+          ".sdd/knowledge/architecture.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §55": {
+        "state": "IMPLEMENTED",
+        "title": "Repository Structure",
+        "refs": [
+          ".sdd/knowledge/backend.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §56": {
+        "state": "IMPLEMENTED",
+        "title": "Go Backend",
+        "refs": [
+          ".sdd/knowledge/backend.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §57": {
+        "state": "IMPLEMENTED",
+        "title": "Vue Frontend",
+        "refs": [
+          ".sdd/knowledge/frontend.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §58": {
+        "state": "IMPLEMENTED",
+        "title": "React Frontend",
+        "refs": [
+          ".sdd/knowledge/frontend.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §59": {
+        "state": "IMPLEMENTED",
+        "title": "推荐的默认技术栈",
+        "refs": [
+          ".sdd/workflows/new-project.md",
+          "AGENTS.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §60": {
+        "state": "IMPLEMENTED",
+        "title": "AI / RAG SaaS",
+        "refs": [
+          ".sdd/examples/ai-saas.md",
+          ".sdd/knowledge/ai-llm.md",
+          ".sdd/workflows/new-project.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §61": {
+        "state": "IMPLEMENTED",
+        "title": "高并发 API",
+        "refs": [
+          ".sdd/examples/high-concurrency.md",
+          ".sdd/workflows/new-project.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §62": {
+        "state": "IMPLEMENTED",
+        "title": "企业 Java 系统",
+        "refs": [
+          ".sdd/workflows/new-project.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §63": {
+        "state": "IMPLEMENTED",
+        "title": "小型内部工具",
+        "refs": [
+          ".sdd/examples/internal-tool.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §64": {
+        "state": "IMPLEMENTED",
+        "title": "MVP",
+        "refs": [
+          ".sdd/decision-trees/decision-protocol.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §65": {
+        "state": "IMPLEMENTED",
+        "title": "微服务决策",
+        "refs": [
+          ".sdd/decision-trees/architecture.md",
+          ".sdd/knowledge/architecture.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §66": {
+        "state": "IMPLEMENTED",
+        "title": "Event-Driven Architecture",
+        "refs": [
+          ".sdd/decision-trees/architecture.md",
+          ".sdd/knowledge/architecture.md",
+          ".sdd/knowledge/messaging.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §67": {
+        "state": "IMPLEMENTED",
+        "title": "CQRS",
+        "refs": [
+          ".sdd/decision-trees/architecture.md",
+          ".sdd/knowledge/architecture.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §68": {
+        "state": "IMPLEMENTED",
+        "title": "Event Sourcing",
+        "refs": [
+          ".sdd/decision-trees/architecture.md",
+          ".sdd/knowledge/architecture.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §69": {
+        "state": "IMPLEMENTED",
+        "title": "DDD",
+        "refs": [
+          ".sdd/decision-trees/architecture.md",
+          ".sdd/knowledge/architecture.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §70": {
+        "state": "IMPLEMENTED",
+        "title": "AI Coding 特殊要求",
+        "refs": [
+          ".sdd/knowledge/architecture.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §71": {
+        "state": "IMPLEMENTED",
+        "title": "Agent 不得自行做的决定",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          ".sdd/decision-trees/decision-protocol.md",
+          ".sdd/examples/brownfield.md",
+          ".sdd/knowledge/ai-llm.md",
+          ".sdd/knowledge/architecture.md",
+          ".sdd/knowledge/security.md",
+          "CLAUDE.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §72": {
+        "state": "IMPLEMENTED",
+        "title": "技术选型评分模型",
+        "refs": [
+          ".sdd/decision-trees/decision-protocol.md",
+          ".sdd/templates/technology-selection.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §73": {
+        "state": "IMPLEMENTED",
+        "title": "技术选择必须记录理由",
+        "refs": [
+          ".sdd/decision-trees/decision-protocol.md",
+          ".sdd/templates/adr.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §74": {
+        "state": "IMPLEMENTED",
+        "title": "Agent 技术选型规则",
+        "refs": [
+          ".sdd/decision-trees/decision-protocol.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §75": {
+        "state": "IMPLEMENTED",
+        "title": "Existing Project 特殊规则",
+        "refs": [
+          ".sdd/examples/brownfield.md",
+          ".sdd/workflows/new-project.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §76": {
+        "state": "IMPLEMENTED",
+        "title": "Agent 生成 spec.md 时必须包含的架构上下文",
+        "refs": [
+          ".sdd/templates/spec.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §77": {
+        "state": "IMPLEMENTED",
+        "title": "plan.md 必须包含",
+        "refs": [
+          ".sdd/templates/plan.md",
+          ".sdd/templates/spec.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §78": {
+        "state": "IMPLEMENTED",
+        "title": "推荐的 SDD Artifact",
+        "refs": [
+          ".sdd/LAYOUT.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §79": {
+        "state": "IMPLEMENTED",
+        "title": "推荐的 spec.md 模板",
+        "refs": [
+          ".sdd/templates/spec.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §80": {
+        "state": "IMPLEMENTED",
+        "title": "推荐的 plan.md 技术架构模板",
+        "refs": [
+          ".sdd/templates/plan.md",
+          "REVIEW-2026-09-19.md",
+          "specs/001-project/design.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §81": {
+        "state": "IMPLEMENTED",
+        "title": "Agent 生成项目 Spec 的最终规则",
+        "refs": [
+          ".sdd/decision-trees/decision-protocol.md",
+          ".sdd/workflows/new-project.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §82": {
+        "state": "IMPLEMENTED",
+        "title": "技术栈选择的默认优先级",
+        "refs": [
+          ".sdd/workflows/new-project.md",
+          "AGENTS.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §83": {
+        "state": "IMPLEMENTED",
+        "title": "默认不要使用的复杂技术",
+        "refs": [
+          ".sdd/decision-trees/decision-protocol.md",
+          ".sdd/knowledge/architecture.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §84": {
+        "state": "IMPLEMENTED",
+        "title": "AI Agent 的最终输出格式",
+        "refs": [
+          ".sdd/templates/technology-selection.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §85": {
+        "state": "IMPLEMENTED",
+        "title": "最重要的规则",
+        "refs": [
+          ".sdd/decision-trees/decision-protocol.md",
+          "AGENTS.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §86": {
+        "state": "MAPPED",
+        "title": "最终 SDD Traceability",
+        "refs": [
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §87": {
+        "state": "IMPLEMENTED",
+        "title": "给 AI Agent 的总指令",
+        "refs": [
+          "AGENTS.md",
+          "CHANGELOG.md",
+          "CLAUDE.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §88": {
+        "state": "IMPLEMENTED",
+        "title": "与 Spec Kit / OpenSpec 的结合方式",
+        "refs": [
+          ".sdd/decision-trees/decision-protocol.md",
+          ".sdd/templates/spec.md",
+          ".sdd/workflows/new-project.md"
+        ],
+        "verified_by": null
+      },
+      "知识库 §89": {
+        "state": "IMPLEMENTED",
+        "title": "推荐最终目录",
+        "refs": [
+          ".sdd/LAYOUT.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      }
+    },
+    "mod_gpt.md": {
+      "mod_gpt.md §1": {
+        "state": "IMPLEMENTED",
+        "title": "P0：SDD 主流程顺序仍然自相矛盾",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          ".sdd/README.md",
+          ".sdd/workflows/new-project.md",
+          "AGENTS.md",
+          "CHANGELOG.md",
+          "CLAUDE.md"
+        ],
+        "verified_by": null
+      },
+      "mod_gpt.md §2": {
+        "state": "IMPLEMENTED",
+        "title": "SDD REQUIRED（新项目 / 重大特性）",
+        "refs": [
+          ".sdd/README.md",
+          ".sdd/decision-trees/decision-protocol.md",
+          ".sdd/workflows/new-project.md",
+          "AGENTS.md",
+          "CHANGELOG.md",
+          "CLAUDE.md"
+        ],
+        "verified_by": null
+      },
+      "mod_gpt.md §3": {
+        "state": "IMPLEMENTED",
+        "title": "P0：用户明确要求 = 最高 Hard Constraint 太绝对",
+        "refs": [
+          ".sdd/decision-trees/decision-protocol.md",
+          "CHANGELOG.md",
+          "CLAUDE.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "mod_gpt.md §4": {
+        "state": "IMPLEMENTED",
+        "title": "P1：plan.md 和 design.md 职责高度重复",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          ".sdd/LAYOUT.md",
+          ".sdd/decision-trees/decision-protocol.md",
+          ".sdd/templates/design.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "mod_gpt.md §5": {
+        "state": "MAPPED",
+        "title": "P1：现在所谓的 JSON Schema 校验实际上没有真正执行 Schema",
+        "refs": [
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "mod_gpt.md §6": {
+        "state": "IMPLEMENTED",
+        "title": "P1：评分公式有权重，但没有评分标尺，Agent 会产生“伪精确评分”",
+        "refs": [
+          ".sdd/decision-trees/decision-protocol.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "mod_gpt.md §7": {
+        "state": "IMPLEMENTED",
+        "title": "P1：默认技术矩阵仍然偏“答案库”，而不是“决策系统”",
+        "refs": [
+          ".sdd/README.md",
+          ".sdd/decision-trees/decision-protocol.md",
+          ".sdd/workflows/new-project.md",
+          "CHANGELOG.md",
+          "CLAUDE.md"
+        ],
+        "verified_by": null
+      },
+      "mod_gpt.md §8": {
+        "state": "IMPLEMENTED",
+        "title": "P1：你最初要求的“默认版本策略”目前还没有真正形成规则",
+        "refs": [
+          ".sdd/knowledge/versioning.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "mod_gpt.md §9": {
+        "state": "IMPLEMENTED",
+        "title": "我建议顺手调整 AGENTS.md",
+        "refs": [
+          "AGENTS.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      }
+    },
+    "modv2.md": {
+      "modv2.md §1": {
+        "state": "IMPLEMENTED",
+        "title": "P0：decision-protocol.md 仍然存在旧规则",
+        "refs": [
+          ".sdd/decision-trees/decision-protocol.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "modv2.md §2": {
+        "state": "MAPPED",
+        "title": "P0：new-project.md 还是旧流程",
+        "refs": [
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "modv2.md §3": {
+        "state": "IMPLEMENTED",
+        "title": "P0：LAYOUT.md 又和 v1.3 冲突了",
+        "refs": [
+          ".sdd/LAYOUT.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "modv2.md §4": {
+        "state": "VERIFIED",
+        "title": "P0：实际上缺少 templates/verification.md",
+        "refs": [
+          ".sdd/LAYOUT.md",
+          ".sdd/README.md",
+          ".sdd/templates/verification.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": "check_verification_artifact"
+      },
+      "modv2.md §5": {
+        "state": "MAPPED",
+        "title": "P0：你说“真 Schema 校验”，但 validate_rules.py 目前实际上没有调用 mini_schema.py",
+        "refs": [
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "modv2.md §6": {
+        "state": "VERIFIED",
+        "title": "P1：Schema 本身还没有完全覆盖 Decision Protocol",
+        "refs": [
+          ".sdd/README.md",
+          ".sdd/decision-trees/decision-protocol.md",
+          ".sdd/templates/technology-selection.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": "check_decision_json"
+      },
+      "modv2.md §7": {
+        "state": "VERIFIED",
+        "title": "P1：decision.json 的成本状态存在逻辑矛盾",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          ".sdd/templates/technology-selection.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": "check_cost_consistency"
+      },
+      "modv2.md §8": {
+        "state": "IMPLEMENTED",
+        "title": "P1：RECOMMEND 的语义在 technology-selection.md 仍然是旧版",
+        "refs": [
+          ".sdd/templates/technology-selection.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "modv2.md §9": {
+        "state": "MAPPED",
+        "title": "P1：plan.md 仍然保留了旧的 Human Confirmation 语义",
+        "refs": [
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "modv2.md §10": {
+        "state": "IMPLEMENTED",
+        "title": "P1：decision-protocol 的决策循环仍然没有真正升级到 v1.3",
+        "refs": [
+          ".sdd/decision-trees/decision-protocol.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "modv2.md §11": {
+        "state": "IMPLEMENTED",
+        "title": "P1：CAN_ASSUME 不应该要求 ADR",
+        "refs": [
+          ".sdd/decision-trees/decision-protocol.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": null
+      },
+      "modv2.md §12": {
+        "state": "VERIFIED",
+        "title": "P1：README / .sdd/README / CHANGELOG 版本号不一致",
+        "refs": [
+          ".sdd/CONVENTIONS.md",
+          "CHANGELOG.md"
+        ],
+        "verified_by": "check_version_consistency"
+      },
+      "modv2.md §13": {
+        "state": "MAPPED",
+        "title": "P1：.sdd/README.md 仍然是旧流程",
+        "refs": [
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "modv2.md §14": {
+        "state": "IMPLEMENTED",
+        "title": "一个更隐蔽的问题：TRACEABILITY 目前仍然不是“内容覆盖率”",
+        "refs": [
+          ".sdd/CANONICAL.md",
+          ".sdd/CONVENTIONS.md",
+          ".sdd/README.md",
+          ".sdd/decision-trees/decision-protocol.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "modv2.md §15": {
+        "state": "IMPLEMENTED",
+        "title": "目前还有一个重要的“内容遗漏”：没有把“证据”提升到一等公民",
+        "refs": [
+          ".sdd/README.md",
+          ".sdd/templates/adr.md",
+          ".sdd/templates/technology-selection.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "modv2.md §16": {
+        "state": "IMPLEMENTED",
+        "title": "另一个遗漏：缺少“Decision Re-evaluation Trigger”",
+        "refs": [
+          ".sdd/README.md",
+          ".sdd/templates/adr.md",
+          ".sdd/templates/technology-selection.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "modv2.md §17": {
+        "state": "IMPLEMENTED",
+        "title": "还建议补一类“架构负债 / Deferred Decision”",
+        "refs": [
+          ".sdd/README.md",
+          ".sdd/templates/technology-selection.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "modv2.md §18": {
+        "state": "IMPLEMENTED",
+        "title": "建议补一个 decision-log.md 或直接增强 decision.json",
+        "refs": [
+          ".sdd/README.md",
+          ".sdd/templates/technology-selection.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "modv2.md §19": {
+        "state": "IMPLEMENTED",
+        "title": "内容方面，我建议下一版补齐 6 个领域",
+        "refs": [
+          ".sdd/knowledge/configuration.md",
+          ".sdd/knowledge/data-lifecycle.md",
+          ".sdd/knowledge/dependency-management.md",
+          ".sdd/knowledge/integration.md",
+          ".sdd/knowledge/multi-tenancy.md",
+          ".sdd/knowledge/reliability.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "modv2.md §20": {
+        "state": "IMPLEMENTED",
+        "title": "我认为还缺一个真正重要的 Agent 能力：Impact Analysis",
+        "refs": [
+          ".sdd/decision-trees/impact-analysis.md",
+          ".sdd/workflows/new-feature.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "modv2.md §21": {
+        "state": "IMPLEMENTED",
+        "title": "small-change 还需要一个“行为变化”检测，而不仅是行数",
+        "refs": [
+          ".sdd/workflows/small-change.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      },
+      "modv2.md §22": {
+        "state": "IMPLEMENTED",
+        "title": "最终我建议你把 v1.3.1 的修改分成三个层次",
+        "refs": [
+          ".sdd/CANONICAL.md",
+          ".sdd/CONVENTIONS.md",
+          ".sdd/README.md",
+          "CHANGELOG.md",
+          "REVIEW-2026-09-19.md"
+        ],
+        "verified_by": null
+      }
+    }
+  },
+  "out_of_range_refs": [],
+  "out_of_range_in_audit_exempted": [
+    "- `Matrix §3.4` → `REVIEW-2026-09-19.md`",
+    "- `Matrix §65` → `REVIEW-2026-09-19.md`",
+    "- `Matrix §66` → `REVIEW-2026-09-19.md`",
+    "- `Matrix §67` → `REVIEW-2026-09-19.md`",
+    "- `Matrix §68` → `REVIEW-2026-09-19.md`",
+    "- `Matrix §69` → `REVIEW-2026-09-19.md`",
+    "- `知识库 §98` → `REVIEW-2026-09-19.md`"
+  ]
+}

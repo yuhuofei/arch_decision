@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://arch-decision/.sdd/schema/decision.schema.json",
   "title": "Architecture Decision Output",
-  "description": "Architecture Decision 的机器可读契约（Machine-readable Decision Contract）。权威实例为 specs/<id>/decision.json，由 scripts/mini_schema.py 做真 JSON Schema 校验；technology-selection.md 里的同名 YAML 代码块仅供人阅读，只做 structural validation（YAML 无标准库解析器）。对应 .sdd/templates/technology-selection.md 与 Matrix §40。",
+  "description": "Architecture Decision 的机器可读契约（Machine-readable Decision Contract）。权威实例为 specs/<id>/decision.json，由 scripts/mini_schema.py 做真 JSON Schema 校验；technology-selection.md 里的同名 YAML 代码块仅供人阅读，只做 structural validation（YAML 无标准库解析器）。对应 .sdd/templates/technology-selection.md 与 Matrix §40；evidence/constraints/alternatives/scores/review_triggers/deferred/decision_history 依 modv2.md §6,§15-§18 补全。",
   "type": "object",
   "required": ["architecture_decision"],
   "additionalProperties": false,
@@ -14,6 +14,9 @@
         "architecture",
         "backend",
         "database",
+        "evidence",
+        "constraints",
+        "alternatives",
         "rejected",
         "confidence"
       ],
@@ -140,6 +143,58 @@
           "type": "object",
           "properties": { "strategy": { "type": "string" } }
         },
+        "evidence": {
+          "description": "决策依据（modv2.md §15）。禁止只写 reason 这类无法复核的理由；每条依据必须可指向来源。",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["type", "claim", "source"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["requirement", "constraint", "team", "documentation", "precedent"]
+              },
+              "claim": { "type": "string", "minLength": 4 },
+              "source": {
+                "type": "string",
+                "minLength": 2,
+                "description": "spec.md#FR-003 / <官方文档 URL> / project-discovery.md#team 之类可定位的引用"
+              },
+              "verified_at": { "type": ["string", "null"] }
+            }
+          }
+        },
+        "constraints": {
+          "description": "塑造该决策的约束（P0A/P0B/P1-P3，见 decision-trees/decision-protocol.md §2）。无约束也要显式写空数组。",
+          "type": "array",
+          "items": { "type": "string", "minLength": 2 }
+        },
+        "alternatives": {
+          "description": "被认真考虑过的其他候选（modv2.md §6）。与 rejected 的区别：alternatives 保留理由，rejected 是淘汰结论。",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["option"],
+            "properties": {
+              "option": { "type": "string", "minLength": 1 },
+              "reason": { "type": "string" }
+            }
+          }
+        },
+        "scores": {
+          "description": "仅当 Hard Constraint elimination 后仍有 >=2 候选且规则无法区分时才评分（decision-protocol.md §4.1）。无评分写空数组。",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["option", "score"],
+            "properties": {
+              "option": { "type": "string", "minLength": 1 },
+              "score": { "type": "integer", "minimum": 0, "maximum": 500 },
+              "breakdown": { "type": ["string", "null"] }
+            }
+          }
+        },
         "versions": {
           "description": "版本选择记录（策略见 knowledge/versioning.md；版本号必须核对上游官方文档，未知写 UNKNOWN，禁止编造）",
           "type": "array",
@@ -154,19 +209,23 @@
                 "enum": ["supported", "LTS", "maintenance", "EOL", "UNKNOWN"]
               },
               "verified_at": { "type": ["string", "null"] },
+              "source_url": {
+                "type": ["string", "null"],
+                "description": "核实该版本状态的官方文档地址（modv2.md §6）——把「核实过」变成可审计数据"
+              },
               "reason": { "type": "string", "minLength": 4 }
             }
           }
         },
         "decision_status": {
-          "description": "每项决策的状态标识（decision-protocol §6）：AUTO/RECOMMEND 不阻塞，REQUIRE_CONFIRMATION 必须人确认",
+          "description": "每项决策的状态标识（decision-protocol.md §6）：AUTO/RECOMMEND 不阻塞，REQUIRE_CONFIRMATION 必须人确认",
           "type": "object",
           "additionalProperties": {
             "enum": ["AUTO", "RECOMMEND", "REQUIRE_CONFIRMATION", "BLOCKED"]
           }
         },
         "complexity": {
-          "description": "架构复杂度预算（decision-protocol §5）",
+          "description": "架构复杂度预算（decision-protocol.md §5）",
           "type": "object",
           "required": ["score", "budget"],
           "properties": {
@@ -186,12 +245,19 @@
           }
         },
         "cost": {
-          "description": "Cost 复核（本仓补充，见 decision-protocol §4.2）",
+          "description": "Cost 复核（本仓补充，见 decision-protocol.md §4.2）。within_budget 为 null 表示无预算数据、无法判断——此时不得写 true（modv2.md §7）。",
           "type": "object",
           "properties": {
             "recurring": { "type": "string", "description": "持续成本的计费口径，须可量化" },
-            "cap": { "type": "string", "description": "成本上限" },
-            "within_budget": { "type": "boolean" }
+            "cap": { "type": "string", "description": "成本上限；未知写 UNKNOWN" },
+            "budget_basis": {
+              "type": ["string", "null"],
+              "description": "判定 within_budget 所依据的预算口径，例如「project monthly infrastructure budget」"
+            },
+            "within_budget": {
+              "type": ["boolean", "null"],
+              "description": "true = 已知预算范围内；false = 明确超预算；null = 无预算数据，无法判断"
+            }
           }
         },
         "rejected": {
@@ -203,6 +269,41 @@
             "properties": {
               "option": { "type": "string" },
               "reason": { "type": "string", "minLength": 4 }
+            }
+          }
+        },
+        "deferred": {
+          "description": "DEFERRED（modv2.md §17）：当前不引入、但已登记重评条件。不要把「暂不做」一律写进 rejected —— 那会丢失重评线索。",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["decision", "reason"],
+            "properties": {
+              "decision": { "type": "string", "minLength": 1 },
+              "reason": { "type": "string", "minLength": 4 },
+              "trigger": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        },
+        "review_triggers": {
+          "description": "重评条件（modv2.md §16）：AUTO 不是永久结论，只是「在当前证据与约束下如此」。",
+          "type": "array",
+          "items": { "type": "string", "minLength": 4 }
+        },
+        "decision_history": {
+          "description": "决策变更史（modv2.md §18）：为什么改、依据什么、取代了哪条旧决策。规模扩大后再拆成 ADR。",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["decision", "from", "to", "reason"],
+            "properties": {
+              "decision": { "type": "string" },
+              "from": { "type": "string" },
+              "to": { "type": "string" },
+              "changed_at": { "type": ["string", "null"] },
+              "reason": { "type": "string", "minLength": 4 },
+              "trigger": { "type": ["string", "null"] },
+              "supersedes": { "type": ["string", "null"] }
             }
           }
         },

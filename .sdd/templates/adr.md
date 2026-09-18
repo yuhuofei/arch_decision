@@ -40,7 +40,20 @@
 - <风险 1>（含缓解）
 
 ### Assumptions
-- <假设 1（CAN ASSUME 须记录）>
+<!-- CAN ASSUME / RECOMMEND 的假设以 technology-selection.md + decision.json 为准（decision-protocol §6.3）；
+     此处只写与本决策直接相关的假设，不必复制全部 -->
+- <假设 1>
+
+### Evidence
+<!-- modv2.md §15：决策依据必须可指向来源，不得只写"因为更好" -->
+- type: <requirement / constraint / team / documentation>
+  claim: <依据内容>
+  source: <spec.md#FR-00X / 官方文档 URL / 团队现状>
+  verified_at: <YYYY-MM-DD 或 —>
+
+### Review Triggers
+<!-- modv2.md §16：AUTO 不是永久结论；写明什么条件出现时重评 -->
+- <条件>
 
 ### Consequences
 <!-- 采用后的影响与依赖；Reversibility：Low/Medium/High -->

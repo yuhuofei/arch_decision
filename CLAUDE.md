@@ -2,7 +2,8 @@
 
 > 本文件只负责"**什么时候读取什么**"，不要求 Agent 背下全部技术知识。
 > 完整规则见 `.sdd/`，项目实例见 `specs/`，源文档归档见 `sources/`（只读，决策时不读取）。
-> 引用约定：`res.md §N` = 源文档第 N 条；`Matrix §N` / `知识库 §N` / `mod_gpt.md §N` 同理；本地引用带文件名（见 `.sdd/CONVENTIONS.md`）。
+> 引用约定：`res.md §N` = 源文档第 N 条；`Matrix §N` / `知识库 §N` / `mod_gpt.md §N` / `modv2.md §N` 同理；本地引用带文件名（见 `.sdd/CONVENTIONS.md`）。
+> **规则归属**：本文件与 `AGENTS.md` 是 Agent 入口，**只引用、不重新定义**行为语义（`.sdd/CANONICAL.md`）。
 > Agent 总指令见 `知识库 §87`。
 > **本文件的流程顺序与 §5 的决策语义在 v1.3 被修正**（Spec 前置、确认收窄、默认值=候选先验）——
 > 依据 `mod_gpt.md §1`（流程顺序）、`§2`（决策状态语义）、`§3`（约束优先级）、`§7`（默认值语义）。
@@ -36,6 +37,9 @@
    - .sdd/decision-trees/{backend,frontend,database,infrastructure}.md
    - 按项目类型追加领域知识（见本文件 §3 的表）
    - 版本问题读 .sdd/knowledge/versioning.md（只有一处版本策略）
+   - 存量系统 / 影响面不明的改动：先读 .sdd/decision-trees/impact-analysis.md
+   - 涉及多租户 / 可靠性 / 数据合规 / 外部集成 / 配置密钥 / 依赖引入：追加读
+     .sdd/knowledge/{multi-tenancy,reliability,data-lifecycle,integration,configuration,dependency-management}.md
 
 5. 生成 specs/<id>-<name>/technology-selection.md
    - Hard Constraint elimination → Candidate comparison → Decision Status → Complexity Budget
@@ -117,8 +121,9 @@
 ## 6. QUESTION POLICY（res.md §108）
 - **MUST ASK**：影响架构（规模/一致性/安全/合规/核心流程/部署/已有栈/性能）——即 `BLOCKED`，原地等待。
 - **SHOULD ASK**：影响实现（Auth/Storage/Email/Search/Queue）——可给默认值并标 `RECOMMEND`，**不阻塞**。
-- **CAN ASSUME**：低风险（格式化/命名/基础结构）——假设必须写入 ADR 的 Assumptions。
-- 提问模板见 `decision-protocol §6.1`；**禁止**把 MUST ASK 降级为 CAN ASSUME 以求加速；
+- **CAN ASSUME**：低风险（格式化/命名/基础结构）——假设**必须写入 `technology-selection.md` /
+  `decision.json` 的 assumptions**（`decision-protocol` §6.3）；**仅当该假设构成重要架构决策时才建 ADR**。
+- 提问模板见 `decision-protocol` §6.2；**禁止**把 MUST ASK 降级为 CAN ASSUME 以求加速；
   反向亦禁止：**不得把 AUTO/RECOMMEND 升格成 MUST ASK 以求免责**。
 
 ## 7. GOLDEN RULE（`res.md §119`，流程顺序按 `mod_gpt.md §1` 修正）

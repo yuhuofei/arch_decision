@@ -1,0 +1,73 @@
+{
+  "verification": {
+    "_note": "本文件是 Verification 的机器可读契约，权威可校验实例（见 .sdd/CANONICAL.md）。verification.md 是同目录的人读报告，二者由 check_verification_mirror 校验一致性。",
+    "status": "Draft",
+    "verified_at": null,
+    "verified_by": null,
+    "commit": null,
+    "spec": "specs/001-project/spec.md",
+    "acceptance_criteria": [
+      {
+        "id": "AC-001",
+        "description": "Given 合法下单 When 提交 Then 订单创建成功",
+        "method": "Test",
+        "result": "NOT RUN",
+        "evidence": "待 T4 完成后补 tests/integration/test_order_create.py"
+      },
+      {
+        "id": "AC-002",
+        "description": "Given 无效商品 When 提交 Then 返回校验错误",
+        "method": "Test",
+        "result": "NOT RUN",
+        "evidence": "待 T4 完成后补 tests/integration/test_order_validation.py"
+      }
+    ],
+    "traceability": [
+      {
+        "requirement": "FR-001",
+        "design": "plan.md §6",
+        "task": "T2 / T4",
+        "code": null,
+        "test": "TEST-001",
+        "result": "NOT RUN"
+      },
+      {
+        "requirement": "NFR（性能 / 安全 / 可观测）",
+        "design": "plan.md §8-§10",
+        "task": "T5 / T6",
+        "code": null,
+        "test": "TEST-002",
+        "result": "NOT RUN"
+      }
+    ],
+    "tests": {
+      "unit": "NOT RUN（示例实例未实现）",
+      "integration": "NOT RUN",
+      "e2e": "NOT RUN"
+    },
+    "nfr": {
+      "performance": "NOT VERIFIED：目标来自 spec.md §5 的 NFR 数字，示例未压测",
+      "security": "NOT RUN：认证 / 授权 / 密钥 / 依赖漏洞扫描（res.md §45）",
+      "availability": "NOT RUN：见 knowledge/reliability.md",
+      "observability": "NOT RUN：结构化日志（res.md §47）；不得泄露敏感信息（res.md §48）"
+    },
+    "consistency": {
+      "spec_plan": false,
+      "plan_tasks": false,
+      "tasks_code": false,
+      "requirements_tests": false,
+      "no_undocumented_architecture_change": true,
+      "no_unresolved_require_confirmation": true,
+      "no_unresolved_blocked": true
+    },
+    "known_issues": [
+      {
+        "issue": "示例实例未实现，全部验证项为 NOT RUN",
+        "severity": "Low",
+        "impact": "不构成真实交付",
+        "follow_up": "真实项目实现后替换本文件"
+      }
+    ],
+    "verdict": "FAIL"
+  }
+}

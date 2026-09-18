@@ -1,24 +1,117 @@
 # Verification — 001-project（示例实例）
 
-> 验证实现是否符合 Spec（res.md §117 Acceptance Criteria / res.md §97）。本文件为 Verification 记录模板。
+> 结构遵循 `.sdd/templates/verification.md`（8 节）；机器可读契约见 `.sdd/schema/verification.schema.json`。
+> 证明实现结果满足 Accepted Spec / Plan / Tasks / Acceptance Criteria。
+> 引用约定见 `.sdd/CONVENTIONS.md`（禁止裸写 `§N`）。
 
-## Verification Checklist
-- [ ] 所有 Acceptance Criteria（spec.md §10）已覆盖测试
-- [ ] Unit Tests 通过（res.md §51）
-- [ ] Integration Tests 通过（res.md §52，优先真实 infrastructure / Testcontainers）
-- [ ] E2E 关键流程通过（res.md §53）
-- [ ] 代码 / 架构 / Spec 三者一致（res.md §0）
-- [ ] 安全 baseline 满足（res.md §45）
-- [ ] 日志未泄露敏感信息（res.md §48）
-- [ ] CI/CD 流水线绿（res.md §63）
+---
 
-## Acceptance Criteria 结果
-| # | Criteria | Status | Evidence |
+## 1. Verification Status
+
+```
+Status:        Draft
+Verified At:   —
+Verified By:   —
+Commit:        —
+Spec:          specs/001-project/spec.md  (Status: Accepted)
+```
+
+> 本示例未实际实现与运行，故为 `Draft`。**不得**用示例数据伪造 PASS。
+
+---
+
+## 2. Acceptance Criteria
+
+> 逐条对应 `spec.md` §10。未验证的写 `NOT RUN` 并说明原因，不留空。
+
+| AC | 描述 | 验证方式 | 结果 | 证据 |
+| --- | --- | --- | --- | --- |
+| AC-001 | Given 合法下单 When 提交 Then 订单创建成功 | Test | NOT RUN | 待 T4 完成后补 `tests/integration/test_order_create.py` |
+| AC-002 | Given 无效商品 When 提交 Then 返回校验错误 | Test | NOT RUN | 待 T4 完成后补 `tests/integration/test_order_validation.py` |
+
+---
+
+## 3. Requirement Traceability
+
+| Requirement | Design | Task | Code | Test | Result |
+| --- | --- | --- | --- | --- | --- |
+| FR-001（创建订单） | plan.md §6 | T2 / T4 | `<待实现>` | TEST-001 | NOT RUN |
+| NFR（性能 / 安全 / 可观测） | plan.md §8-§10 | T5 / T6 | `<待实现>` | TEST-002 | NOT RUN |
+
+> `Requirements ↔ Tests traceable`（`res.md §97`）：任一层留空即视为追溯断裂。
+
+---
+
+## 4. Test Results
+
+```
+Unit
+  Command:   pytest tests/unit
+  Result:    NOT RUN（示例实例未实现）
+
+Integration
+  Command:   pytest tests/integration
+  Result:    NOT RUN
+
+E2E
+  Command:   npx playwright test
+  Result:    NOT RUN
+```
+
+---
+
+## 5. Non-Functional Verification
+
+```
+Performance
+  Target:    <来自 spec.md §5 的 NFR 数字>
+  Actual:    NOT VERIFIED
+  Evidence:  —
+  Verdict:   NOT VERIFIED
+
+Security
+  Checks:    认证 / 授权 / 密钥管理 / 依赖漏洞扫描（res.md §45）
+  Result:    NOT RUN
+
+Availability / Reliability
+  Checks:    按 knowledge/reliability.md 的 SLA / 备份 / 降级检查
+  Result:    NOT RUN
+
+Observability
+  Logs:  结构化日志（res.md §47）    Metrics:  —    Tracing:  —
+  Result:    NOT RUN（日志不得泄露敏感信息，res.md §48）
+```
+
+---
+
+## 6. Consistency Check
+
+- [ ] Accepted Spec ↔ Plan consistent
+- [ ] Plan ↔ Tasks consistent
+- [ ] Tasks ↔ Code consistent
+- [ ] Requirements ↔ Tests traceable
+- [ ] No undocumented architecture changes
+- [ ] No unresolved `REQUIRE_CONFIRMATION` decision
+- [ ] No unresolved `BLOCKED` decision
+- [ ] 实现未绕过 Spec（发现 Spec 错误时按 `res.md §101` 先回改上游产物）
+
+---
+
+## 7. Known Issues
+
+| Issue | Severity | Impact | Follow-up |
 | --- | --- | --- | --- |
-| AC1 | Given valid invitation When accepts Then becomes member | ☐ | <test/report> |
+| 示例实例未实现，全部验证项为 NOT RUN | Low | 不构成真实交付 | 真实项目实现后替换本文件 |
 
-## Open Issues / Risks
-<待填写>
+---
 
-## Convergence
-实现符合 Spec 且测试通过 → 收敛。若发现 Spec 错误，按 res.md §101 回流更新。
+## 8. Final Verdict
+
+```
+FAIL    # 示例实例无实现，按定义不能判 PASS
+```
+
+**Evidence / Notes**
+
+本文件是**结构与写法示例**，用于演示 `.sdd/templates/verification.md` 的 8 节骨架，
+不代表任何真实验证结果。真实项目必须把每一条 `NOT RUN` 替换为可复跑的结论。

@@ -48,7 +48,7 @@ Convergence
 > **顺序不可交换**：先把 Spec 写出来（哪怕只是 Draft），再谈技术。
 > 反过来做就是 `Prompt → Tech Stack → Spec`，等于放弃 SDD（`mod_gpt.md §1`）。
 
-## Agent 决策循环（Matrix §43，15 步）
+## Agent 决策循环（`Matrix §43`，已升级为 21 步 —— 见 `decision-protocol` §7）
 > 本循环对应上面骨架的 **第 3–4 步**，是"决策"这个子过程的展开；它发生在 **Draft Spec 之后**。
 ```
 1. Read requirements             → 读 Draft spec.md（不是从零重读用户原话）

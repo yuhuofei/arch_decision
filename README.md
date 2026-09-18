@@ -30,7 +30,8 @@ Correctness + Maintainability + Simplicity + Testability + Observability + Secur
 | 人（想理解体系） | 本文件 → `.sdd/README.md` |
 | 想知道"东西应该放哪" | `.sdd/LAYOUT.md` |
 | 想知道"引用怎么写" | `.sdd/CONVENTIONS.md` |
-| 想追溯"某条源规则落在哪" | `.sdd/TRACEABILITY.md` |
+| 想追溯"某条源规则落在哪、落到哪一层" | `.sdd/TRACEABILITY.md` |
+| 想知道"同一件事哪份文件说了算" | `.sdd/CANONICAL.md`（规则归属矩阵） |
 
 ---
 
@@ -46,18 +47,22 @@ sources/                        【只读】源文档归档（Agent 决策时【
 └── v1.0/
 
 .sdd/                           规则库
+├── VERSION                     规则库版本号的**唯一来源**（README/CHANGELOG 都引用它）
 ├── LAYOUT.md                   目录约定（唯一权威）
 ├── CONVENTIONS.md              引用编号与命名约定
-├── TRACEABILITY.md             源规则 → 落点反向索引
+├── CANONICAL.md                规则归属矩阵（同一语义只有一个权威定义）
+├── TRACEABILITY.md             源规则 → 落点反向索引（四态，脚本生成）
+├── traceability.json           同上，机器可读版
 ├── schema/                     机器可读契约（JSON Schema，**真校验**）
-├── knowledge/                  14 个领域知识文件（含 versioning）
-├── decision-trees/             7 个决策树（含元治理 decision-protocol）
-├── templates/                  7 个文档模板
+├── knowledge/                  20 个领域知识文件（含 versioning）
+├── decision-trees/             8 个决策树（含元治理 decision-protocol 与 impact-analysis）
+├── templates/                  8 个文档模板
 ├── workflows/                  5 个流程
 └── examples/                   5 个已决策示例
 
 specs/                          项目实例
-└── 001-project/                示例实例（含 plan.md、decision.json 与 adr/）
+├── 001-project/                示例实例（含 plan.md、decision.json 与 adr/）
+└── 002-demo-todo-cli/          演示实例（design/ADR 均按需，故不存在）
 
 scripts/                        校验与迁移脚本
 ```
@@ -69,14 +74,15 @@ scripts/                        校验与迁移脚本
 1. **决策治理** — `.sdd/decision-trees/decision-protocol.md`
    约束优先级 **P0A / P0B** / P1–P3（安全合规不可被用户偏好覆盖）/ Hard·Soft Constraint /
    技术选型评分**标尺**与适用门槛 / 架构复杂度预算（含计分表）/ 默认值语义（Default = Candidate Prior）/
-   决策状态 `AUTO·RECOMMEND·REQUIRE_CONFIRMATION·BLOCKED`（仅 CONFIRMATION 阻塞）/ 15 步决策循环 / 30 条规则。
+   决策状态 `AUTO·RECOMMEND·REQUIRE_CONFIRMATION·BLOCKED`（仅 CONFIRMATION 阻塞）/ **21 步全链路决策循环** / 30 条规则。
 
 2. **领域知识** — `.sdd/knowledge/`
    architecture、backend、frontend、database、caching、messaging、api、security、
-   testing、deployment、observability、**ai-llm**、**data**、**versioning**（版本策略唯一实现）。
+   testing、deployment、observability、ai-llm、data、versioning（版本策略唯一实现）、
+   **multi-tenancy**、**reliability**、**data-lifecycle**、**integration**、**configuration**、**dependency-management**。
 
 3. **执行流程** — `.sdd/workflows/`
-   new-project、new-feature、**small-change**、bugfix、refactor。
+   new-project、new-feature（含 **Impact Analysis** 前置）、small-change（含 **Behavioral Risk Check**）、bugfix、refactor。
 
 ---
 
@@ -91,12 +97,12 @@ scripts/                        校验与迁移脚本
 ## 校验
 
 ```bash
-python3 scripts/gen_traceability.py   # 重建 4 份来源 → 落点的反向索引（改引用后必跑）
-python3 scripts/validate_rules.py     # 引用完整性 + decision.json 真 Schema 校验 + 复杂度预算
+python3 scripts/gen_traceability.py   # 重建 5 份来源 → 落点的反向索引（改引用后必跑）
+python3 scripts/validate_rules.py     # 引用完整性 / 真 Schema 校验 / Cost 语义 / 版本一致性 / Canonical 不变量
 ```
 
 ---
 
 ## 版本
 
-见 `CHANGELOG.md`。当前规则库版本：**v1.3**。
+见 `CHANGELOG.md`。当前规则库版本：**v1.4**（版本号唯一来源：`.sdd/VERSION`，由自检脚本核对三处一致）。

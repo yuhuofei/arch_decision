@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://arch-decision/.sdd/schema/verification.schema.json",
+  "title": "Verification Output",
+  "description": "验证报告的机器可读契约。权威实例为 specs/<id>/verification.json，由 scripts/mini_schema.py 做真 JSON Schema 校验；同目录 verification.md 是人读报告，二者由 validate_rules.py 的 check_verification_mirror 做一致性检查（Status / Verdict / AC 集合）。结构骨架见 .sdd/templates/verification.md（8 节），对应 modv2.md §4。",
+  "type": "object",
+  "required": ["verification"],
+  "additionalProperties": false,
+  "properties": {
+    "verification": {
+      "type": "object",
+      "required": ["status", "spec", "acceptance_criteria", "consistency", "verdict"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["Draft", "Passed", "Passed with Known Issues", "Failed"]
+        },
+        "verified_at": { "type": ["string", "null"] },
+        "verified_by": { "type": ["string", "null"] },
+        "commit": { "type": ["string", "null"] },
+        "spec": { "type": "string", "description": "被验证的 Accepted Spec 路径" },
+        "acceptance_criteria": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "description", "method", "result"],
+            "properties": {
+              "id": { "type": "string", "pattern": "^AC-[0-9]{3}$" },
+              "description": { "type": "string", "minLength": 4 },
+              "method": { "type": "string", "enum": ["Test", "Manual", "Inspection"] },
+              "result": { "type": "string", "enum": ["PASS", "FAIL", "NOT RUN"] },
+              "evidence": { "type": ["string", "null"] }
+            }
+          }
+        },
+        "traceability": {
+          "type": "array",
+          "description": "Requirements ↔ Tests 追溯（res.md §97）",
+          "items": {
+            "type": "object",
+            "required": ["requirement"],
+            "properties": {
+              "requirement": { "type": "string" },
+              "design": { "type": ["string", "null"] },
+              "task": { "type": ["string", "null"] },
+              "code": { "type": ["string", "null"] },
+              "test": { "type": ["string", "null"] },
+              "result": { "type": ["string", "null"] }
+            }
+          }
+        },
+        "tests": {
+          "type": "object",
+          "properties": {
+            "unit": { "type": ["string", "null"] },
+            "integration": { "type": ["string", "null"] },
+            "e2e": { "type": ["string", "null"] }
+          }
+        },
+        "nfr": {
+          "type": "object",
+          "properties": {
+            "performance": { "type": ["string", "null"] },
+            "security": { "type": ["string", "null"] },
+            "availability": { "type": ["string", "null"] },
+            "observability": { "type": ["string", "null"] }
+          }
+        },
+        "consistency": {
+          "type": "object",
+          "description": "spec → plan → tasks → code → tests 一致性（decision-protocol.md §7 第 21 步）",
+          "required": [
+            "spec_plan",
+            "plan_tasks",
+            "tasks_code",
+            "requirements_tests"
+          ],
+          "properties": {
+            "spec_plan": { "type": "boolean" },
+            "plan_tasks": { "type": "boolean" },
+            "tasks_code": { "type": "boolean" },
+            "requirements_tests": { "type": "boolean" },
+            "no_undocumented_architecture_change": { "type": "boolean" },
+            "no_unresolved_require_confirmation": { "type": "boolean" },
+            "no_unresolved_blocked": { "type": "boolean" }
+          }
+        },
+        "known_issues": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["issue", "severity"],
+            "properties": {
+              "issue": { "type": "string", "minLength": 4 },
+              "severity": { "type": "string", "enum": ["High", "Medium", "Low"] },
+              "impact": { "type": ["string", "null"] },
+              "follow_up": { "type": ["string", "null"] }
+            }
+          }
+        },
+        "verdict": { "type": "string", "enum": ["PASS", "PASS WITH KNOWN ISSUES", "FAIL"] }
+      }
+    }
+  }
+}

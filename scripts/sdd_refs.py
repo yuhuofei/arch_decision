@@ -2,7 +2,7 @@
 """源文档引用解析的唯一实现（`gen_traceability.py` 与 `validate_rules.py` 共用）。
 
 存在的理由：这两个脚本原先各自维护一份 `(res\\.md|Matrix|知识库) §(\\d+)` 正则，
-它只认「来源名 + 紧随其后的单个 §N」，漏掉两类合法写法：
+它只认「来源名 + 紧随其后的单个 §N」，漏掉三类合法写法：
 
 * 逗号压缩：`Matrix §24,§25,§45`  —— 只识别到 §24
 * 区间：    `res.md §50-§58`       —— 只识别到 §50
@@ -19,7 +19,7 @@
   * `§12.3` → `(12, 3)`   「子条目」
 用同一命名空间可让排序自然，也便于区分「引用了 §6」与「引用了 §6.1」。
 
-来源（4 份）与各自的条目识别方式不同，见 `_title_lines` 的分派说明。
+来源（5 份）与各自的条目识别方式不同，见 `_title_lines` 的分派说明。
 
 用法：
     from sdd_refs import iter_refs, parse_source_items, parse_titles, fmt_ref, SOURCES
@@ -38,29 +38,34 @@ SOURCES: dict[str, Path] = {
     "Matrix": SRC / "AI Architecture Decision Matrix.md",
     "知识库": SRC / "AI Coding SDD 项目技术架构与框架选择知识库.md",
     "mod_gpt.md": SRC / "mod_gpt.md",
+    "modv2.md": SRC / "modv2.md",
 }
 SOURCE_NAMES = tuple(SOURCES)
 
 # 扫描范围：全仓 Markdown，排除源文档归档、本地状态、脚本目录
 SKIP_DIRS = {"sources", ".workbuddy", ".git", "scripts", "node_modules"}
-# 生成物自身（自引用无意义）与临时审计报告（非规范性文档）不入索引
-SKIP_FILES = {"TRACEABILITY.md", "REVIEW-2026-09-19.md"}
+# 生成物自身（自引用无意义）不入索引。
+# 注：审计报告 `REVIEW-*.md` **纳入**扫描 —— 它的"处置表"是源规则的正当落点，
+# 四态模型会把它记为 MAPPED（描述层）而非 IMPLEMENTED，故不会虚增覆盖率。
+SKIP_FILES = {"TRACEABILITY.md"}
 
 Key = tuple[int, int]  # (major, minor)，minor == 0 表示顶层条目
 
 # 引用标签白名单（`gen_traceability.py` 与 `validate_rules.py` 共用，只有一处定义）。
 # 用途有二：(1) 判定一个 `§N` 是否"裸写"；(2) 判定 `§N` 归属哪一份来源。
 LABELS: tuple[str, ...] = (
-    "res.md", "res:", "Matrix", "知识库", "mod_gpt.md",
-    "decision-protocol",
+    "res.md", "res:", "Matrix", "知识库", "mod_gpt.md", "modv2.md",
+    "decision-protocol", "impact-analysis",
     "architecture.md", "backend.md", "frontend.md", "database.md", "caching.md",
     "messaging.md", "api.md", "security.md", "testing.md", "deployment.md",
     "observability.md", "ai-llm.md", "data.md", "versioning.md",
+    "reliability.md", "multi-tenancy.md", "data-lifecycle.md", "integration.md",
+    "configuration.md", "dependency-management.md",
     "project-discovery.md", "technology-selection.md", "spec.md", "plan.md",
     "design.md", "tasks.md", "verification.md", "adr.md",
     "new-project.md", "new-feature.md", "small-change.md", "bugfix.md", "refactor.md",
     "CLAUDE.md", "AGENTS.md", "README.md", "LAYOUT.md", "CONVENTIONS.md",
-    "TRACEABILITY.md", "CHANGELOG.md",
+    "CANONICAL.md", "TRACEABILITY.md", "CHANGELOG.md", "VERSION",
     "本文件", "本模板", "本节", "该文件", "本文档",
 )
 
@@ -68,7 +73,7 @@ LABELS: tuple[str, ...] = (
 _ALIAS = {"res:": "res.md"}
 
 # 来源名：新增来源必须同时登记到 .sdd/CONVENTIONS.md §1
-_SOURCE_RE = re.compile(r"res\.md|Matrix|知识库|mod_gpt\.md|res:")
+_SOURCE_RE = re.compile(r"res\.md|Matrix|知识库|mod_gpt\.md|modv2\.md|res:")
 # 本地标签（来源名之外的 LABELS）—— 用于「最近的标签胜出」归属判定
 _LOCAL_LABELS = tuple(
     lb for lb in LABELS if lb not in SOURCE_NAMES and lb not in _ALIAS
@@ -86,8 +91,23 @@ _MAX_RANGE_SPAN = 300
 
 _TOP_RE = re.compile(r"^#*\s*(\d+)\.\s+(.+?)\s*$")
 _SUB_RE = re.compile(r"^#+\s*(\d+)\.(\d+)\s+(.+?)\s*$")
+# 中文序数标题（`modv2.md` 的写法：`一、P0：…` / `二十二、…`）
+_CN_TOP_RE = re.compile(r"^([一二三四五六七八九十]+)、\s*(.+?)\s*$")
+_CN_DIGITS = {"一": 1, "二": 2, "三": 3, "四": 4, "五": 5, "六": 6, "七": 7, "八": 8, "九": 9}
 _CJK_RE = re.compile(r"[\u4e00-\u9fff]")
 _MAX_TITLE_LEN = 70
+
+
+def _cn_to_int(s: str) -> int | None:
+    """中文序数 → 整数，支持 1–99（`一`…`九十九`）。无法解析返回 None。"""
+    if not s:
+        return None
+    if "十" in s:
+        head, _, tail = s.partition("十")
+        tens = _CN_DIGITS.get(head, 1) if head else 1
+        ones = _CN_DIGITS.get(tail, 0) if tail else 0
+        return tens * 10 + ones if ones < 10 else None
+    return _CN_DIGITS.get(s)
 
 
 def fmt_ref(name: str, key: Key) -> str:
@@ -178,6 +198,9 @@ def _title_lines(name: str, path: Path):
       "Default priority: 1. …"）。因此只接受**严格递增**的行首编号，
       编号回退（重启）的一律视作子枚举忽略。
       若不这样做，`§1`/`§2` 会被重复登记 3 次，条号集合与标题都会张冠李戴。
+    * `modv2.md`：同样是散文式评审，但 22 条建议写作**中文序数**（`一、` … `二十二、`）。
+      中文序数天然唯一且递增，故无需递增过滤；而正文代码块里的 `6.` / `6.1` 等
+      阿拉伯编号一律**不参与**本来源的条目识别。
 
     子条目（`N.M`）恒为 `#` 标题，不受上述差异影响。
     """
@@ -194,6 +217,16 @@ def _title_lines(name: str, path: Path):
                 continue
             last = n
             yield (n, 0), m.group(2).strip()
+        return
+
+    if name == "modv2.md":
+        for line in lines:
+            m = _CN_TOP_RE.match(line)
+            if not m:
+                continue
+            n = _cn_to_int(m.group(1))
+            if n is not None:
+                yield (n, 0), m.group(2).strip()
         return
 
     for line in lines:
@@ -243,6 +276,47 @@ def targets() -> list[Path]:
             continue
         out.append(p)
     return out
+
+
+# ---------------------------------------------------------------------------
+# 落点分类（TRACEABILITY 的四态模型用；`gen_traceability.py` 消费）
+# ---------------------------------------------------------------------------
+
+# 「实现类」落点：承担规则/知识/流程/契约职责的目录与入口文件。
+# 归属这些位置的引用视为 IMPLEMENTED；只出现在 README / CHANGELOG / REVIEW 中
+# 的引用只能算 MAPPED（被提到，但不是在规则层落地）。
+IMPLEMENTING_PREFIXES: tuple[str, ...] = (
+    ".sdd/knowledge/",
+    ".sdd/decision-trees/",
+    ".sdd/templates/",
+    ".sdd/workflows/",
+    ".sdd/schema/",
+    ".sdd/examples/",
+    "specs/",
+)
+IMPLEMENTING_FILES: frozenset[str] = frozenset(
+    {"CLAUDE.md", "AGENTS.md", ".sdd/LAYOUT.md", ".sdd/CONVENTIONS.md", ".sdd/CANONICAL.md"}
+)
+
+
+def is_implementing(rel: str) -> bool:
+    """判断一个落点文件是否属于「实现层」（而非仅描述层）。"""
+    return rel in IMPLEMENTING_FILES or rel.startswith(IMPLEMENTING_PREFIXES)
+
+
+def is_audit(rel: str) -> bool:
+    """审计报告（`REVIEW-*.md`）：豁免「引用写法」类检查。
+
+    理由：审计报告的职责正是**引用缺陷原文**（如把已经修掉的 `Matrix §65-§69`
+    越界写法照抄下来说明"这里原本写错了"）。若强制它也符合引用规范，就无法引用旧原文。
+    因此它在两处被豁免：
+      * `gen_traceability.py` 的「引用不存在的条号」清单（只统计非审计文件的越界引用）
+      * `validate_rules.py` 的裸引用 / 来源条号检查
+    它仍参与覆盖率统计（记为 `MAPPED` 层）。
+
+    判定放在此处（而非各脚本），与 `is_implementing` 同理，避免多份实现漂移。
+    """
+    return Path(rel).name.startswith("REVIEW-")
 
 
 if __name__ == "__main__":  # 自检：解析规则的可视化验证

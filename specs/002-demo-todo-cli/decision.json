@@ -1,0 +1,162 @@
+{
+  "architecture_decision": {
+    "_note": "本文件是 Machine-readable Decision Contract，权威可校验实例（见 .sdd/CANONICAL.md）。technology-selection.md 里的 YAML 块是其人读镜像。evidence/constraints/alternatives/deferred/review_triggers 依 modv2.md §6,§15-§18 补全。",
+    "project": {
+      "type": "Internal Tool / CLI",
+      "scale": "Small",
+      "team_size": 1,
+      "deployment": "Local (single script/package)"
+    },
+    "architecture": {
+      "style": "Monolith",
+      "reason": "single-process CLI; no independent scaling/deployment/ownership need"
+    },
+    "backend": {
+      "language": "Python",
+      "framework": "argparse (stdlib)",
+      "reason": "local CRUD-like tooling; Python is the default for CLI; no web framework needed"
+    },
+    "database": {
+      "primary": "SQLite (embedded file)",
+      "reason": "single-user local persistence; embedded, no separate server or ops"
+    },
+    "cache": {
+      "enabled": false,
+      "technology": null,
+      "purpose": "no cache need for single-user local tool"
+    },
+    "messaging": {
+      "enabled": false,
+      "technology": null,
+      "purpose": "no async/event need"
+    },
+    "search": {
+      "enabled": false,
+      "technology": null
+    },
+    "vector": {
+      "enabled": false,
+      "technology": null
+    },
+    "object_storage": {
+      "enabled": false,
+      "technology": null
+    },
+    "authentication": {
+      "strategy": "None"
+    },
+    "authorization": {
+      "strategy": "single-user local"
+    },
+    "observability": {
+      "logging": true,
+      "metrics": false,
+      "tracing": false
+    },
+    "testing": {
+      "unit": "High",
+      "integration": "Low",
+      "e2e": "Low"
+    },
+    "deployment": {
+      "strategy": "pip install / python -m"
+    },
+    "evidence": [
+      {
+        "type": "requirement",
+        "claim": "本地单用户的增删改查命令行需求，无网络与多客户端",
+        "source": "spec.md#FR-001",
+        "verified_at": null
+      },
+      {
+        "type": "constraint",
+        "claim": "无合规/多租户/审计要求，单机运行",
+        "source": "spec.md#NFR",
+        "verified_at": null
+      },
+      {
+        "type": "documentation",
+        "claim": "标准库 argparse 足以覆盖子命令与参数解析，无需引入 CLI 框架",
+        "source": "res.md §90（依赖决策七问：标准库能否解决）",
+        "verified_at": null
+      }
+    ],
+    "constraints": [
+      "P1: 单用户本地运行，无并发写压力（SQLite 足够）",
+      "P2: 零运维面（不引入需独立部署的组件）",
+      "P2: 成本必须为 0（仅使用开发者本机资源）"
+    ],
+    "alternatives": [
+      {
+        "option": "Typer / Click（第三方 CLI 框架）",
+        "reason": "参数体验略好，但标准库 argparse 已满足需求，引入即产生依赖维护义务"
+      },
+      {
+        "option": "JSON 文件持久化",
+        "reason": "无需 schema，但失去事务与查询能力；SQLite 已内置且无部署成本"
+      },
+      {
+        "option": "DuckDB",
+        "reason": "分析型场景更强，但本工具是事务型小数据读写，SQLite 更合适且更普及"
+      }
+    ],
+    "decision_status": {
+      "architecture": "AUTO",
+      "backend": "AUTO",
+      "database": "AUTO",
+      "authentication": "AUTO"
+    },
+    "complexity": {
+      "score": 0,
+      "budget": 6,
+      "items": [
+        { "component": "SQLite (embedded, no separate deploy)", "points": 0 }
+      ]
+    },
+    "cost": {
+      "recurring": "none (runs on developer machine)",
+      "cap": "0",
+      "budget_basis": "项目预算为 0（仅使用开发者本机资源，无云支出）",
+      "within_budget": true
+    },
+    "rejected": [
+      {
+        "option": "Web framework (FastAPI/Django)",
+        "reason": "CLI tool with no HTTP server, network, or multi-client need; adds unjustified complexity"
+      },
+      {
+        "option": "PostgreSQL/MySQL server",
+        "reason": "single-user local tool; embedded SQLite satisfies persistence without a separately deployed database (+1 infra)"
+      },
+      {
+        "option": "React/Vue frontend",
+        "reason": "no UI; CLI is sufficient and simpler"
+      }
+    ],
+    "deferred": [
+      {
+        "decision": "Cloud sync / multi-device",
+        "reason": "当前无需求；一旦出现即需引入服务端与认证，属架构级变更",
+        "trigger": [
+          "出现多设备或多用户协作需求",
+          "出现数据备份到云端的诉求"
+        ]
+      }
+    ],
+    "review_triggers": [
+      "出现多用户或多人共享同一数据文件 → 重评 SQLite（并发写）",
+      "出现网络访问/API 需求 → 重新决策 backend 与 authentication",
+      "数据量超过单机可承受范围 → 重评 database"
+    ],
+    "decision_history": [],
+    "risks": [
+      "SQLite file concurrency: acceptable for single user; do not run multiple instances simultaneously"
+    ],
+    "assumptions": [
+      "single user, local only, no sync/cloud"
+    ],
+    "confidence": {
+      "overall": 5
+    }
+  }
+}

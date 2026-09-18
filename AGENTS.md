@@ -1,7 +1,8 @@
 # AGENTS.md — General Agent Engineering Rules
 
 > 通用 Agent 软件工程与 Spec-Driven Development 规则。详细知识库见 `.sdd/`。
-> 来源：`sources/v1.0/res.md`（顶层 121 条 + 子条目 11）+ `Matrix`（45 + 14）+ `知识库`（89 + 14）+ `mod_gpt.md`（9 条可执行性改进）；Agent 总指令见 `知识库 §87`。
+> 来源：`sources/v1.0/res.md`（顶层 121 条 + 子条目 11）+ `Matrix`（45 + 14）+ `知识库`（89 + 14）+ `mod_gpt.md`（9 条可执行性改进）+ `modv2.md`（22 项复核）；Agent 总指令见 `知识库 §87`。
+> **规则归属**：本文件与 `CLAUDE.md` 是 Agent 入口，**只引用、不重新定义**行为语义（见 `.sdd/CANONICAL.md`）。
 > 引用约定见 `.sdd/CONVENTIONS.md`；目录约定见 `.sdd/LAYOUT.md`。
 > 本文件定位：**规则摘要 + 目录索引（table of contents）**，不追求穷尽 —— 细节在 `.sdd/`。
 
@@ -22,6 +23,13 @@
      - Data / ETL / Pipeline → `.sdd/knowledge/data.md`
      - 涉及缓存或全文检索 → `.sdd/knowledge/caching.md`
      - 任何新项目（版本问题）→ `.sdd/knowledge/versioning.md`
+     - 存量系统改动 / 影响面不明 → `.sdd/decision-trees/impact-analysis.md`
+     - SaaS 多租户 → `.sdd/knowledge/multi-tenancy.md`
+     - 可用性 / RPO·RTO / 容错重试 → `.sdd/knowledge/reliability.md`
+     - PII / 留存删除 / 合规驻留 → `.sdd/knowledge/data-lifecycle.md`
+     - 外部系统集成（第三方 API / 回调） → `.sdd/knowledge/integration.md`
+     - 配置与密钥 → `.sdd/knowledge/configuration.md`
+     - 引入第三方依赖 → `.sdd/knowledge/dependency-management.md`
 6. 生成 `technology-selection.md` + `decision.json`（Hard Constraint elimination → Candidates → Decision Status → Complexity Budget）
 7. 对 `REQUIRE_CONFIRMATION` 项请求人工确认（其余状态不阻塞）
 8. 完成 Final `spec.md`（`Accepted`）→ `plan.md` → `design.md`（按需）→ `adr/`（按需）→ `tasks.md`
@@ -30,7 +38,7 @@
 其他入口：
 | 场景 | 流程 |
 | --- | --- |
-| 新特性 | `.sdd/workflows/new-feature.md` |
+| 新特性 | `.sdd/workflows/new-feature.md`（**Impact Analysis 前置**） |
 | 小改动（见阈值） | `.sdd/workflows/small-change.md` |
 | 缺陷修复 | `.sdd/workflows/bugfix.md` |
 | 重构 | `.sdd/workflows/refactor.md` |
@@ -126,7 +134,9 @@ Event Sourcing / Distributed transaction / Public API contract / Breaking API ch
 2. 必须达到：
    - **0 errors，0 warnings**
    - **无失效文件引用**（反引号内 `.md` / `specs/*/decision.json` 指向真实文件）
-   - **无互相冲突的 canonical rules**（同一件事只能有一个权威文件，见 `.sdd/LAYOUT.md` §3）
+   - **无互相冲突的 canonical rules**（同一件事只能有一个权威文件，见 `.sdd/CANONICAL.md`）
+   - **Canonical 不变量全部通过**（归属矩阵与登记表一致 / 流程顺序 / 决策状态旧语义未回流 / 必填产物有模板）
+   - **版本号三处一致**（`.sdd/VERSION` ≡ `README.md` ≡ `CHANGELOG.md` 最新版本）
    - `TRACEABILITY.md` 与当前引用一致（否则就是过期索引，比缺失更有害）
 3. 若修改了以下内容，**必须同步**：
 
@@ -139,6 +149,10 @@ Event Sourcing / Distributed transaction / Public API contract / Breaking API ch
    | Rule source mapping（引用来源条号） | 重跑 `scripts/gen_traceability.py` 更新 `.sdd/TRACEABILITY.md` |
    | Public rule behavior（对外可见的规则变更） | `CHANGELOG.md` |
    | 版本策略 | `.sdd/knowledge/versioning.md`（**不要**在领域文件里另写一份） |
+   | **规则库版本号** | `.sdd/VERSION`（唯一来源）→ 同步 `README.md` / `.sdd/README.md` / `CHANGELOG.md` |
+   | **Canonical 归属**（哪份文件说了算） | `.sdd/CANONICAL.md` + `scripts/validate_rules.py` 的 `CANONICAL_TOPICS` |
+   | Verification 结构 | `.sdd/templates/verification.md` + `.sdd/schema/verification.schema.json` |
+   | 新增知识域 / 决策树 | `.sdd/README.md` 与 `.sdd/LAYOUT.md` 的目录清单（含数量） |
    | 新增引用来源 | 先在 `.sdd/CONVENTIONS.md` §1 登记前缀，再使用 |
 
 4. 校验器不认识某条 Schema 关键字时会**报错而非静默跳过**（`scripts/mini_schema.py`）；

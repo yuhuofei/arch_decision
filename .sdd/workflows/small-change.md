@@ -20,6 +20,25 @@
 
 **任一条件不满足 → 退出本流程**，改走 `new-feature.md` / `bugfix.md` / `refactor.md`。
 
+### 1.1 Behavioral Risk Check（行为风险检测；`modv2.md §21`）
+
+> **行数不是风险指标。** 把 `if user.is_admin:` 改成 `if user.is_owner:` 只改一行，
+> 却是权限规则变化。即使满足上表全部阈值，只要改变下列任一项，
+> **立即升级**为 `new-feature.md` / `bugfix.md`，不得按轻量改动处理：
+
+```
+- externally observable behavior   （对外可观察行为）
+- authorization result              （授权判定结果）
+- persistence semantics             （持久化语义：存不存 / 存什么 / 删不删）
+- error semantics                   （错误码 / 错误语义 / 异常类型）
+- transaction boundary              （事务边界）
+- concurrency behavior              （并发行为 / 加锁 / 幂等性）
+- retry behavior                    （重试次数 / 重试条件）
+- default business behavior         （默认业务行为 / 默认取值）
+```
+
+**`≤100 行` 与 `≤3 文件` 只是防止过度流程的成本门槛，不是安全门槛。**
+
 ---
 
 ## 2. 典型可走场景
@@ -47,7 +66,7 @@
 ## 4. 流程
 
 ```
-1. 确认阈值      → 逐项对照本文件 §1 表格；任一不满足即退出本流程
+1. 确认阈值      → 逐项对照本文件 §1 与 §1.1 行为风险；任一不满足即退出本流程
    ↓
 2. 最小改动      → 不做"顺手重构"（禁止 res.md §106 式的大范围重写）
    ↓
@@ -62,5 +81,6 @@
 
 1. 本流程**免去** `spec.md` / `plan.md` / ADR 产出，但**不免去测试**。
 2. 改动过程中若发现触及阈值外内容 → **立即升级**到对应流程，不要"改都改了"。
-3. 轻量改动**不改变对外行为**；若改变了行为，按 `new-feature.md` 走 Spec。
+3. 轻量改动**不改变对外行为**；若改变了行为，按 `new-feature.md` 走 Spec，
+   并按 `.sdd/decision-trees/impact-analysis.md` 重估影响面。
 4. 单次会话中累计多个小改动仍按各自阈值判定；累计超过阈值即视为一次 new-feature。

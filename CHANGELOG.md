@@ -2,7 +2,127 @@
 
 本文件记录 `.sdd/` 规则库的版本变更。约定见 `.sdd/CONVENTIONS.md` §5。
 
+> 版本号唯一来源是 `.sdd/VERSION`；本文件的最新版本标题必须与它一致（`scripts/validate_rules.py` 会核对）。
+
 ---
+
+## [v1.4] — 2026-09-19
+
+**主题：Rule Drift 治理 + 决策契约补全**。
+来源：`sources/v1.0/modv2.md`（22 项复核），逐项处置见 `REVIEW-2026-09-19.md` 的四审章节。
+
+### 先说明：`modv2.md` 的 P0 清单多为旧快照误判
+
+`modv2.md` 声称 `decision-protocol` / `new-project` / `LAYOUT` / `validate_rules` / `plan` /
+`README` / `.sdd/README` 仍停留在 v1.1–v1.2 语义。逐条核实后，**这些判断不成立**：
+该文档复核时读到的版本早于 v1.3 提交（它自己也注意到「公开页面显示 main 最新提交只有 2 个 commit」）。
+核实证据：
+
+| modv2 指控 | 实测 |
+| --- | --- |
+| `modv2.md` §1 `decision-protocol` §6/§8/§9 仍是旧语义 | 已是 v1.3 语义，文件内有「修正点（此前自相矛盾）」标注 |
+| `modv2.md` §2 `new-project.md` 仍是旧流程 | 已是 `Discovery → Draft Spec → 决策 → Decision Status → Final Spec` |
+| `modv2.md` §3 `LAYOUT.md` 把 `design.md` / `adr/` 标回必填 | 自 v1.3 即为**按需**，文件内有「v1.3 变更」标注 |
+| `modv2.md` §5 `validate_rules.py` 没调用 `mini_schema` | 第 129 行已在调用（`check_decision_json`） |
+| `modv2.md` §6 `versions` 未进入 Schema properties | 早已存在 |
+| `modv2.md` §9 `plan.md` 仍是 Human Confirmation 旧语义 | 已是「仅 `REQUIRE_CONFIRMATION` 需先确认」 |
+| `modv2.md` §12 root `README` 仍写 v1.1 ／ `modv2.md` §13 `.sdd/README` 旧流程 | 均为 v1.3 语义 |
+
+**结论：本次不按「修旧语义」处理这些项；改为按「防回流 + 补真实缺口」处理。**
+
+### 第一层：真实缺口修复（P0）
+
+1. **新增 `templates/verification.md`**（`modv2.md §4`）
+   `LAYOUT.md` 一直声明 `verification.md` 必填，但 `.sdd/templates/` 只有 7 个模板，没有它 —— 真结构缺口。
+   新增 8 节模板（Status / AC 验证 / 需求追溯 / 测试结果 / NFR / 一致性检查 / Known Issues / Final Verdict）
+   + `.sdd/schema/verification.schema.json` + `specs/001-project/verification.json`（机器实例）。
+   `specs/001-project/verification.md` 同时从旧 4 节升级为新 8 节结构。
+
+2. **`decision-protocol.md` §7 决策循环 15 步 → 21 步**（`modv2.md §10`）
+   旧循环只覆盖「决策」子过程，缺 Draft Spec / Final Spec / 确认门槛 / 按需设计 / 验证。
+   新循环到第 21 步「Spec → Plan → Tasks → Code → Tests consistency check」。
+
+3. **`decision-protocol.md` §6 重排为 6.1–6.4**（`modv2.md §6`）
+   - §6.1 `RECOMMEND` 与 `REQUIRE_CONFIRMATION` 的**边界**（8 条升级条件 + 不得为免责逐项询问）
+   - §6.2 `BLOCKED` 的**三条件**与澄清模板（原 §6.1 模板移入）
+   - §6.3 **Assumptions 记录位置**（`technology-selection.md` + `decision.json`，**不要求 ADR**）
+   - §6.4 默认 `REQUIRE_CONFIRMATION` 清单（原 §6.0）
+
+4. **`CAN_ASSUME` 不再要求 ADR**（`modv2.md §11`）
+   `CLAUDE.md` §6、`decision-protocol` §6.3/§6.2、`adr.md` 同步；ADR 自 v1.3 起即为按需。
+
+### 第二层：决策契约补全（P1）
+
+5. **`decision.schema.json` 增结构化字段**（`modv2.md §6,§15-§18`）
+   新增 `evidence`（**必填，minItems 1**）/ `constraints` / `alternatives` / `scores` /
+   `deferred` / `review_triggers` / `decision_history`；`versions[]` 增 `source_url`；
+   `cost.within_budget` 改为 `["boolean","null"]` 并增 `budget_basis`。
+   `evidence` 是本次**理念上最重要的一条**：决策从「规则驱动的推荐」升级为「有据可查的判断」——
+   `reason: PostgreSQL is preferred` 这类不可复核的理由不再足够。
+
+6. **`cost` 逻辑矛盾修正**（`modv2.md §7`）
+   两个实例均为 `cap: UNKNOWN` + `within_budget: true`——预算上限未知却判定「在预算内」。
+   001 改为 `within_budget: null` + `budget_basis: null` 并把「预算上限未定」写入 `risks`；
+   002 补 `budget_basis`。新增自检项 `check_cost_consistency` 防复发。
+
+7. **`technology-selection.md` 模板**（`modv2.md §8`）
+   删除 `Architecture Summary` 标题里的「先输出给人确认」残留（它与同文件下一段自相矛盾）；
+   新增 Evidence / Deferred / Review Triggers / Decision History 四节与 YAML 镜像字段。
+
+8. **`plan.md` / `.sdd/README.md` 的确认语义**（`modv2.md §9,§13`）
+   核实后**无需修改**（已是收窄后语义）；`.sdd/README.md` 已重写以反映 v1.4 结构与四态追溯。
+
+9. **`.sdd/VERSION` 单一版本来源**（`modv2.md §12`）
+   新增 `.sdd/VERSION`（内容 `1.4`）；`README.md` / `.sdd/README.md` / `CHANGELOG.md` 引用它，
+   自检项 `check_version_consistency` 强制三处一致（原来人工维护两处必然漂移）。
+
+10. **两个实例的 `decision.json` / `technology-selection.md` YAML 镜像**同步新字段。
+
+### 第三层：能力增强
+
+11. **`CANONICAL.md` 规则归属矩阵**（`modv2.md §22`）
+    16 个主题 → 唯一权威的对照表；配套自检项 `check_canonical_registry`、
+    `check_workflow_order`、`check_forbidden_semantics`、`check_artifact_requiredness`。
+
+12. **TRACEABILITY 升级为四态**（`modv2.md §14`）
+    `MAPPED → IMPLEMENTED → VERIFIED`：`IMPLEMENTED` 由落点路径自动判定（是否落在实现层），
+    `VERIFIED` 由人工登记的检查项决定（`VERIFIED_BY`，只登记真实存在的检查项）。
+    同时产出机器可读的 `.sdd/traceability.json`。
+    **`VERIFIED` 不等于内容正确** —— 与「引用率 ≠ 覆盖率」一起写进文件说明。
+
+13. **6 个缺失知识域**（`modv2.md §19`）
+    新增 `multi-tenancy` / `reliability` / `data-lifecycle` / `integration` / `configuration` /
+    `dependency-management`。其中 `multi-tenancy` 接 `Matrix §22`、`dependency-management` 接
+    `res.md §90`、`configuration` 接 `res.md §86,§87` 与 `知识库 §36`，其余条目标注「本仓补充」。
+    **动机**：`Compliance` / `Data residency` 已被列为默认 `REQUIRE_CONFIRMATION`，
+    若没有对应知识，Agent 只会「知道要问」却不知道「问什么」。
+
+14. **`impact-analysis.md` 决策树 + `new-feature.md` 前置**（`modv2.md §20`）
+    回答 Brownfield 的真正问题：「这个改动会影响什么」。
+
+15. **`small-change.md` 增 Behavioral Risk Check**（`modv2.md §21`）
+    行数不是风险指标；触及对外行为 / 授权判定 / 持久化语义 / 错误语义 / 事务边界 / 并发 /
+    重试 / 默认业务行为即升级。
+
+### 第 5 来源接入
+
+`modv2.md` 用**中文序数**编号（`一、` … `二十二、`），与前三份及 `mod_gpt.md` 都不同。
+其正文代码块含 `6.` / `6.1` 等阿拉伯编号小节，若混用模型会互相污染，
+故 `scripts/sdd_refs.py` 按来源分派**三种条号模型**，`modv2.md` 取行首中文序数（得 1–22）。
+登记于 `.sdd/CONVENTIONS.md` §1.1。
+
+### 自检脚本新增 9 项检查
+
+`check_cost_consistency` / `check_verification_json` / `check_verification_artifact` /
+`check_verification_mirror` / `check_version_consistency` / `check_canonical_registry` /
+`check_workflow_order` / `check_forbidden_semantics` / `check_artifact_requiredness`。
+
+> 其中 `check_forbidden_semantics` 是**回归防护**：把 `modv2.md` 提到的旧语义写成禁止短语表，
+> 一旦回流即报错。解释了历史需要保留旧原文时，在该行标注 `【已废弃】` 即可。
+> `CHANGELOG.md` 与 `REVIEW-*.md` 天然豁免（它们必须能引用旧原文）。
+
+---
+
 
 ## [v1.3] — 2026-09-19
 

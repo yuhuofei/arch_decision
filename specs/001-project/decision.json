@@ -1,6 +1,6 @@
 {
   "architecture_decision": {
-    "_note": "本文件是 Machine-readable Decision Contract，权威可校验实例（见 .sdd/LAYOUT.md §1）。technology-selection.md 里的 YAML 块是其人读镜像。",
+    "_note": "本文件是 Machine-readable Decision Contract，权威可校验实例（见 .sdd/CANONICAL.md）。technology-selection.md 里的 YAML 块是其人读镜像。evidence/constraints/alternatives/scores/deferred/review_triggers 依 modv2.md §6,§15-§18 补全。",
     "project": {
       "type": "SaaS",
       "scale": "Small/Medium",
@@ -72,13 +72,15 @@
         "selected": "UNKNOWN",
         "support_status": "UNKNOWN",
         "verified_at": null,
-        "reason": "本示例未联网核对上游版本，按 knowledge/versioning.md 不得编造精确版本号；实现前须补齐"
+        "source_url": null,
+        "reason": "本示例未联网核对上游版本，按 knowledge/versioning.md 不得编造精确版本号；实现前须补齐并回填 source_url"
       },
       {
         "technology": "PostgreSQL",
         "selected": "UNKNOWN",
         "support_status": "UNKNOWN",
         "verified_at": null,
+        "source_url": null,
         "reason": "同上：以目标部署平台可用的 supported stable major 为准"
       },
       {
@@ -86,9 +88,71 @@
         "selected": "UNKNOWN",
         "support_status": "UNKNOWN",
         "verified_at": null,
+        "source_url": null,
         "reason": "仅构建前端工具链需要；取 Active LTS"
       }
     ],
+    "evidence": [
+      {
+        "type": "requirement",
+        "claim": "下单与订单状态需要事务性写入（关系型 + 一致性）",
+        "source": "spec.md#FR-001",
+        "verified_at": null
+      },
+      {
+        "type": "requirement",
+        "claim": "数据模型为订单/商品等关系实体，需 join 与外键约束",
+        "source": "spec.md §6",
+        "verified_at": null
+      },
+      {
+        "type": "constraint",
+        "claim": "greenfield 项目，无既有数据库或协议需兼容",
+        "source": "project-discovery.md §7",
+        "verified_at": null
+      },
+      {
+        "type": "team",
+        "claim": "团队 6 人，需受控的运维面（不支持长期维护自建中间件）",
+        "source": "project-discovery.md §6",
+        "verified_at": null
+      },
+      {
+        "type": "documentation",
+        "claim": "关系型新项目的默认候选为 PostgreSQL，且无约束指向其他引擎",
+        "source": "knowledge/database.md（候选先验，非结论）",
+        "verified_at": null
+      }
+    ],
+    "constraints": [
+      "P1: 需要事务与关系完整性（下单流程不可部分成功）",
+      "P1: 团队规模 6 人，运维面必须受控",
+      "P2: 成本敏感 —— 基础设施预算上限尚未确定（cap = UNKNOWN）",
+      "P2: 有文件类数据（图片/附件）需对象存储"
+    ],
+    "alternatives": [
+      {
+        "option": "Django",
+        "reason": "自带 admin/ORM 更完整，但本服务以 API 为主，重量级框架带来不必要的结构约束"
+      },
+      {
+        "option": "Flask",
+        "reason": "更轻，但异步、类型与请求校验能力弱于 FastAPI；新项目无历史包袱，无需迁就 Flask"
+      },
+      {
+        "option": "MySQL",
+        "reason": "可满足关系型需求，但无任何约束指向它；PostgreSQL 在 JSON 查询、扩展生态与默认选型上更优"
+      },
+      {
+        "option": "React + Vite",
+        "reason": "生态更大，但管理后台复杂度中等，Vue 3 在同等能力下更贴近团队既有实践"
+      },
+      {
+        "option": "Monolith（非模块化）",
+        "reason": "更简单，但 6 人团队需要模块边界来避免单体内互相侵入"
+      }
+    ],
+    "scores": [],
     "decision_status": {
       "architecture": "AUTO",
       "backend": "AUTO",
@@ -107,7 +171,8 @@
     "cost": {
       "recurring": "1 VM + managed PostgreSQL（可选）+ 对象存储按 GB 计",
       "cap": "UNKNOWN",
-      "within_budget": true
+      "budget_basis": null,
+      "within_budget": null
     },
     "rejected": [
       {
@@ -123,9 +188,46 @@
         "reason": "no cache/session/rate-limit requirement yet; introducing it adds +1 complexity for nothing"
       }
     ],
+    "deferred": [
+      {
+        "decision": "Redis",
+        "reason": "当前工作负载不足以证明其运维复杂度；本仓不引入（区别于 REJECTED：条件出现即重评）",
+        "trigger": [
+          "p95 延迟 > 300ms 且可归因于重复计算/查询",
+          "出现缓存命中机会 > 60% 的热点读",
+          "会话存储超出应用内存或需要跨实例共享"
+        ]
+      },
+      {
+        "decision": "Kafka / 消息队列",
+        "reason": "当前无异步或事件驱动需求",
+        "trigger": [
+          "出现削峰或跨服务异步需求",
+          "出现需要重放的事件流需求"
+        ]
+      },
+      {
+        "decision": "Microservices 拆分",
+        "reason": "当下无独立扩缩/部署/所有权需求，复杂度预算不支持",
+        "trigger": [
+          "出现独立扩缩需求",
+          "团队所有权拆分超过 2 个团队",
+          "部署耦合成为发布阻塞",
+          "故障隔离成为显式需求"
+        ]
+      }
+    ],
+    "review_triggers": [
+      "p95 延迟 > 300ms 或出现缓存/会话共享需求 → 重评 deferred 中的 Redis",
+      "出现独立扩缩 / 独立部署 / 团队所有权拆分 → 重评架构（Modular Monolith → Microservices）",
+      "出现合规、数据驻留或跨境传输要求 → 立即触发 REQUIRE_CONFIRMATION（decision-protocol §6.4）",
+      "基础设施预算上限确定后 → 回填 cost.cap 与 cost.budget_basis，并重判 within_budget"
+    ],
+    "decision_history": [],
     "risks": [
       "Redis may be needed later for session store; revisit before scaling out",
-      "unverified runtime versions must be checked against upstream before implementation"
+      "unverified runtime versions must be checked against upstream before implementation",
+      "基础设施预算上限未确定（cap = UNKNOWN），成本是否可接受尚无结论"
     ],
     "assumptions": [
       "single-region deployment",

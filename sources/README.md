@@ -13,6 +13,7 @@
 | v1.0 | `v1.0/AI Architecture Decision Matrix.md` | 约束模型 / 正式决策矩阵 / 复杂度预算 / 技术评分 / Decision Output Schema / 决策状态 / 15 步决策循环 / 30 条规则 |
 | v1.0 | `v1.0/AI Coding SDD 项目技术架构与框架选择知识库.md` | 中文知识库 / 默认技术栈（9 场景）/ spec·plan 模板 / 与 Spec Kit 衔接 / 最重要 15 条规则 |
 | v1.0 | `v1.0/mod_gpt.md` | **v1.3 可执行性评审**（9 项：Spec 前置 / 确认收窄 / 约束分级 / design 按需 / 真 Schema 校验 / 评分标尺 / 默认值语义 / 版本策略 / Definition of Done）。性质是"对本仓的评审意见"，不是原始技术规范。 |
+| v1.0 | `v1.0/modv2.md` | **v1.4 复核评审**（22 项：归属矩阵 / 四态追溯 / Evidence / Review Triggers / Deferred / Impact Analysis / Behavioral Risk / 6 个缺失知识域）。同为评审意见；其 P0 清单经逐条核实**多为旧快照误判**（复核时读到的版本早于 v1.3 提交）。 |
 
 ---
 
@@ -24,9 +25,12 @@
 | `Matrix §N` / `Matrix §N.M` | `sources/v1.0/AI Architecture Decision Matrix.md` 第 N 节 |
 | `知识库 §N` | `sources/v1.0/AI Coding SDD 项目技术架构与框架选择知识库.md` 第 N 节 |
 | `mod_gpt.md §N` | `sources/v1.0/mod_gpt.md` 第 N 条建议（N = 1–9） |
+| `modv2.md §N` | `sources/v1.0/modv2.md` 第 N 条建议（N = 1–22） |
 
 > `mod_gpt.md` 的条目识别方式与前三份不同：它是散文，正文里嵌着 3 处**从 1 重新开始**的子枚举，
 > 故只认**严格递增**的行首编号（详见 `.sdd/CONVENTIONS.md` §1.1）。
+> `modv2.md` 同样是散文，但用**中文序数**（`一、` … `二十二、`）编号，故按行首中文序数识别；
+> 它正文代码块中的 `6.` / `6.1` 等阿拉伯编号属**正文小节**，不构成来源条号。
 
 ---
 
@@ -42,6 +46,7 @@
 | `Matrix` §45（L1996-2030）<br>`知识库` §89（同一套） | `ai-architecture-kb/...` | superseded |
 | `知识库` §78（L2368-2384） | `specs/<id>/{spec,plan,tasks,research,...}.md` + `adr/` | 部分 adopted |
 | `mod_gpt.md` §4 | `design.md` / `adr/` 曾被视为必填 | 已改为**按需**（`LAYOUT.md` §1.2） |
+| `modv2.md` §3 | 称 `LAYOUT.md` 又把 `design.md` / `adr/` 标回必填 | **旧快照误判**：`LAYOUT.md` 自 v1.3 起即为按需 |
 
 **Agent 若直接阅读源文档，会得到互相矛盾的落点。** 因此本仓要求：决策只读 `.sdd/`，源文档仅用于溯源。
 

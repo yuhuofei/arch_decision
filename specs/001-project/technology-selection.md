@@ -85,6 +85,33 @@ architecture_decision:
   observability: { logging: true, metrics: true, tracing: false }
   testing: { unit: High, integration: High, e2e: Medium }
   deployment: { strategy: Docker }
+  versions:
+    - { technology: Python, selected: UNKNOWN, support_status: UNKNOWN, verified_at: null, source_url: null, reason: "未联网核对上游，禁止编造版本号" }
+    - { technology: PostgreSQL, selected: UNKNOWN, support_status: UNKNOWN, verified_at: null, source_url: null, reason: "取目标平台 supported stable major" }
+  cost: { recurring: "1 VM + managed PG + 对象存储按 GB", cap: UNKNOWN, budget_basis: null, within_budget: null }
+  evidence:
+    - { type: requirement, claim: "下单/订单状态需事务性写入", source: "spec.md#FR-001", verified_at: null }
+    - { type: requirement, claim: "订单/商品为关系实体，需 join 与外键", source: "spec.md §6", verified_at: null }
+    - { type: constraint, claim: "greenfield，无既有数据库需兼容", source: "project-discovery.md §7", verified_at: null }
+    - { type: team, claim: "6 人团队，运维面必须受控", source: "project-discovery.md §6", verified_at: null }
+    - { type: documentation, claim: "PostgreSQL 是关系型新项目的默认候选", source: "knowledge/database.md", verified_at: null }
+  constraints:
+    - "P1: 事务与关系完整性"
+    - "P1: 团队 6 人，运维面受控"
+    - "P2: 成本敏感（cap 未定）"
+  alternatives:
+    - { option: Django, reason: "以 API 为主，重量级框架带来不必要结构约束" }
+    - { option: Flask, reason: "异步/类型/请求校验弱于 FastAPI" }
+    - { option: "React + Vite", reason: "管理后台复杂度中等，Vue 3 更贴近团队既有实践" }
+  scores: []
+  deferred:
+    - { decision: Redis, reason: "当前负载不足以证明运维复杂度", trigger: ["p95 延迟 > 300ms", "缓存命中机会 > 60%"] }
+    - { decision: "Microservices 拆分", reason: "无独立扩缩/部署/所有权需求", trigger: ["出现独立扩缩需求", "团队所有权拆分 > 2 个团队"] }
+  review_triggers:
+    - "p95 延迟 > 300ms 或出现缓存/会话共享需求"
+    - "出现独立扩缩 / 独立部署 / 团队所有权拆分"
+    - "出现合规或数据驻留要求 → 立即 REQUIRE_CONFIRMATION"
+  decision_history: []
   rejected:
     - { option: Microservices, reason: "no strong-condition satisfied" }
     - { option: MySQL, reason: "greenfield, no MySQL constraint → PostgreSQL preferred" }
@@ -102,10 +129,10 @@ architecture_decision:
 - 本实例**无 `REQUIRE_CONFIRMATION` 项** → 无需人工确认门槛（decision-protocol §6）
 
 ## Versions（见 knowledge/versioning.md）
-| Technology | Selected | Support Status | Reason |
-| --- | --- | --- | --- |
-| Python | UNKNOWN | UNKNOWN | 本示例未联网核对上游，按 versioning.md §4 不编造版本号；实现前补齐 |
-| PostgreSQL | UNKNOWN | UNKNOWN | 同上：取目标平台可用的 supported stable major |
+| Technology | Selected | Support Status | Verified | Source URL | Reason |
+| --- | --- | --- | --- | --- | --- |
+| Python | UNKNOWN | UNKNOWN | — | — | 本示例未联网核对上游，按 versioning.md §4 不编造版本号；实现前补齐 |
+| PostgreSQL | UNKNOWN | UNKNOWN | — | — | 同上：取目标平台可用的 supported stable major |
 > 与 `decision.json` 的 `versions` 数组保持一致。
 
 ## 复杂度预算（口径见 decision-protocol §5.1）

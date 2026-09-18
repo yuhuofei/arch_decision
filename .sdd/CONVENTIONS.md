@@ -16,6 +16,7 @@
 | `AI Architecture Decision Matrix.md` | `Matrix §N` / `Matrix §N.M` | `Matrix §32`（复杂度预算）、`Matrix §6.1`（Python） |
 | `AI Coding SDD …知识库.md` | `知识库 §N` / `知识库 §N.M` | `知识库 §71`、`知识库 §4.5` |
 | `mod_gpt.md`（v1.3 可执行性评审） | `mod_gpt.md §N` | `mod_gpt.md §1`（Spec 前置）、`§4`（design 按需） |
+| `modv2.md`（v1.4 复核评审） | `modv2.md §N` | `modv2.md §14`（四态追溯）、`§22`（归属矩阵） |
 | 本仓规则文件 | `<文件名> §N` | `decision-protocol §6`、`spec.md §10` |
 | 指代当前文件自身 | `本文件 §N` / `本模板 §N` | `本文件 §1` |
 
@@ -45,10 +46,14 @@
 | `Matrix` | Markdown 标题（`#` 开头） | 45 + 14 |
 | `知识库` | Markdown 标题（`#` 开头） | 89 + 14 |
 | `mod_gpt.md` | **严格递增的行首编号**（`N. P0：…`）；编号回退（重启）的行视作正文子枚举，忽略 | 9 |
+| `modv2.md` | **行首中文序数**（`一、P0：…` … `二十二、…`）；正文代码块里的 `6.` / `6.1` 等阿拉伯编号**不参与**识别 | 22 |
 
 > `mod_gpt.md` 是散文式评审而非标题编号规范文档，正文里有 3 处**从 1 重新开始**的列表
 > （"A default: 1. …"、"Default priority: 1. …"、"DEFINITION OF DONE: 1. …"）。
 > 若不做递增过滤，同一个条号（如第 1、2 条）会被重复登记，条号集合与标题都会张冠李戴。
+>
+> `modv2.md` 同样是散文式评审，但改用中文序数编号（22 条）。中文序数天然唯一且递增，故无需递增过滤；
+> 只因它正文的代码块里含多处阿拉伯编号小节（`6.` / `6.1`），若混用模型会互相污染，故按来源分派不同正则。
 
 ---
 
@@ -74,6 +79,10 @@
 | ADR Status | `Proposed` / `Accepted` / `Rejected` / `Superseded` |
 | 约束优先级 | `P0A`（安全/合规/可行性/平台不可能）/ `P0B`（用户不可协商约束·现有系统硬兼容）/ `P1`（Strong）/ `P2`（Preference）/ `P3`（Weak） |
 | Support Status（版本） | `supported` / `LTS` / `maintenance` / `EOL` / `UNKNOWN`（见 `knowledge/versioning.md` §4） |
+| Verification Status | `Draft` / `Passed` / `Passed with Known Issues` / `Failed`（见 `templates/verification.md`） |
+| Verification Verdict | `PASS` / `PASS WITH KNOWN ISSUES` / `FAIL` |
+| AC 结果 | `PASS` / `FAIL` / `NOT RUN` |
+| `cost.within_budget` | `true`（已知在预算内）/ `false`（明确超预算）/ `null`（无预算数据，无法判断）；**`cap` 未知时不得为 `true`**（`modv2.md §7`） |
 | Confidence | `0–5` 整数 |
 | 评分标尺（0–5） | 见 `decision-protocol §4.1` 的 rubric |
 | 复杂度预算档 | `MVP 5` / `Internal 6` / `Small SaaS 8` / `Enterprise SaaS 12` / `Distributed 20+`（计分口径见 `decision-protocol §5.1`） |
@@ -109,4 +118,11 @@
 5. 校验脚本：`scripts/validate_rules.py`（裸引用 / 条号存在性 / 文件引用 / Decision Schema 两级 / 复杂度预算）。
 6. 索引生成：`scripts/gen_traceability.py`（改完引用后必须重跑，否则 `TRACEABILITY.md` 过期）。
    两个脚本的扫描范围也由 `sdd_refs.targets()` 统一，避免一边扫根目录文档、一边不扫。
-7. 收尾标准见 `AGENTS.md` 的 **DEFINITION OF DONE**（含"改了 A 就要同步 B"的对照表）。
+7. **版本号只有一个来源**：`.sdd/VERSION`。`README.md` / `.sdd/README.md` / `CHANGELOG.md` 都引用它，
+   由自检脚本核对三处一致（`modv2.md §12`）。
+8. **规则归属只有一个权威**：见 `.sdd/CANONICAL.md`；`CLAUDE.md` / `AGENTS.md` 作为 Agent 入口
+   **只引用、不重新定义**行为语义（`modv2.md §22`）。
+9. **审计报告 `REVIEW-*.md` 豁免引用写法检查** —— 它的职责就是引用缺陷原文；
+   它仍参与落点统计，但在四态模型中只记为 `MAPPED`（描述层）。
+10. 机器可读索引：`scripts/gen_traceability.py` 同时产出 `.sdd/traceability.json`。
+11. 收尾标准见 `AGENTS.md` 的 **DEFINITION OF DONE**（含"改了 A 就要同步 B"的对照表）。

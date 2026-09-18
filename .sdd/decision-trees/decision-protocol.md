@@ -2,7 +2,8 @@
 
 > 本文件是跨领域决策的"元规则"，应用于所有 decision-trees 与 knowledge 文件。
 > 来源：Matrix §1-§2,§3.1-§3.2,§32,§36,§40-§44；知识库 §64（MVP 默认）,§71-§74,§81,§85；
-> mod_gpt.md §2（决策状态语义）,§3（约束优先级）,§6（评分标尺）,§7（默认值语义）。
+> mod_gpt.md §2（决策状态语义）,§3（约束优先级）,§6（评分标尺）,§7（默认值语义）；
+> modv2.md §1（旧语义残留复核）,§6（Assumptions / 确认边界 / 默认确认清单）,§10（决策循环升级）,§14（四态追溯）。
 > 引用约定见 `.sdd/CONVENTIONS.md`：`Matrix §N` = Matrix 文档章节；`res.md §N` = res.md 规则条号。
 > 配套：`.sdd/decision-trees/*.md`（领域树）、`.sdd/templates/technology-selection.md`（人读输出）、
 > `specs/<id>/decision.json`（机器可读契约）。
@@ -123,7 +124,7 @@ User preference > Safety / Compliance / Feasibility      # 新增（P0A 不可�
 **禁止把偏好升格为硬约束**。用户说"我比较喜欢 MySQL" **不**等价于 `MUST_USE_MYSQL = true`；
 它只是让 MySQL 在候选集中获得先验优势（见 §3.4）。
 
-**遇到 P0A × P0B 冲突**：不得静默服从任一方，标 `BLOCKED` 并按 §6.1 模板提出最小必要问题集。
+**遇到 P0A × P0B 冲突**：不得静默服从任一方，标 `BLOCKED` 并按 §6.2 模板提出最小必要问题集。
 反例（不应照做）：用户要求 EOL 框架、SQLite 承担高并发写、前端保存明文 token、禁止数据库备份。
 
 ### 3.2 Soft Constraint（可比较，不能覆盖 Hard）
@@ -303,7 +304,7 @@ AI SaaS  ：PostgreSQL(1) + pgvector(0,扩展) + 对象存储(1) = 2 / 预算 8 
 
 ---
 
-## 6. 决策状态（Matrix §41；语义按 `mod_gpt.md §2` 修正）
+## 6. 决策状态（`Matrix §41`；语义按 `mod_gpt.md §2` 修正）
 
 每个决策必须标记：
 
@@ -312,24 +313,45 @@ AI SaaS  ：PostgreSQL(1) + pgvector(0,扩展) + 对象存储(1) = 2 / 预算 8 
 | `AUTO` | 可由规则直接判定 | **直接执行并记录**，不向用户征询 |
 | `RECOMMEND` | 存在多个合理方案，但默认值/规则给出推荐 | **Agent 可采用推荐方案继续执行**，同时记录 alternatives、assumptions 与 reversibility；**不阻塞流程** |
 | `REQUIRE_CONFIRMATION` | 重大架构影响 | **必须人确认，不得静默决定** |
-| `BLOCKED` | 缺失信息会导致重大、不可逆或高风险决策，且**不存在安全可逆默认值** | 停止，按 §6.1 请求澄清 |
+| `BLOCKED` | 缺失信息会导致重大、不可逆或高风险决策，且**不存在安全可逆默认值** | 停止，按 §6.2 请求澄清 |
 
-> **修正点（此前自相矛盾）**：旧版本要求"技术栈类决定有长期锁定成本 → 必须先 `Human Confirmation`"，
+> **修正点（此前自相矛盾）**：`modv2.md §1` 复核确认，旧版曾要求「技术栈类决定有长期锁定成本 → 必须先 `Human Confirmation`」【已废弃】，
 > 与 `AUTO` 的存在直接冲突 —— 若语言、框架、数据库、Docker 都要问用户，`AUTO` 就失去了意义。
 > 现统一为：**只有标记为 `REQUIRE_CONFIRMATION` 的技术/架构决策必须人工确认。**
 > 普通语言、框架、ORM、测试工具、包管理器、缓存是否引入等，在满足 Hard Constraint 且属
 > `AUTO`/`RECOMMEND` 时，Agent **应自行选择并记录，不应阻塞用户**。
 >
-> 反向也禁止：**不得**把 `AUTO`/`RECOMMEND` 升格为"要人确认"以求免责（`mod_gpt.md §2`）。
+> 反向也禁止：**不得**把 `AUTO`/`RECOMMEND` 升格为「要人确认」以求免责（`mod_gpt.md §2`）。
 
-### 6.0 默认 REQUIRE_CONFIRMATION 的决策（Matrix §42）
-Microservices / Kubernetes / Multi-region / Database migration / Authentication architecture / Authorization model / Payment / Data residency / Compliance / 主流云商 / Event-driven / CQRS / Event sourcing / Distributed transaction / Public API contract / Breaking API changes / 重大技术迁移（含破坏性版本升级）。
+### 6.1 RECOMMEND 与 REQUIRE_CONFIRMATION 的边界（`modv2.md §6`）
 
-> 规则：存在多个合理方案时，不假装只有唯一正确答案，应列出 Alternatives 与 Trade-offs（知识库 Rule 15）。
+`RECOMMEND` **不等于**「等待用户确认」。只有下列情况才升级为 `REQUIRE_CONFIRMATION`：
 
-### 6.1 BLOCKED 澄清问题模板（本仓补充）
+```
+- 改变系统边界或部署拓扑
+- 引入长期运维责任
+- 改变认证 / 授权 / 合规边界
+- 改变公共 API 契约
+- 引入不可逆或高成本迁移
+- 涉及付款、数据驻留、法规或组织级约束
+- 用户明确要求人工审批
+- 本文件 §6.4 清单内的决策
+```
 
-状态为 `BLOCKED` 时，**不得猜测后继续**，也不得泛泛地问"能再详细说说吗"。按下列模板提出**最小必要问题集**：
+**该清单之外**的语言、框架、ORM、测试工具、包管理器、缓存是否引入等，只要满足 Hard Constraint
+且属 `AUTO`/`RECOMMEND`，Agent **不得为了免责而逐项询问用户**。
+
+### 6.2 BLOCKED 的使用条件与澄清模板（本仓补充，`modv2.md §6`）
+
+**三个条件必须同时满足**，否则不得使用 `BLOCKED`：
+
+```
+1. 缺失的信息会改变重大架构 / 安全 / 合规 / 数据一致性 / 部署决策
+2. 该决策具有明显不可逆或高风险后果
+3. 没有安全的可逆默认方案
+```
+
+状态为 `BLOCKED` 时，**不得猜测后继续**，也不得泛泛地问「能再详细说说吗」。按下列模板提出**最小必要问题集**：
 
 ```
 【阻塞点】<一句话说明哪一项决策无法进行>
@@ -347,31 +369,66 @@ Microservices / Kubernetes / Multi-region / Database migration / Authentication 
 | --- | --- |
 | 影响架构（规模 / 一致性 / 安全 / 合规 / 核心流程 / 部署 / 既有栈 / 性能） | **MUST ASK**，即 `BLOCKED`，停在原地等答复 |
 | 影响实现（Auth / Storage / Email / Search / Queue） | **SHOULD ASK**，可给默认值并标记 `RECOMMEND`，**不阻塞** |
-| 低风险（格式化 / 命名 / 基础结构） | **CAN ASSUME**，直接假设，但**必须写入 ADR 的 Assumptions** |
+| 低风险（格式化 / 命名 / 基础结构） | **CAN ASSUME**，直接假设并记录（写入位置见 §6.3） |
 
-禁止：把 MUST ASK 的问题降级为 CAN ASSUME 以"加快进度"（`res.md §44` 规则 27-28）。
+禁止：把 MUST ASK 的问题降级为 CAN ASSUME 以加快进度（`res.md §44` 规则 27-28）。
+
+### 6.3 Assumptions 的记录位置（`modv2.md §6,§11`）
+
+`CAN ASSUME` 与 `RECOMMEND` 产生的假设**必须**记录在：
+
+```
+1. technology-selection.md                （人读镜像）
+2. decision.json 的 assumptions 字段      （机器可读，权威）
+3. 必要时同步到 spec.md 的 Assumptions 节 （影响需求的假设）
+```
+
+**只有该假设本身构成重要 Architecture Decision 时，才创建 ADR** —— ADR 已改为按需
+（`mod_gpt.md §4`）。不得为每条假设制造 ADR：目录中的 ADR 数量应等于真正需要长期保留的架构决策数量。
+
+### 6.4 默认 REQUIRE_CONFIRMATION 的决策（`Matrix §42`）
+
+Microservices / Kubernetes / Multi-region / Database migration / Authentication architecture /
+Authorization model / Payment / Data residency / Compliance / 主流云商 / Event-driven / CQRS /
+Event sourcing / Distributed transaction / Public API contract / Breaking API changes /
+重大技术迁移（含破坏性版本升级）/ 用户明确要求人工审批的决策。
+
+> **该清单之外，不得仅因为「长期锁定成本」就自动升级为 `REQUIRE_CONFIRMATION`**（`modv2.md §6`）。
+> 规则：存在多个合理方案时，不假装只有唯一正确答案，应列出 Alternatives 与 Trade-offs（知识库 Rule 15）。
 
 ---
 
-## 7. Agent 决策循环（Matrix §43）
+## 7. Agent 决策循环（`Matrix §43`；按 `modv2.md §10` 升级为全链路 21 步）
+
+> 旧版为 15 步，只覆盖「决策」子过程，缺 Draft Spec / Final Spec / 确认门槛 / 按需设计 / 验证。
+> 现扩展为覆盖 **Spec → Decision → Plan → Tasks → Code → Test → Verify** 的完整链路，
+> 与 `CLAUDE.md` §2 的流程顺序、`.sdd/workflows/new-project.md` 的骨架一致。
 
 ```
-1. Read requirements
-2. Classify project
-3. Extract hard constraints
-4. Extract soft constraints
-5. Detect existing stack
-6. Generate candidates
-7. Eliminate hard-constraint violations
-8. Score remaining candidates          # 仅当消除后仍 >= 2 且规则无法区分（§4.1）
-9. Select simplest sufficient architecture
-10. Generate ADR                       # 按需（LAYOUT.md §1.2）
-11. Mark confidence
-12. Identify human-confirmation decisions
-13. Generate plan.md
-14. Generate tasks.md
-15. Run consistency analysis (spec → plan → tasks)
+1. Read / capture requirements
+2. Project Discovery
+3. Draft Specification
+4. Extract hard constraints                    # P0A / P0B（本文件 §2）
+5. Extract soft constraints                    # P1-P3
+6. Detect existing stack
+7. Generate candidates
+8. Eliminate hard-constraint violations
+9. Select / score remaining candidates         # 评分仅当消除后 >= 2 且规则无法区分（§4.1）
+10. Validate architecture complexity / cost    # 本文件 §5 与 §4.2
+11. Mark Decision Status                       # 本文件 §6
+12. Resolve REQUIRE_CONFIRMATION / BLOCKED     # §6.1 / §6.2
+13. Finalize Accepted Spec                     # Status: Draft → Accepted
+14. Generate plan.md
+15. Generate design.md if required             # 判据见 LAYOUT.md §1.2
+16. Generate ADR if required                   # 按需
+17. Generate tasks.md
+18. Implement
+19. Test
+20. Verify                                     # templates/verification.md
+21. Run Spec → Plan → Tasks → Code → Tests consistency check
 ```
+
+> **门槛在第 12 步**：只有 `REQUIRE_CONFIRMATION` 与 `BLOCKED` 会阻塞；`AUTO` 与 `RECOMMEND` 直接进入第 13 步。
 
 ---
 
@@ -450,5 +507,5 @@ User
 
 **与用户指令的关系**：用户**不可协商**的显式约束 = **P0B** Hard Constraint，Agent 不得自行覆盖（`res.md §1.5`）；
 但 **P0B 不能让 Agent 产出违反 P0A（安全/合规/可行性）的方案** —— 遇到此类冲突必须标 `BLOCKED`
-并按 §6.1 提出最小必要问题集，不得静默服从任一方（`mod_gpt.md §3`）。
+并按 §6.2 提出最小必要问题集，不得静默服从任一方（`mod_gpt.md §3`）。
 用户表达的"偏好/倾向/最好用"只是 §3.4 意义上的候选先验，不构成约束。
