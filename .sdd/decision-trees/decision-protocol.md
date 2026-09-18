@@ -402,7 +402,7 @@ Event sourcing / Distributed transaction / Public API contract / Breaking API ch
 
 > 旧版为 15 步，只覆盖「决策」子过程，缺 Draft Spec / Final Spec / 确认门槛 / 按需设计 / 验证。
 > 现扩展为覆盖 **Spec → Decision → Plan → Tasks → Code → Test → Verify** 的完整链路，
-> 与 `CLAUDE.md` §2 的流程顺序、`.sdd/workflows/new-project.md` 的骨架一致。
+> 与 `.sdd/workflows/new-project.md` 的骨架一致（`CLAUDE.md` §2 只路由器读取顺序，不复制步序）。
 
 ```
 1. Read / capture requirements
@@ -485,7 +485,8 @@ User
 ```
 
 **关键门槛（已收窄）**：只有标记为 `REQUIRE_CONFIRMATION` 的决定需要先 `Architecture Proposal → Human Confirmation`，
-确认后固化进 `plan.md` + `decision.json` + ADR，后续 Agent 默认不得擅自改变。
+确认后固化进 `decision.json` + `plan.md`；**仅当该决策构成重要 Architecture Decision 时才按需创建 ADR**
+（判据见 `LAYOUT.md §1.2`）——ADR **不是**确认流程的固定产物。后续 Agent 默认不得擅自改变。
 其余决策按本文件 §6 的 `AUTO` / `RECOMMEND` 语义**直接执行并记录，不阻塞**。
 
 ---

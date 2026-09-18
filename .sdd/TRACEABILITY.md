@@ -48,7 +48,7 @@
 | `res.md §10` | GO | IMPLEMENTED | `.sdd/knowledge/backend.md` |
 | `res.md §11` | GO FRAMEWORK | IMPLEMENTED | `.sdd/knowledge/backend.md` |
 | `res.md §12` | TYPESCRIPT BACKEND | IMPLEMENTED | `.sdd/knowledge/backend.md` |
-| `res.md §13` | NESTJS | IMPLEMENTED | `.sdd/decision-trees/backend.md`<br>`.sdd/knowledge/backend.md`<br>`AGENTS.md` |
+| `res.md §13` | NESTJS | IMPLEMENTED | `.sdd/decision-trees/backend.md`<br>`.sdd/knowledge/backend.md` |
 | `res.md §14` | JAVA / KOTLIN | IMPLEMENTED | `.sdd/knowledge/backend.md` |
 | `res.md §15` | SPRING BOOT | IMPLEMENTED | `.sdd/knowledge/backend.md` |
 | `res.md §16` | FRONTEND DECISION | IMPLEMENTED | `.sdd/knowledge/frontend.md` |
@@ -116,7 +116,7 @@
 | `res.md §78` | REPOSITORY STRUCTURE | IMPLEMENTED | `.sdd/knowledge/backend.md`<br>`CHANGELOG.md`<br>`REVIEW-2026-09-19.md`<br>`specs/001-project/plan.md` |
 | `res.md §79` | Django | IMPLEMENTED | `.sdd/knowledge/backend.md`<br>`CHANGELOG.md`<br>`REVIEW-2026-09-19.md` |
 | `res.md §80` | Go | IMPLEMENTED | `.sdd/knowledge/backend.md`<br>`CHANGELOG.md`<br>`REVIEW-2026-09-19.md` |
-| `res.md §81` | NestJS | IMPLEMENTED | `.sdd/decision-trees/backend.md`<br>`.sdd/knowledge/backend.md`<br>`AGENTS.md`<br>`CHANGELOG.md`<br>`REVIEW-2026-09-19.md` |
+| `res.md §81` | NestJS | IMPLEMENTED | `.sdd/decision-trees/backend.md`<br>`.sdd/knowledge/backend.md`<br>`CHANGELOG.md`<br>`REVIEW-2026-09-19.md` |
 | `res.md §82` | Spring Boot | IMPLEMENTED | `.sdd/knowledge/backend.md`<br>`CHANGELOG.md`<br>`REVIEW-2026-09-19.md` |
 | `res.md §83` | VUE | IMPLEMENTED | `.sdd/knowledge/frontend.md` |
 | `res.md §84` | REACT | IMPLEMENTED | `.sdd/knowledge/frontend.md` |
@@ -143,9 +143,9 @@
 | `res.md §105` | BUGFIX FLOW | IMPLEMENTED | `.sdd/workflows/bugfix.md`<br>`.sdd/workflows/new-project.md`<br>`REVIEW-2026-09-19.md` |
 | `res.md §106` | REFACTOR FLOW | IMPLEMENTED | `.sdd/workflows/new-project.md`<br>`.sdd/workflows/refactor.md`<br>`.sdd/workflows/small-change.md`<br>`REVIEW-2026-09-19.md` |
 | `res.md §107` | AGENT QUESTION POLICY | IMPLEMENTED | `.sdd/workflows/new-project.md`<br>`REVIEW-2026-09-19.md` |
-| `res.md §108` | QUESTIONS CLASSIFICATION | IMPLEMENTED | `.sdd/decision-trees/decision-protocol.md`<br>`.sdd/workflows/new-feature.md`<br>`.sdd/workflows/new-project.md`<br>`CLAUDE.md`<br>`REVIEW-2026-09-19.md` |
+| `res.md §108` | QUESTIONS CLASSIFICATION | IMPLEMENTED | `.sdd/decision-trees/decision-protocol.md`<br>`.sdd/workflows/new-feature.md`<br>`.sdd/workflows/new-project.md`<br>`REVIEW-2026-09-19.md` |
 | `res.md §109` | TECHNOLOGY DECISION OUTPUT | IMPLEMENTED | `.sdd/templates/technology-selection.md`<br>`.sdd/workflows/new-project.md`<br>`REVIEW-2026-09-19.md` |
-| `res.md §110` | DEFAULT TECHNOLOGY MATRIX | IMPLEMENTED | `.sdd/knowledge/backend.md`<br>`.sdd/workflows/new-project.md`<br>`AGENTS.md`<br>`CHANGELOG.md`<br>`REVIEW-2026-09-19.md` |
+| `res.md §110` | DEFAULT TECHNOLOGY MATRIX | IMPLEMENTED | `.sdd/knowledge/backend.md`<br>`.sdd/workflows/new-project.md`<br>`CHANGELOG.md`<br>`REVIEW-2026-09-19.md` |
 | `res.md §111` | DEFAULT FULL STACK | IMPLEMENTED | `.sdd/workflows/new-project.md`<br>`REVIEW-2026-09-19.md` |
 | `res.md §112` | DEFAULT AI APPLICATION STACK | IMPLEMENTED | `.sdd/workflows/new-project.md`<br>`REVIEW-2026-09-19.md` |
 | `res.md §113` | DEFAULT ENTERPRISE STACK | IMPLEMENTED | `.sdd/workflows/new-project.md`<br>`REVIEW-2026-09-19.md` |
@@ -155,7 +155,7 @@
 | `res.md §117` | FINAL SPEC REQUIREMENTS | IMPLEMENTED | `.sdd/README.md`<br>`.sdd/decision-trees/decision-protocol.md`<br>`.sdd/templates/spec.md`<br>`.sdd/workflows/new-project.md`<br>`CHANGELOG.md`<br>`REVIEW-2026-09-19.md` |
 | `res.md §118` | FINAL AGENT BEHAVIOR | IMPLEMENTED | `.sdd/workflows/new-project.md`<br>`REVIEW-2026-09-19.md` |
 | `res.md §119` | GOLDEN RULE | IMPLEMENTED | `CLAUDE.md` |
-| `res.md §120` | FINAL PRINCIPLE | IMPLEMENTED | `.sdd/README.md`<br>`AGENTS.md`<br>`CLAUDE.md`<br>`README.md`<br>`specs/001-project/technology-selection.md` |
+| `res.md §120` | FINAL PRINCIPLE | IMPLEMENTED | `.sdd/README.md`<br>`AGENTS.md`<br>`CHANGELOG.md`<br>`README.md`<br>`specs/001-project/technology-selection.md` |
 
 **未被引用（顶层 自身及子条目均未出现 / 子条目 未出现）：0 条**
 
@@ -217,7 +217,7 @@
 | `Matrix §33` | Infrastructure Introduction Rule | IMPLEMENTED | `.sdd/decision-trees/decision-protocol.md`<br>`.sdd/knowledge/configuration.md`<br>`.sdd/knowledge/messaging.md` |
 | `Matrix §34` | Existing Project Decision Matrix | IMPLEMENTED | `.sdd/decision-trees/impact-analysis.md`<br>`.sdd/examples/brownfield.md`<br>`CHANGELOG.md`<br>`specs/001-project/plan.md` |
 | `Matrix §35` | Existing Stack Conflict | IMPLEMENTED | `.sdd/decision-trees/impact-analysis.md`<br>`.sdd/examples/brownfield.md`<br>`specs/001-project/plan.md` |
-| `Matrix §36` | Technology Selection Scoring | IMPLEMENTED | `.sdd/decision-trees/decision-protocol.md`<br>`.sdd/templates/technology-selection.md`<br>`AGENTS.md` |
+| `Matrix §36` | Technology Selection Scoring | IMPLEMENTED | `.sdd/decision-trees/decision-protocol.md`<br>`.sdd/templates/technology-selection.md` |
 | `Matrix §37` | Example | IMPLEMENTED | `.sdd/examples/saas.md` |
 | `Matrix §38` | Example: AI SaaS | IMPLEMENTED | `.sdd/examples/ai-saas.md` |
 | `Matrix §39` | Example: High-Concurrency Service | IMPLEMENTED | `.sdd/examples/high-concurrency.md` |
@@ -311,7 +311,7 @@
 | `知识库 §56` | Go Backend | IMPLEMENTED | `.sdd/knowledge/backend.md` |
 | `知识库 §57` | Vue Frontend | IMPLEMENTED | `.sdd/knowledge/frontend.md` |
 | `知识库 §58` | React Frontend | IMPLEMENTED | `.sdd/knowledge/frontend.md` |
-| `知识库 §59` | 推荐的默认技术栈 | IMPLEMENTED | `.sdd/workflows/new-project.md`<br>`AGENTS.md`<br>`CHANGELOG.md` |
+| `知识库 §59` | 推荐的默认技术栈 | IMPLEMENTED | `.sdd/workflows/new-project.md`<br>`CHANGELOG.md` |
 | `知识库 §60` | AI / RAG SaaS | IMPLEMENTED | `.sdd/examples/ai-saas.md`<br>`.sdd/knowledge/ai-llm.md`<br>`.sdd/workflows/new-project.md`<br>`CHANGELOG.md`<br>`REVIEW-2026-09-19.md` |
 | `知识库 §61` | 高并发 API | IMPLEMENTED | `.sdd/examples/high-concurrency.md`<br>`.sdd/workflows/new-project.md`<br>`CHANGELOG.md` |
 | `知识库 §62` | 企业 Java 系统 | IMPLEMENTED | `.sdd/workflows/new-project.md`<br>`CHANGELOG.md` |
@@ -323,7 +323,7 @@
 | `知识库 §68` | Event Sourcing | IMPLEMENTED | `.sdd/decision-trees/architecture.md`<br>`.sdd/knowledge/architecture.md`<br>`CHANGELOG.md`<br>`REVIEW-2026-09-19.md` |
 | `知识库 §69` | DDD | IMPLEMENTED | `.sdd/decision-trees/architecture.md`<br>`.sdd/knowledge/architecture.md`<br>`CHANGELOG.md`<br>`REVIEW-2026-09-19.md` |
 | `知识库 §70` | AI Coding 特殊要求 | IMPLEMENTED | `.sdd/knowledge/architecture.md`<br>`CHANGELOG.md`<br>`REVIEW-2026-09-19.md` |
-| `知识库 §71` | Agent 不得自行做的决定 | IMPLEMENTED | `.sdd/CONVENTIONS.md`<br>`.sdd/decision-trees/decision-protocol.md`<br>`.sdd/examples/brownfield.md`<br>`.sdd/knowledge/ai-llm.md`<br>`.sdd/knowledge/architecture.md`<br>`.sdd/knowledge/security.md`<br>`CLAUDE.md` |
+| `知识库 §71` | Agent 不得自行做的决定 | IMPLEMENTED | `.sdd/CONVENTIONS.md`<br>`.sdd/decision-trees/decision-protocol.md`<br>`.sdd/examples/brownfield.md`<br>`.sdd/knowledge/ai-llm.md`<br>`.sdd/knowledge/architecture.md`<br>`.sdd/knowledge/security.md`<br>`AGENTS.md`<br>`CLAUDE.md` |
 | `知识库 §72` | 技术选型评分模型 | IMPLEMENTED | `.sdd/decision-trees/decision-protocol.md`<br>`.sdd/templates/technology-selection.md` |
 | `知识库 §73` | 技术选择必须记录理由 | IMPLEMENTED | `.sdd/decision-trees/decision-protocol.md`<br>`.sdd/templates/adr.md` |
 | `知识库 §74` | Agent 技术选型规则 | IMPLEMENTED | `.sdd/decision-trees/decision-protocol.md`<br>`CHANGELOG.md` |
@@ -334,12 +334,12 @@
 | `知识库 §79` | 推荐的 spec.md 模板 | IMPLEMENTED | `.sdd/templates/spec.md`<br>`CHANGELOG.md`<br>`REVIEW-2026-09-19.md` |
 | `知识库 §80` | 推荐的 plan.md 技术架构模板 | IMPLEMENTED | `.sdd/templates/plan.md`<br>`REVIEW-2026-09-19.md`<br>`specs/001-project/design.md` |
 | `知识库 §81` | Agent 生成项目 Spec 的最终规则 | IMPLEMENTED | `.sdd/decision-trees/decision-protocol.md`<br>`.sdd/workflows/new-project.md` |
-| `知识库 §82` | 技术栈选择的默认优先级 | IMPLEMENTED | `.sdd/workflows/new-project.md`<br>`AGENTS.md` |
+| `知识库 §82` | 技术栈选择的默认优先级 | IMPLEMENTED | `.sdd/workflows/new-project.md` |
 | `知识库 §83` | 默认不要使用的复杂技术 | IMPLEMENTED | `.sdd/decision-trees/decision-protocol.md`<br>`.sdd/knowledge/architecture.md` |
 | `知识库 §84` | AI Agent 的最终输出格式 | IMPLEMENTED | `.sdd/templates/technology-selection.md` |
 | `知识库 §85` | 最重要的规则 | IMPLEMENTED | `.sdd/decision-trees/decision-protocol.md`<br>`AGENTS.md`<br>`REVIEW-2026-09-19.md` |
 | `知识库 §86` | 最终 SDD Traceability | MAPPED | `CHANGELOG.md` |
-| `知识库 §87` | 给 AI Agent 的总指令 | IMPLEMENTED | `AGENTS.md`<br>`CHANGELOG.md`<br>`CLAUDE.md` |
+| `知识库 §87` | 给 AI Agent 的总指令 | IMPLEMENTED | `CHANGELOG.md`<br>`CLAUDE.md` |
 | `知识库 §88` | 与 Spec Kit / OpenSpec 的结合方式 | IMPLEMENTED | `.sdd/decision-trees/decision-protocol.md`<br>`.sdd/templates/spec.md`<br>`.sdd/workflows/new-project.md` |
 | `知识库 §89` | 推荐最终目录 | IMPLEMENTED | `.sdd/LAYOUT.md`<br>`CHANGELOG.md` |
 
@@ -354,13 +354,13 @@
 
 | 源规则 | 标题 | 状态 | 落点文件 |
 | --- | --- | --- | --- |
-| `mod_gpt.md §1` | P0：SDD 主流程顺序仍然自相矛盾 | IMPLEMENTED | `.sdd/CONVENTIONS.md`<br>`.sdd/README.md`<br>`.sdd/workflows/new-project.md`<br>`AGENTS.md`<br>`CHANGELOG.md`<br>`CLAUDE.md` |
-| `mod_gpt.md §2` | SDD REQUIRED（新项目 / 重大特性） | IMPLEMENTED | `.sdd/README.md`<br>`.sdd/decision-trees/decision-protocol.md`<br>`.sdd/workflows/new-project.md`<br>`AGENTS.md`<br>`CHANGELOG.md`<br>`CLAUDE.md` |
-| `mod_gpt.md §3` | P0：用户明确要求 = 最高 Hard Constraint 太绝对 | IMPLEMENTED | `.sdd/decision-trees/decision-protocol.md`<br>`CHANGELOG.md`<br>`CLAUDE.md`<br>`REVIEW-2026-09-19.md` |
+| `mod_gpt.md §1` | P0：SDD 主流程顺序仍然自相矛盾 | IMPLEMENTED | `.sdd/CONVENTIONS.md`<br>`.sdd/README.md`<br>`.sdd/workflows/new-project.md`<br>`CHANGELOG.md`<br>`CLAUDE.md` |
+| `mod_gpt.md §2` | SDD REQUIRED（新项目 / 重大特性） | IMPLEMENTED | `.sdd/README.md`<br>`.sdd/decision-trees/decision-protocol.md`<br>`.sdd/workflows/new-project.md`<br>`CHANGELOG.md` |
+| `mod_gpt.md §3` | P0：用户明确要求 = 最高 Hard Constraint 太绝对 | IMPLEMENTED | `.sdd/decision-trees/decision-protocol.md`<br>`CHANGELOG.md`<br>`REVIEW-2026-09-19.md` |
 | `mod_gpt.md §4` | P1：plan.md 和 design.md 职责高度重复 | IMPLEMENTED | `.sdd/CONVENTIONS.md`<br>`.sdd/LAYOUT.md`<br>`.sdd/decision-trees/decision-protocol.md`<br>`.sdd/templates/design.md`<br>`CHANGELOG.md` |
 | `mod_gpt.md §5` | P1：现在所谓的 JSON Schema 校验实际上没有真正执行 Schema | MAPPED | `CHANGELOG.md`<br>`REVIEW-2026-09-19.md` |
 | `mod_gpt.md §6` | P1：评分公式有权重，但没有评分标尺，Agent 会产生“伪精确评分” | IMPLEMENTED | `.sdd/decision-trees/decision-protocol.md`<br>`CHANGELOG.md` |
-| `mod_gpt.md §7` | P1：默认技术矩阵仍然偏“答案库”，而不是“决策系统” | IMPLEMENTED | `.sdd/README.md`<br>`.sdd/decision-trees/decision-protocol.md`<br>`.sdd/workflows/new-project.md`<br>`CHANGELOG.md`<br>`CLAUDE.md` |
+| `mod_gpt.md §7` | P1：默认技术矩阵仍然偏“答案库”，而不是“决策系统” | IMPLEMENTED | `.sdd/README.md`<br>`.sdd/decision-trees/decision-protocol.md`<br>`.sdd/workflows/new-project.md`<br>`CHANGELOG.md` |
 | `mod_gpt.md §8` | P1：你最初要求的“默认版本策略”目前还没有真正形成规则 | IMPLEMENTED | `.sdd/knowledge/versioning.md`<br>`CHANGELOG.md` |
 | `mod_gpt.md §9` | 我建议顺手调整 AGENTS.md | IMPLEMENTED | `AGENTS.md`<br>`CHANGELOG.md` |
 

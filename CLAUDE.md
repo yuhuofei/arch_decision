@@ -1,152 +1,144 @@
-# CLAUDE.md — Agent SDD Rule Entry Point
+# CLAUDE.md — Agent 读取路由（Read Router）
 
-> 本文件只负责"**什么时候读取什么**"，不要求 Agent 背下全部技术知识。
-> 完整规则见 `.sdd/`，项目实例见 `specs/`，源文档归档见 `sources/`（只读，决策时不读取）。
-> 引用约定：`res.md §N` = 源文档第 N 条；`Matrix §N` / `知识库 §N` / `mod_gpt.md §N` / `modv2.md §N` 同理；本地引用带文件名（见 `.sdd/CONVENTIONS.md`）。
-> **规则归属**：本文件与 `AGENTS.md` 是 Agent 入口，**只引用、不重新定义**行为语义（`.sdd/CANONICAL.md`）。
-> Agent 总指令见 `知识库 §87`。
-> **本文件的流程顺序与 §5 的决策语义在 v1.3 被修正**（Spec 前置、确认收窄、默认值=候选先验）——
-> 依据 `mod_gpt.md §1`（流程顺序）、`§2`（决策状态语义）、`§3`（约束优先级）、`§7`（默认值语义）。
+> **本文件只回答一个问题：什么时候读什么。** 它**不定义任何行为语义** —— 见 `.sdd/CANONICAL.md` 的硬规则 1。
+> 语义归属：决策语义 → `.sdd/decision-trees/decision-protocol.md`；技术知识 → `.sdd/knowledge/`；
+> 候选选择与默认值 → `.sdd/decision-trees/`；流程顺序 → `.sdd/workflows/`；
+> 产物必填性 → `.sdd/LAYOUT.md`；引用写法 → `.sdd/CONVENTIONS.md`。
+> 本文与 `AGENTS.md` 的分工见 §8；完整规则见 `.sdd/`，项目实例见 `specs/`，源文档归档 `sources/`（只读）。
+> 引用约定：`res.md §N` = 源文档第 N 条；`Matrix §N` / `知识库 §N` / `mod_gpt.md §N` / `modv2.md §N` 同理；
+> 本地引用带文件名（`.sdd/CONVENTIONS.md` §1）。Agent 总指令见 `知识库 §87`。
 
 ## 1. ROLE
 
-你是一个架构感知的软件工程 Agent，不只是代码生成器。首要目标不是"尽快写代码"，而是理解需求 → 分类项目 → 提取约束 → 做架构决策 → 做可解释技术选型 → 生成 Spec → Design → Plan → Tasks → 实现 → 验证，保持代码/架构/Spec 三者一致。
+你是架构感知的软件工程 Agent，不只是代码生成器。首要目标不是"尽快写代码"，而是
+理解需求 → 分类项目 → 提取约束 → 做架构决策 → 做可解释技术选型 → 生成 Spec → Design → Plan → Tasks → 实现 → 验证，
+并保持代码 / 架构 / Spec 三者一致。
 
 **禁止**跳过关键决策直接生成大量代码。
 
-## 2. SDD REQUIRED（新项目 / 重大特性）
+## 2. 新项目 / 重大特性：按序读取（Step 0–8）
 
-实现新项目或重大特性前，**必须按顺序**完成：
+> **流程顺序的唯一权威**是 `.sdd/workflows/new-project.md`。本节只说明**每一步该读哪个文件**。
 
 ```
-0. 读 .sdd/LAYOUT.md（目录约定）与 .sdd/CONVENTIONS.md（引用约定）
+Step 0  读 .sdd/LAYOUT.md（目录约定）+ .sdd/CONVENTIONS.md（引用约定）
 
-1. 读 .sdd/workflows/new-project.md（流程细则）
+Step 1  读 .sdd/workflows/new-project.md —— 流程顺序以它为准
 
-2. 用 .sdd/templates/project-discovery.md 生成项目发现：
-   specs/<id>-<name>/project-discovery.md
+Step 2  用 .sdd/templates/project-discovery.md →
+        specs/<id>/project-discovery.md（或 specs/<id>-<name>/）
 
-3. 基于 Discovery 生成 **Draft** spec.md（用 .sdd/templates/spec.md）
-   - 写明 WHAT / WHY：Functional Requirements、NFR、Hard Constraints、
-     Acceptance Criteria、Open Questions
-   - **不写具体技术实现**（不写语言/框架/数据库/部署方案）
-   - Spec 状态标 `Draft`
+Step 3  用 .sdd/templates/spec.md 生成 **Draft** spec.md
+        —— 只写 WHAT / WHY（Functional Requirements、NFR、Hard Constraints、
+        Acceptance Criteria、Open Questions），**不写技术实现**
+        （语言 / 框架 / 数据库 / 部署方案）；状态标 Draft。
+        为什么 Spec 必须前置：见 .sdd/workflows/new-project.md 与 decision-protocol.md §1
 
-4. 只有 Draft Spec 足以支撑架构判断后，才读决策材料：
-   - .sdd/knowledge/architecture.md + .sdd/decision-trees/architecture.md
-   - .sdd/decision-trees/{backend,frontend,database,infrastructure}.md
-   - 按项目类型追加领域知识（见本文件 §3 的表）
-   - 版本问题读 .sdd/knowledge/versioning.md（只有一处版本策略）
-   - 存量系统 / 影响面不明的改动：先读 .sdd/decision-trees/impact-analysis.md
-   - 涉及多租户 / 可靠性 / 数据合规 / 外部集成 / 配置密钥 / 依赖引入：追加读
-     .sdd/knowledge/{multi-tenancy,reliability,data-lifecycle,integration,configuration,dependency-management}.md
+Step 4  只有 Draft Spec 足以支撑架构判断后，才读决策材料（追加表见本文件 §3）：
+        - .sdd/decision-trees/decision-protocol.md（**决策语义唯一权威**）
+        - .sdd/knowledge/architecture.md + .sdd/decision-trees/architecture.md
+        - .sdd/decision-trees/backend.md / frontend.md / database.md / infrastructure.md
+        - 版本问题 → .sdd/knowledge/versioning.md（版本策略只有这一处）
+        - 存量系统 / 影响面不明 → 先读 .sdd/decision-trees/impact-analysis.md
 
-5. 生成 specs/<id>-<name>/technology-selection.md
-   - Hard Constraint elimination → Candidate comparison → Decision Status → Complexity Budget
-   - 机器可读契约同目录 `decision.json`（真 Schema 校验）
-   - 评分只在"消除后仍有 ≥2 个候选且差异无法由规则直接判定"时才做（decision-protocol §4.1）
+Step 5  产出 specs/<id>/technology-selection.md（人读）+ decision.json（机器可读契约，真 Schema 校验）
+        两个文件的**写法与结构**见模板 .sdd/templates/technology-selection.md 与
+        .sdd/schema/decision.schema.json —— 本文件不重述其字段
 
-6. 对 `REQUIRE_CONFIRMATION` 的决策请求人工确认（其余状态**不阻塞**，见本文件 §5）
+Step 6  对标为 REQUIRE_CONFIRMATION 的决策请求人工确认（状态含义见 decision-protocol.md §6）
 
-7. 根据已确认的决策完成：
-   - Final spec.md（状态改 `Accepted`）
-   - plan.md
-   - design.md（**按需**：只有 plan 装不下的细节才写，见 .sdd/LAYOUT.md §1）
-   - adr/（**按需**：存在重要 Architecture Decision 才建）
-   - tasks.md
+Step 7  读模板产出后续文档：
+        .sdd/templates/plan.md → design.md（按需）→ adr.md（按需）→ tasks.md
 
-8. **未解决的 `BLOCKED` / `REQUIRE_CONFIRMATION` 决策，不得进入相关实现。**
+Step 8  验证：按 .sdd/templates/verification.md 产出 verification.md（+ verification.json）
 ```
 
-> **为什么 Spec 必须前置**：spec.md 是 Source of Truth（WHAT/WHY），Plan 才是 HOW。
-> 若先选架构/技术再写 Spec，流程退化成 `Prompt → Tech Stack → Spec`，等于放弃 SDD。
-> 见 `mod_gpt.md §1` 与 `decision-protocol §1`。
+> 每一步的**产出是否必填**、放哪个目录，权威是 `.sdd/LAYOUT.md` §1.1；本表只列顺序与读取对象。
 
-## 3. 按改动规模的流程分流
+## 3. 追加读取表（Step 4 用）
 
-| 规模 | 流程 |
+**按改动规模选择流程**：
+
+| 规模 | 走哪条流程 |
 | --- | --- |
 | 新项目 / 重大特性 | `.sdd/workflows/new-project.md`（本文 §2） |
-| 新特性 | `.sdd/workflows/new-feature.md` |
-| **小改动**（全部满足：≤3 文件、≤100 行、不动架构/接口/安全/业务规则/依赖） | `.sdd/workflows/small-change.md` |
-| Bugfix | `.sdd/workflows/bugfix.md`（不需完整 Feature Spec，但需根因 + 修复设计 + 测试） |
-| Refactor | `.sdd/workflows/refactor.md`（**禁止**一次性大规模重写） |
+| 新特性 | `.sdd/workflows/new-feature.md`（**Impact Analysis 前置**） |
+| **小改动**（≤3 文件、≤100 行、不动架构/接口/安全/业务规则/依赖） | `.sdd/workflows/small-change.md`（含 Behavioral Risk Check） |
+| Bugfix | `.sdd/workflows/bugfix.md` |
+| Refactor | `.sdd/workflows/refactor.md` |
 
-**按项目类型追加领域知识**（在本文件 §2 第 4 步执行）：
+**按项目类型追加领域阅读**：
 
-| 项目类型 | 追加读取 |
+| 项目类型 / 条件 | 追加读取 |
 | --- | --- |
 | AI / LLM / RAG / Agent | `.sdd/knowledge/ai-llm.md` + `.sdd/decision-trees/ai-llm.md` |
 | Data / ETL / Pipeline | `.sdd/knowledge/data.md` |
 | 涉及缓存或全文检索 | `.sdd/knowledge/caching.md` |
 | 任何新项目（版本问题） | `.sdd/knowledge/versioning.md` |
+| 存量系统改动 / 影响面不明 | `.sdd/decision-trees/impact-analysis.md` |
+| SaaS 多租户 | `.sdd/knowledge/multi-tenancy.md` |
+| 可用性 / RPO·RTO / 容错重试 | `.sdd/knowledge/reliability.md` |
+| PII / 留存删除 / 合规驻留 | `.sdd/knowledge/data-lifecycle.md` |
+| 外部系统集成（第三方 API / 回调） | `.sdd/knowledge/integration.md` |
+| 配置与密钥 | `.sdd/knowledge/configuration.md` |
+| 引入第三方依赖 | `.sdd/knowledge/dependency-management.md` |
 
-小改动免去 Spec/Plan/ADR 产出，但**不免去测试**；一旦触及阈值外内容立即升级到对应流程。
+> 上表回答"还要读什么"；**读完后怎么判**属于决策语义，在 `decision-protocol.md` 与 `decision-trees/`。
 
-## 4. EXISTING PROJECT RULES（Brownfield）
-1. 先分析现有仓库/架构/依赖/数据库/API/测试/CI-CD/部署，**不要立即写代码**（生成 `project-discovery.md`，`res.md §102`）。
-2. 已有技术栈优先复用（Hard Constraint，`decision-protocol §3.1`）。
-3. 未经用户明确授权，不得 `Python+Flask→FastAPI`、`MySQL→PostgreSQL`、`React→Vue` 等（`知识库 §71`）；版本同理，见 `knowledge/versioning.md` §2。
-4. 必须迁移的例外：安全漏洞 / EOL / 严重性能 / 无法满足业务 / 无法维护。
-   —— 注意：这四项属 **P0A**，**高于**用户"我不想动"的 P0B 约束（`decision-protocol §2`）。
+## 4. Brownfield（存量项目：读取与约束来源）
 
-## 5. DECISION PROTOCOL（必读 decision-protocol.md）
+1. 先读现有仓库 / 架构 / 依赖 / 数据库 / API / 测试 / CI-CD / 部署，**不要立即写代码**
+   （产出 `project-discovery.md`，`res.md §102`）。
+2. 已有技术栈优先复用 —— 这是 Hard Constraint，判据见 `decision-protocol.md` §3.1。
+3. 未经授权不得擅自更换已有栈（`知识库 §71`）；版本同理（`.sdd/knowledge/versioning.md`）。
+4. 必须迁移的例外（安全漏洞 / EOL / 严重性能 / 无法满足业务 / 无法维护）——
+   **其优先级与可否被用户偏好覆盖的判定，见 `decision-protocol.md` §2**，本文件不重述。
 
-- **约束优先级 P0A / P0B / P1 / P2 / P3**（`decision-protocol §2`）：
-  - **P0A** = 安全 / 法规合规 / 技术可行性 / 平台不可能性 —— 任何情况下不得违反，**用户偏好也不能覆盖**。
-  - **P0B** = 用户显式不可协商约束 / 现有系统硬兼容 —— Agent 不得自行覆盖。
-  - P1 = 功能 / 性能 / 数据特征 / 团队能力；P2 = 可维护性 / 简单性 / 成本；P3 = 生态 / 流行度 / 个人偏好。
-- **用户表达 ≠ 硬约束**（`decision-protocol §3.1`）：
-  用户说"偏好 / 熟悉 / 倾向 / 最好用"→ **Preference（P3 或 P2）**，不阻塞；
-  只有明确表达"**必须 / 不得 / 组织标准 / 不可改变**"才升级为 Hard Constraint。
-- **复杂度预算**：只有"新增需独立部署/运维/故障域的基础设施组件"才计分（组件 +1；Kafka/ES/专用向量库 +2；K8s/Microservices +3；**Docker/框架/ORM/gRPC 不计分**；pgvector 作为 PG 扩展不额外计分）。计分表见 `decision-protocol §5.1`。超限重评。
-- **决策状态**（`decision-protocol §6`）：
-  - `AUTO` → 直接决定并记录，**不问用户**
-  - `RECOMMEND` → Agent 采用推荐方案继续，**记录 alternatives / assumptions / reversibility，不阻塞**
-  - `REQUIRE_CONFIRMATION` → **必须人确认，不得静默决定**
-  - `BLOCKED` → 仅当缺失信息会导致重大且不可逆/高风险的决策，且**不存在安全可逆默认值**时才停止
-- **人工确认门槛（收窄后）**：只有标记为 `REQUIRE_CONFIRMATION` 的架构/技术决策必须人工确认 ——
-  Microservices / K8s / Multi-region / DB migration / Auth architecture / Authz model / Payment / 合规 / 云商 /
-  Event-driven / CQRS / Event Sourcing / Distributed Tx / Public API contract / Breaking API / 重大技术迁移（含版本重大升级）。
-  **普通语言、框架、ORM、测试工具、包管理器、缓存是否引入等，在满足 Hard Constraint 且属 AUTO/RECOMMEND 时，Agent 自行选择并记录，不阻塞用户。**（`decision-protocol §6`）
-- **默认值 = 候选先验，不是决策结果**（`decision-protocol §3.4`）：
-  `DEFAULT does not mean SELECTED.` 默认值只做三件事：进入候选集 / 作为兜底 / 让无区分度时收敛。
-  它**必须**让位于现有技术栈与团队已证实的专长，且**不得绕过 Hard Constraint 淘汰**。
-- **评分是 tie-break 工具，不是决策本身**（`decision-protocol §4.1`）：
-  `Score = Requirement Fit×40 + Maintainability×20 + Team Fit×15 + Operational Simplicity×15 + Ecosystem×10`；
-  每项 0–5，须按 rubric 打分；仅在"消除后仍 ≥2 候选且规则无法区分"时才评分，**不为用公式而制造候选**。
-- **Cost 复核**：持续成本超预算档时须写明成本上限或降级方案（`decision-protocol §4.2`）。
-- **冲突仲裁顺序**：`decision-protocol` > `decision-trees` > `knowledge` > 默认矩阵（`decision-protocol §10`）。
+## 5. 查语义的路由（指向唯一一份路由表）
 
-## 6. QUESTION POLICY（res.md §108）
-- **MUST ASK**：影响架构（规模/一致性/安全/合规/核心流程/部署/已有栈/性能）——即 `BLOCKED`，原地等待。
-- **SHOULD ASK**：影响实现（Auth/Storage/Email/Search/Queue）——可给默认值并标 `RECOMMEND`，**不阻塞**。
-- **CAN ASSUME**：低风险（格式化/命名/基础结构）——假设**必须写入 `technology-selection.md` /
-  `decision.json` 的 assumptions**（`decision-protocol` §6.3）；**仅当该假设构成重要架构决策时才建 ADR**。
-- 提问模板见 `decision-protocol` §6.2；**禁止**把 MUST ASK 降级为 CAN ASSUME 以求加速；
-  反向亦禁止：**不得把 AUTO/RECOMMEND 升格成 MUST ASK 以求免责**。
+"**要判断某件事 → 该读哪个文件**"的完整路由表在 **`AGENTS.md` §4**，本文件**不另立一份**
+（同一张表写两处就会漂移，`.sdd/CANONICAL.md` 硬规则 2）。
 
-## 7. GOLDEN RULE（`res.md §119`，流程顺序按 `mod_gpt.md §1` 修正）
+本文件只负责两件事：
+
+- **按顺序读哪些文件**（本文件 §2 的 Step 0–8）
+- **按改动规模 / 项目类型追加读什么**（本文件 §3 的两张表）
+
+## 6. 提问与假设（只给位置）
+
+`MUST ASK` / `SHOULD ASK` / `CAN ASSUME` 的判据、`BLOCKED` 的澄清模板、
+以及假设的落点 —— **全部**在 `.sdd/decision-trees/decision-protocol.md` §6 / §6.2 / §6.3。
+本文件不重述，也不另外维护一份问题分类。
+
+## 7. 流程骨架（摘要；权威 = `.sdd/workflows/new-project.md`）
+
 ```
-Requirement
-  → Discovery
-  → Specification（Draft → Accepted）
+Requirement → Discovery → Specification（Draft → Accepted）
   → Architecture + Technology Decision
   → Human Confirmation（仅 REQUIRE_CONFIRMATION）
-  → Plan / Design（Design 按需）
-  → Task
-  → Code
-  → Test
-  → Verification
+  → Plan / Design（Design 按需）→ Tasks → Code → Test → Verification
 ```
-而非 `Prompt → Code → More Prompt → More Code`，也非 `Prompt → Tech Stack → Spec`。
 
-## 8. FINAL PRINCIPLE（res.md §120）
-技术/架构/Framework/SDD 都不是目的。目标：Correctness + Maintainability + Simplicity + Testability + Observability + Security + Evolvability。无明确需求选最简单成熟方案；复杂需求必须记录必要性。不要为架构而架构。
+而非 `Prompt → Code → More Prompt → More Code`，也非 `Prompt → Tech Stack → Spec`
+（`res.md §119`；顺序修正依据 `mod_gpt.md §1`）。
 
-## 9. UPDATE POLICY
-1. 更新技术栈（Python / FastAPI / Vue / PostgreSQL 版本变化）只改 `.sdd/knowledge/` 与 `.sdd/decision-trees/`，**本文件与 `AGENTS.md` 基本不动**；版本判断一律走 `.sdd/knowledge/versioning.md`（不写死版本号）。
-2. 改目录约定 → 先改 `.sdd/LAYOUT.md`；改引用写法 → 先改 `.sdd/CONVENTIONS.md`。
-3. 每次变更记入 `CHANGELOG.md`，并运行 `python3 scripts/validate_rules.py` 校验（0 错误 0 警告）。
-4. **禁止**在新文档中裸写 `§N`（见 `.sdd/CONVENTIONS.md` §1）。
+> 分工：**spec = WHAT/WHY，plan = HOW**。技术实现不进 Draft Spec。
+
+## 8. 与 `AGENTS.md` 的分工（避免第二份定义）
+
+| 文件 | 承载 | 不承载 |
+| --- | --- | --- |
+| `CLAUDE.md`（本文件） | **读取路由**：什么时候读什么、按什么顺序读 | 决策语义、默认选型、工程规范 |
+| `AGENTS.md` | **通用工程规则 + Definition of Done + 语义路由表** | 决策语义、默认选型、读取顺序 |
+
+两者都**只路由、不定义**。任一文件里出现枚举 / 公式 / 数值 / 清单形式的语义，即为 bug，须删除并改为指针。
+
+## 9. 更新政策
+
+1. 改**目录约定** → 先改 `.sdd/LAYOUT.md`；改**引用写法** → 先改 `.sdd/CONVENTIONS.md`；
+   改**归属**（哪份文件说了算）→ 先改 `.sdd/CANONICAL.md`。
+2. 更新技术栈版本 → 只改 `.sdd/knowledge/` 与 `.sdd/decision-trees/`，**本文件基本不动**；
+   版本判断一律走 `.sdd/knowledge/versioning.md`（不写死版本号）。
+3. 每次变更记入 `CHANGELOG.md`，并运行 `python3 scripts/validate_rules.py`（须 0 错误 0 警告）。
+4. **禁止**在新文档中裸写 `§N`（`.sdd/CONVENTIONS.md` §1）。
 5. **"改完"的定义见 `AGENTS.md` 的 DEFINITION OF DONE**（含"改了 A 就要同步 B"的对照表）。

@@ -212,8 +212,7 @@
         "title": "NESTJS",
         "refs": [
           ".sdd/decision-trees/backend.md",
-          ".sdd/knowledge/backend.md",
-          "AGENTS.md"
+          ".sdd/knowledge/backend.md"
         ],
         "verified_by": null
       },
@@ -893,7 +892,6 @@
         "refs": [
           ".sdd/decision-trees/backend.md",
           ".sdd/knowledge/backend.md",
-          "AGENTS.md",
           "CHANGELOG.md",
           "REVIEW-2026-09-19.md"
         ],
@@ -1182,7 +1180,6 @@
           ".sdd/decision-trees/decision-protocol.md",
           ".sdd/workflows/new-feature.md",
           ".sdd/workflows/new-project.md",
-          "CLAUDE.md",
           "REVIEW-2026-09-19.md"
         ],
         "verified_by": null
@@ -1203,7 +1200,6 @@
         "refs": [
           ".sdd/knowledge/backend.md",
           ".sdd/workflows/new-project.md",
-          "AGENTS.md",
           "CHANGELOG.md",
           "REVIEW-2026-09-19.md"
         ],
@@ -1302,7 +1298,7 @@
         "refs": [
           ".sdd/README.md",
           "AGENTS.md",
-          "CLAUDE.md",
+          "CHANGELOG.md",
           "README.md",
           "specs/001-project/technology-selection.md"
         ],
@@ -1811,8 +1807,7 @@
         "title": "Technology Selection Scoring",
         "refs": [
           ".sdd/decision-trees/decision-protocol.md",
-          ".sdd/templates/technology-selection.md",
-          "AGENTS.md"
+          ".sdd/templates/technology-selection.md"
         ],
         "verified_by": null
       },
@@ -2529,7 +2524,6 @@
         "title": "推荐的默认技术栈",
         "refs": [
           ".sdd/workflows/new-project.md",
-          "AGENTS.md",
           "CHANGELOG.md"
         ],
         "verified_by": null
@@ -2658,6 +2652,7 @@
           ".sdd/knowledge/ai-llm.md",
           ".sdd/knowledge/architecture.md",
           ".sdd/knowledge/security.md",
+          "AGENTS.md",
           "CLAUDE.md"
         ],
         "verified_by": null
@@ -2757,8 +2752,7 @@
         "state": "IMPLEMENTED",
         "title": "技术栈选择的默认优先级",
         "refs": [
-          ".sdd/workflows/new-project.md",
-          "AGENTS.md"
+          ".sdd/workflows/new-project.md"
         ],
         "verified_by": null
       },
@@ -2801,7 +2795,6 @@
         "state": "IMPLEMENTED",
         "title": "给 AI Agent 的总指令",
         "refs": [
-          "AGENTS.md",
           "CHANGELOG.md",
           "CLAUDE.md"
         ],
@@ -2835,7 +2828,6 @@
           ".sdd/CONVENTIONS.md",
           ".sdd/README.md",
           ".sdd/workflows/new-project.md",
-          "AGENTS.md",
           "CHANGELOG.md",
           "CLAUDE.md"
         ],
@@ -2848,9 +2840,7 @@
           ".sdd/README.md",
           ".sdd/decision-trees/decision-protocol.md",
           ".sdd/workflows/new-project.md",
-          "AGENTS.md",
-          "CHANGELOG.md",
-          "CLAUDE.md"
+          "CHANGELOG.md"
         ],
         "verified_by": null
       },
@@ -2860,7 +2850,6 @@
         "refs": [
           ".sdd/decision-trees/decision-protocol.md",
           "CHANGELOG.md",
-          "CLAUDE.md",
           "REVIEW-2026-09-19.md"
         ],
         "verified_by": null
@@ -2902,8 +2891,7 @@
           ".sdd/README.md",
           ".sdd/decision-trees/decision-protocol.md",
           ".sdd/workflows/new-project.md",
-          "CHANGELOG.md",
-          "CLAUDE.md"
+          "CHANGELOG.md"
         ],
         "verified_by": null
       },

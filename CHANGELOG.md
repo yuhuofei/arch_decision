@@ -6,6 +6,81 @@
 
 ---
 
+## [v1.5] — 2026-09-19
+
+**主题：Agent Entry 瘦身 —— 让 Canonical 硬规则 1 从"已声明"变成"已落实"**。
+
+### 问题：v1.4 声明了原则，但入口文件没遵守
+
+`v1.4` 新增的 `.sdd/CANONICAL.md` 硬规则 1 写明"**Agent 入口只引用，不重新定义**行为语义"，
+但当时的 `CLAUDE.md` §5 与 `AGENTS.md` 仍然各写了一份完整的决策语义：
+
+- 约束优先级 `P0A` / `P0B` / `P1`–`P3` 的**定义**
+- 复杂度计分的**口径与数值**（组件 +1、Kafka/ES +2、K8s +3、预算档 5/6/8/12/20+）
+- 决策状态 `AUTO` / `RECOMMEND` / `REQUIRE_CONFIRMATION` / `BLOCKED` 的**定义**
+- 评分**公式**（`Requirement Fit×40 + Maintainability×20 + …`）
+- **默认技术矩阵**（22 行 Default / Alternatives 表）
+- `REQUIRE_CONFIRMATION` 的**默认清单**（与 `decision-protocol.md` §6.4 逐字重复）
+
+即：同一份语义在 `CLAUDE.md`、`AGENTS.md`、`decision-protocol.md` 存在 **三份定义** —— 这正是 v1.3 的 rule drift 成因。
+
+### 处置：入口文件退化为"路由"，语义回归唯一权威
+
+| 语义 | 唯一权威（改动后） | 入口文件现在的写法 |
+| --- | --- | --- |
+| 约束优先级 / 硬软约束 / 默认值语义 | `decision-protocol.md` §2 / §3.1 / §3.4 | 路由表一行 |
+| 评分公式与 rubric | `decision-protocol.md` §4 / §4.1 | 路由表一行 |
+| 复杂度计分与预算 | `decision-protocol.md` §5 / §5.1 / §5.2 | 路由表一行 |
+| 决策状态与确认门槛 | `decision-protocol.md` §6 | 路由表一行 |
+| 默认选型（候选先验） | `.sdd/decision-trees/` 各领域文件 | 路由一行（**不再复制矩阵**） |
+| 流程步序 | `.sdd/workflows/new-project.md` | `CLAUDE.md` §2 只列"读什么"，步序指向权威 |
+| 提问策略 `MUST/SHOULD/CAN ASSUME` | `decision-protocol.md` §6 / §6.2 / §6.3 | `CLAUDE.md` §6 只给位置 |
+
+**两份入口文件的新定位**（已登记进 `.sdd/CANONICAL.md` §1）：
+
+- `CLAUDE.md` = **读取路由**：什么时候读什么、按什么顺序读（Step 0–8 + 按规模 / 按项目类型的追加读取表）。
+- `AGENTS.md` = **通用工程规则 + 语义路由表 + DEFINITION OF DONE**。
+
+**"要判断 X → 去读 Y"的路由表全局只有一份**，放在 `AGENTS.md` §4；`CLAUDE.md` §5 只指向它。
+初稿曾把这张表同时写在两个文件里 —— 那是**这轮修复本身制造的新重复**，已合并。
+`CLAUDE.md` 只保留"按顺序读哪些文件 / 追加读什么"（§2 / §3），与"去哪查语义"（`AGENTS.md` §4）职责分离。
+
+同时去掉两份入口文件之间的重复：`FINAL PRINCIPLE`（`res.md §120`）此前两边都有，现只留 `AGENTS.md`；
+读取顺序此前两边都有，现只留 `CLAUDE.md`。
+
+### 顺带修正：入口文件里"看起来只是摘要"的重复
+
+- `AGENTS.md` 的"最重要的规则"由 12 条改为 **6 条原则**。原第 4/5/6/7/8/9 条
+  （Modular Monolith 默认、PostgreSQL 默认、Redis 非默认、REST 默认、TS/Python/Go 语言倾向）
+  是**默认值的第二种写法**，与默认矩阵同源 —— 一并移出，指向 `.sdd/decision-trees/`。
+  保留的 6 条是真正的工程原则（不追流行 / 不预支复杂度 / 复用存量栈 / 记录理由 / 追溯链 / Spec 前置）。
+- `AGENTS.md` 的"禁止（不得静默决定）"清单与 `decision-protocol.md` §6.4 逐字重复 → 改为指针。
+- `.sdd/README.md` 的"使用方式"第 3 条曾复述确认门槛与 `AUTO`/`RECOMMEND` 语义 → 改为指针。
+
+### 修正：`CANONICAL.md` 曾登记两个不存在的检查项
+
+v1.4 的归属矩阵在"机器校验"列写了 `check_decision_status_semantics` 与 `check_agent_entry_no_redefine`，
+**这两个检查项在 `scripts/validate_rules.py` 里并不存在** —— 等于宣称了不存在的机器验证。
+现已改为显式登记在 `.sdd/CANONICAL.md` §4「尚未实现的机器校验」，
+并写明现状：**硬规则 1 目前只靠 `check_forbidden_semantics` 挡住旧句回流，挡不住"用新措辞再写一遍"，因此依赖 code review。**
+
+### 影响面（引用同步）
+
+- `CLAUDE.md` / `AGENTS.md`：重写。
+- `.sdd/CANONICAL.md`：归属矩阵新增 `Default matrix` 行，`Agent entry` 拆为两行，新增 §4。
+- `scripts/validate_rules.py`：`CANONICAL_TOPICS` 同步（新增 `Default matrix` 与两条 Agent entry）。**未新增任何检查项。**
+- `.sdd/README.md`：上层文件说明 + 使用方式第 3 条。
+- `.sdd/workflows/small-change.md`：入口由 `AGENTS.md` §0 改为 `CLAUDE.md` §3。
+- `.sdd/decision-trees/decision-protocol.md` §7：不再以 `CLAUDE.md` §2 为流程顺序的依据。
+
+### 未做（有意）
+
+1. **未扩展 validator**：按约定先瘦身、再决定检查判据 —— 在"还没定义清楚什么叫重复"时固化检查项容易误报。
+2. **未删除任何语义**：移出入口文件的内容全部已在权威文件中有落点（见上表），
+   因此 5 份来源的"未引用"计数在本版仍为 0（由 `gen_traceability.py` 核对）。
+
+---
+
 ## [v1.4] — 2026-09-19
 
 **主题：Rule Drift 治理 + 决策契约补全**。
@@ -124,12 +199,23 @@
 ---
 
 
-### 第三层：旧流程残留清理（文档一致性）
+### 第三层：文档一致性清理
 
 - **`new-project.md` 移除冲突的"第二套步骤"**：原"Agent 决策循环"小节标题写"已升级为 21 步"，
   正文却只列 15 步，与 `decision-protocol.md §7` 的权威 21 步直接冲突。现改为**只指向
   `decision-protocol.md §7` 作为唯一权威**，本文件仅描述该循环在 new-project workflow 中的
   入口、阶段边界与产物，不再复制步骤（避免双份维护漂移）。符合"规则归属唯一权威"（`CANONICAL.md`）。
+- **`decision.schema.json` 写清 `alternatives` / `rejected` 语义边界**：原描述「alternatives 保留理由、
+  rejected 是淘汰结论」含混，导致 `MySQL` 在 `specs/001-project/decision.json` 里**同时**出现在两处。
+  现明确：`alternatives` = 仍成立的**可行备选**；`rejected` = **淘汰结论**；**同一候选只应出现在二者之一**。
+  同步修正 001 示例（`MySQL` 仅保留于 `alternatives`）。`rejected.minItems=1` 的设计债另记于
+  `REVIEW-2026-09-19.md` 的「四审未做的事」，本轮**不改 Schema 结构**。
+- **ADR 不再被写成"固定产物"**（3 处）：`LAYOUT.md §1.2` 自 v1.3 起即定 `adr/` **按需**，但以下三处
+  仍把 ADR 与 `plan.md` / `decision.json` 并列为确认后的固定产物，与 LAYOUT 冲突：
+  `.sdd/workflows/new-project.md`（确认门槛示意图）、`README.md`（流程总览）、
+  `.sdd/decision-trees/decision-protocol.md`（§9 关键门槛——**与本文件 §2 已写的"ADR（按需）"自相矛盾**）。
+  现统一为「固化 `decision.json` + `plan.md`；**如存在重要 Architecture Decision 再创建 `adr/`（按需）**」，
+  并指向 `LAYOUT.md §1.2` 判据。避免 Agent 为满足流程而制造空 ADR。
 
 ## [v1.3] — 2026-09-19
 

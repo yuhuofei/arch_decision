@@ -3,7 +3,7 @@
 本目录是 Agent 在 SDD 模式下进行项目框架选择与技术选型的**可解释决策系统**。
 它不是"把 Python+FastAPI+PostgreSQL 当最佳实践硬塞给 Agent"，而是一套让 Agent 依据项目上下文选择技术、并把选择固化进 `decision.json` / `technology-selection.md` / `spec.md` 的规则库（定位与 `知识库 §1` 的「文档目标」一致）。
 
-当前规则库版本：**v1.4**（版本号唯一来源：`.sdd/VERSION`，由 `scripts/validate_rules.py` 核对与根 `README.md` / `CHANGELOG.md` 三处一致。）
+当前规则库版本：**v1.5**（版本号唯一来源：`.sdd/VERSION`，由 `scripts/validate_rules.py` 核对与根 `README.md` / `CHANGELOG.md` 三处一致。）
 
 ## 设计原则（res.md §120 FINAL PRINCIPLE / 知识库 §2,§2.1）
 技术、架构、Framework、SDD 都不是目的；目标是 Correctness / Maintainability / Simplicity / Testability / Observability / Security / Evolvability。
@@ -93,8 +93,8 @@
 
 ## 上层文件
 - `README.md`：仓库总览（人 + 非 Claude 的 Agent 入口）。
-- `CLAUDE.md`：Agent 总入口，只负责"什么时候读取什么"（含 Spec 前置流程）；**只引用规则，不重新定义**。
-- `AGENTS.md`：通用 Agent 工程规则摘要（读取顺序、默认矩阵、最重要的规则、**DEFINITION OF DONE**）。
+- `CLAUDE.md`：Agent **读取路由** —— 只回答"什么时候读什么"（Step 0–8）；**只路由，不定义语义**。
+- `AGENTS.md`：**通用工程规则 + 语义路由表 + DEFINITION OF DONE**；**不定义决策语义、不复制默认选型**。
 - `sources/v1.0/`：源文档归档，**只读，Agent 决策时不读取**。
 - `specs/`：项目实例目录（如 `specs/001-project/`，含 `decision.json` 与 `verification.md`）。
 
@@ -103,9 +103,9 @@
    "哪份文件说了算"见 `.sdd/CANONICAL.md`（引用的 `§` 必须带来源前缀：`res.md` / `Matrix` / `知识库` / `mod_gpt.md` / `modv2.md` / `<文件名>`）。
 2. 新项目：`CLAUDE.md` §2 → Discovery → **Draft Spec** → 读 decision-protocol + knowledge + decision-trees
    → 填 template 到 `specs/<id>-<name>/` → 写 `decision.json` → 写 `verification.md`。
-3. **人工确认门槛（已收窄）**：只有标 `REQUIRE_CONFIRMATION` 的决策（Microservices / K8s / DB migration /
-   Auth architecture 等，见 `decision-protocol` §6.4）需 `Architecture Proposal → Human Confirmation`；
-   其余（语言、框架、ORM、测试工具、缓存是否引入）属 `AUTO`/`RECOMMEND`，**自行决定并记录，不阻塞**。
+3. **决策语义不在入口文件里**：约束优先级、决策状态、评分、复杂度预算、确认门槛的唯一权威是
+   `.sdd/decision-trees/decision-protocol.md`；默认选型（候选先验）的唯一权威是 `.sdd/decision-trees/`。
+   入口文件（`CLAUDE.md` / `AGENTS.md`）只给指针（`.sdd/CANONICAL.md` 硬规则 1）。
 4. 存量项目改动：先跑 `.sdd/decision-trees/impact-analysis.md`，再进 new-feature / bugfix / refactor。
 5. 小改动：走 `.sdd/workflows/small-change.md`，不跑全流程；但**Behavioral Risk Check 失败即升级**。
 6. 更新技术栈：仅改 `knowledge/` 与 `decision-trees/`；`CLAUDE.md`/`AGENTS.md` 基本不动。

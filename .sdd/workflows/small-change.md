@@ -1,6 +1,6 @@
 # Workflow: Small Change（轻量改动）
 
-> 入口：`CLAUDE.md` §3 / `AGENTS.md` §0。
+> 入口：`CLAUDE.md` §3（按改动规模分流的追加读取表）。
 > 目的：**避免 Agent 对每个小改动都跑完整 SDD 流程**（流程成本 > 改动价值）。
 > 治理：`.sdd/decision-trees/decision-protocol.md`
 

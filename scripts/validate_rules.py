@@ -77,6 +77,7 @@ CANONICAL_TOPICS: list[tuple[str, str]] = [
     ("Workflow order", ".sdd/workflows/new-project.md"),
     ("Decision semantics", ".sdd/decision-trees/decision-protocol.md"),
     ("Complexity budget", ".sdd/decision-trees/decision-protocol.md"),
+    ("Default matrix", ".sdd/decision-trees/"),
     ("Artifact required/optional", ".sdd/LAYOUT.md"),
     ("Directory", ".sdd/LAYOUT.md"),
     ("Reference syntax", ".sdd/CONVENTIONS.md"),
@@ -87,7 +88,9 @@ CANONICAL_TOPICS: list[tuple[str, str]] = [
     ("Spec structure", ".sdd/templates/spec.md"),
     ("Verification", ".sdd/templates/verification.md"),
     ("Traceability", ".sdd/TRACEABILITY.md"),
-    ("Agent entry", "CLAUDE.md"),
+    ("Agent entry — read routing", "CLAUDE.md"),
+    ("Agent entry — engineering rules + DoD", "AGENTS.md"),
+    ("Semantic routing", "AGENTS.md"),
 ]
 
 # 决策状态旧语义的**禁止短语**（modv2.md §1：这些是 v1.3 已修掉、但会回流的写法）。

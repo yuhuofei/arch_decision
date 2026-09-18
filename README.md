@@ -13,7 +13,8 @@
 Discovery → Draft Spec（WHAT/WHY）→ 分类项目 → 提取硬约束（P0A/P0B）
         → 生成候选 → 消除违规候选 →（必要时）评分 → 选最简且充分的架构
         → 标注决策状态 → 人工确认（**仅** REQUIRE_CONFIRMATION）
-        → 固化 technology-selection.md + decision.json + ADR + plan.md
+        → 固化 technology-selection.md + decision.json + plan.md（ADR **按需**：
+          仅存在重要 Architecture Decision 时才建，见 `.sdd/LAYOUT.md` §1.2）
         → Final Spec（Accepted）→ 才允许写代码
 ```
 
@@ -61,7 +62,7 @@ sources/                        【只读】源文档归档（Agent 决策时【
 └── examples/                   5 个已决策示例
 
 specs/                          项目实例
-├── 001-project/                示例实例（含 plan.md、decision.json 与 adr/）
+├── 001-project/                示例实例（plan.md、decision.json；因存在重要架构决策故有 adr/）
 └── 002-demo-todo-cli/          演示实例（design/ADR 均按需，故不存在）
 
 scripts/                        校验与迁移脚本
@@ -105,4 +106,4 @@ python3 scripts/validate_rules.py     # 引用完整性 / 真 Schema 校验 / Co
 
 ## 版本
 
-见 `CHANGELOG.md`。当前规则库版本：**v1.4**（版本号唯一来源：`.sdd/VERSION`，由自检脚本核对三处一致）。
+见 `CHANGELOG.md`。当前规则库版本：**v1.5**（版本号唯一来源：`.sdd/VERSION`，由自检脚本核对三处一致）。
