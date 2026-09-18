@@ -1,90 +1,97 @@
 # Knowledge: Backend（后端语言与框架）
 
-> 来源：res.md §5-§15, §28, §54, §56, §57, §58, §59, §64, §88, §89
-> 决策树：`.sdd/decision-trees/backend.md`
+> 来源：res.md §5-§15,§28,§54,§56,§57,§58,§59,§64,§88,§89；Matrix §6-§7,§14；知识库 §5-§11,§25,§47,§48
+> 决策树：`.sdd/decision-trees/backend.md`　治理：`.sdd/decision-trees/decision-protocol.md`
 
-## 1. Backend Language Decision（§5）
+## 1. Backend Language Matrix（Matrix §6，正式条件）
 
-| 候选 | 默认决策原则 |
+### Python（Matrix §6.1）
+```
+IF AI OR ML OR Data Processing OR Automation OR CRUD/API
+   AND extreme_performance = false
+THEN language = Python
+```
+优先：AI / RAG / LLM / ETL / Automation / Admin API / Business API / Data Science。默认栈：Python 3.x + uv + FastAPI + Pydantic + SQLAlchemy + Alembic + pytest。
+
+### Go（Matrix §6.2）
+```
+IF concurrency = high OR network_service OR infrastructure OR latency_requirement = strict OR CPU_efficiency = important
+THEN language = Go
+```
+适合 Gateway/Proxy/Infra/Network/High-Concurrency API/Distributed。普通 CRUD：Go 可选，先评估 Python/TS。
+
+### TypeScript（Matrix §6.3）
+```
+IF fullstack_web OR frontend OR node_backend THEN language = TypeScript
+```
+适合 Web/BFF/Fullstack/Frontend-heavy。
+
+### Java / Kotlin（Matrix §6.4）
+```
+IF enterprise_java_ecosystem OR organization_standard = Java OR existing = Spring OR enterprise_integration = high
+THEN language = Java/Kotlin
+```
+
+### Rust（Matrix §6.5，仅候选）
+```
+IF memory_safety = critical AND performance = critical AND team_has_rust_expertise = true
+THEN Rust = candidate
+```
+否则不要为性能猜测引入 Rust。适合极致性能/系统工具/安全底层/WASM/网络基础设施；默认不用于普通 CRUD Web。
+
+## 2. Backend Framework Matrix（Matrix §7）
+
+### Python（默认 FastAPI）
+| Requirement | Decision |
 | --- | --- |
-| Python | AI / Data / LLM / RAG / 数据处理 |
-| Go | 高并发 / 基础设施 / 网络服务 |
-| TypeScript | 全栈 TypeScript |
-| Java / Kotlin | 企业 Java 生态 |
-| C# | 微软生态 |
+| General / Async / AI API | FastAPI |
+| CRUD-heavy admin | Django |
+| Existing Flask | Preserve Flask |
+| Very small service | Flask / FastAPI |
+| Django ecosystem required | Django |
 
-## 2. Python（§6）
+Django 选：Admin-heavy/CMS/Enterprise CRUD/ORM-heavy/server-rendered。新项目 FastAPI > Flask（非绝对）。
 
-**推荐**：AI / LLM / RAG / Data Processing / Automation / API / SaaS / Internal Tool / MVP / CRUD。
-**不优先**：极端低延迟 / 极端高并发 / CPU-heavy / 网络基础设施 → 考虑 Go/Java/Rust。
-**默认版本**：使用项目开始时的当前稳定 Python 3.x；不要固定旧版本。必须记录 Python Version + Reason。
+### Go（Matrix §7 关键修正）
+**Go 标准库 `net/http` 已能构建完整 HTTP 服务**，Agent 不应默认引入第三方 framework。
+| Requirement | Decision |
+| --- | --- |
+| Simple HTTP API / Standard-library-first / 极简 | `net/http` |
+| REST API | `net/http` / Gin |
+| Advanced middleware/routing | Gin |
+| Existing Gin | Preserve Gin |
 
-## 3. FastAPI（§7, DEFAULT Python API）
+默认规则：小服务→`net/http`，普通 API→Gin，特殊需求→评估 Echo/Chi。
 
-默认 `Python + FastAPI`。选：REST API / API-first / SaaS / AI backend / Async / Microservice / Mobile backend / BFF。
-不选：强依赖 Django Admin / 大量传统 server-rendered / 已有成熟 Django。
-默认 Stack：FastAPI + Pydantic + SQLAlchemy + Alembic + pytest + httpx。
+### TypeScript
+| Requirement | Decision |
+| --- | --- |
+| Fullstack Web | Next.js |
+| React frontend only | React + Vite |
+| Vue application | Vue + Vite |
+| Existing Next.js / Vue | Preserve |
 
-## 4. Django（§8）
+### Java / Kotlin
+默认 Spring Boot + Spring Web/Security/Data JPA + PostgreSQL + Redis/Kafka(按需) + JUnit + Testcontainers。
 
-选：Admin-heavy / CMS / Enterprise CRUD / ORM-heavy / Server-rendered / 已有 Django。
-不选：极简 API / AI microservice / 高度异步 / 极轻量 service。
-默认 Stack：Django + Django ORM + PostgreSQL + pytest-django + Redis(按需) + Celery(按需)。
+## 3. ORM（res.md §28 / 知识库 §25）
+- Python：SQLAlchemy（FastAPI/显式 SQL）；Django 项目用 Django ORM。
+- Go：simple SQL → `database/sql`；type-safe → `sqlc`；ORM required → GORM/Ent。Agent 不得因"ORM 方便"自动加 ORM。
+- TS：Prisma / Drizzle。Java：Spring Data JPA；复杂 SQL → jOOQ。
 
-## 5. Flask（§9）
+## 4. 后台任务 / Worker（res.md §37 / 知识库 §4.5）
+- Python：Celery / RQ / Arq + Redis/RabbitMQ（AI 批处理亦可用）。
+- Go：Asynq / 自建 Worker + Redis。
+- **BackgroundTasks ≠ 分布式可靠队列**；需 Retry/Persistence/分布式/Scheduling 用真正 task queue。
 
-选：已有 Flask 项目 / 极简 API / 高度定制 / 团队已有 Flask 能力。新项目默认 FastAPI > Flask（非绝对）。
+## 5. Package Management / Migration / Version（res.md §59,§64,§88,§89）
+见 deployment.md 与 backend 工具链。默认工具链（知识库 §47-§48）：
+- Python：uv + FastAPI + Pydantic + SQLAlchemy + Alembic + pytest + Ruff + mypy/pyright
+- Go：Go Modules + Gin/net/http + sqlc/GORM + golangci-lint + testing + Docker
 
-## 6. Go（§10）
+## 6. 用户显式指定（res.md §1.5）
+用户指定即 Hard Constraint，不得擅自改（decision-protocol §3）。
 
-选：高并发 / 网络服务 / Gateway / Proxy / Infrastructure / Cloud Native / 高性能 API / Microservice / CLI。
-不选：AI-heavy / Data Science / 快速 ML 原型 / Python 生态为核心依赖。
-默认 Stack：Go + Chi/Gin + PostgreSQL + Redis(按需) + OpenTelemetry + Docker。
-
-## 7. Go Framework（§11）
-
-- **Chi**：Lightweight API / 标准库优先 / 最小抽象（默认推荐）。
-- **Gin**：REST API / 快速开发 / 成熟生态。
-- **Echo**：REST API / Lightweight service。
-
-## 8. TypeScript Backend（§12, §13）
-
-选：Full-stack TS / Web-first / BFF / Realtime / SaaS / 团队偏好 TS。默认 **NestJS**。
-**NestJS** 选：Enterprise TS / Modular backend / Large team / DI / 结构化架构 / REST·GraphQL。不选：极简 API / 极轻量 serverless。
-默认 Stack：NestJS + TS + PostgreSQL + Prisma/TypeORM + Redis(按需) + Jest。
-
-## 9. Java / Kotlin（§14, §15）
-
-选：Enterprise / Banking / ERP / 大型组织 / 已有 JVM 生态 / 复杂事务处理。默认 **Java/Kotlin + Spring Boot**。
-**Spring Boot** 选：Enterprise backend / 复杂业务 / 大团队 / JVM 生态 / 长生命周期生产系统。不选：tiny service / MVP / 1 人原型 / 简单 API。
-默认 Stack：Spring Boot + Spring Web + Spring Security + Spring Data JPA + PostgreSQL + Redis/Kafka(按需) + JUnit + Testcontainers。
-
-## 10. ORM（§28）
-
-- Python：SQLAlchemy（FastAPI/复杂 domain/显式 SQL）；Django 项目用 Django ORM。
-- Go：sqlc（SQL-centric/性能/强类型）/ GORM（CRUD 快速）/ Ent（强 schema/大项目）。
-- TS：Prisma / Drizzle（按团队与复杂度）。
-- Java：Spring Data JPA；复杂 SQL 用 jOOQ。
-
-## 11. Package Management（§59）
-
-Python → uv（优先）/ Node → pnpm / Go → Go Modules / Java → Gradle 或 Maven（按 existing project）。
-
-## 12. DB Migration（§64）
-
-必须用 migration：Python → Alembic / Django → Django migrations / Java → Flyway·Liquibase / Node → Prisma·Drizzle migration。**禁止**直接手工改 production schema。
-
-## 13. Version Strategy（§88）
-
-语言用当前稳定版；框架用当前稳定版但避免刚发布的 major；库优先 stable/maintained/compatible，避免 abandoned/alpha/beta/deprecated。
-
-## 14. Version Pinning（§89）
-
-生产依赖必须锁定：uv.lock / pnpm-lock.yaml / go.mod+go.sum / gradle.lockfile。
-
-## 15. Agent 提问（通用）
-
-- Python：是否 AI/Data-heavy？是否 CPU-bound？是否对启动时间/内存敏感？
-- Go：是否真需要 Go runtime 优势？是否高并发？是否 network/infra service？是否有 Go 团队？
-- NestJS：是否需要模块化/DI？团队是否熟悉 TS？是否需要 GraphQL？
-- Spring Boot：是否 Enterprise？是否长生命周期生产系统？
+## 7. Repository Structure（知识库 §55-§56）
+- Python：`backend/app/{api,core,models,schemas,services,repositories}/main.py` + tests + migrations + pyproject.toml + Dockerfile
+- Go：`backend/cmd/server/` + `internal/{handler,service,repository,model,middleware}/` + migrations + go.mod + Dockerfile

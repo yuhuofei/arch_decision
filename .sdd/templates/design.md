@@ -8,22 +8,22 @@
 <!-- 模块 / 服务划分，组件职责与边界 -->
 
 ## Data Flow
-<!-- 请求从入口到落库的流转；含 async 分支（§74） -->
+<!-- 请求从入口到落库的流转；含 async 分支（res.md §74） -->
 
 ## API
-<!-- 端点、Request/Response schema（OpenAPI, §33）、错误格式（§70）、分页（§71） -->
+<!-- 端点、Request/Response schema（OpenAPI, res.md §33）、错误格式（res.md §70）、分页（res.md §71） -->
 
 ## Database
-<!-- 表 / 集合设计，第三范式优先（§66），事务边界（§67），ID 策略（§68） -->
+<!-- 表 / 集合设计，第三范式优先（res.md §66），事务边界（res.md §67），ID 策略（res.md §68） -->
 
 ## Authentication
-<!-- Cookie Session / JWT / OIDC（§41-§44） -->
+<!-- Cookie Session / JWT / OIDC（res.md §41-§44） -->
 
 ## Error Handling
-<!-- 统一错误格式（§70）；业务错误不暴露 DB exception -->
+<!-- 统一错误格式（res.md §70）；业务错误不暴露 DB exception -->
 
 ## Async Processing
-<!-- 仅在明确需求时（§74）；HTTP→Job→Queue→Worker→DB -->
+<!-- 仅在明确需求时（res.md §74）；HTTP→Job→Queue→Worker→DB -->
 
 ## Failure Handling
-<!-- 重试 / 幂等 / 降级 / Redis failure 行为（§73） -->
+<!-- 重试 / 幂等 / 降级 / Redis failure 行为（res.md §73） -->

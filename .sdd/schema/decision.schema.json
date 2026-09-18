@@ -1,0 +1,203 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://arch-decision/.sdd/schema/decision.schema.json",
+  "title": "Architecture Decision Output",
+  "description": "technology-selection.md 中 Decision Output Schema（YAML 代码块）的机器可校验形式。对应 .sdd/templates/technology-selection.md 与 Matrix §40。",
+  "type": "object",
+  "required": ["architecture_decision"],
+  "additionalProperties": false,
+  "properties": {
+    "architecture_decision": {
+      "type": "object",
+      "required": [
+        "project",
+        "architecture",
+        "backend",
+        "database",
+        "rejected",
+        "confidence"
+      ],
+      "properties": {
+        "project": {
+          "type": "object",
+          "required": ["type", "scale"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": "Project Type，见 knowledge/architecture.md §1"
+            },
+            "scale": { "type": "string", "examples": ["Small", "Small/Medium", "Medium", "Large"] },
+            "team_size": { "type": "integer", "minimum": 1 },
+            "deployment": { "type": "string" }
+          }
+        },
+        "architecture": {
+          "type": "object",
+          "required": ["style", "reason"],
+          "properties": {
+            "style": { "type": "string", "enum": ["Monolith", "Modular Monolith", "Microservices"] },
+            "reason": { "type": "string", "minLength": 4 }
+          }
+        },
+        "backend": {
+          "type": "object",
+          "required": ["language"],
+          "properties": {
+            "language": { "type": "string" },
+            "framework": { "type": "string" },
+            "reason": { "type": "string", "minLength": 4 }
+          }
+        },
+        "frontend": {
+          "type": "object",
+          "properties": {
+            "language": { "type": "string" },
+            "framework": { "type": "string" },
+            "reason": { "type": "string" }
+          }
+        },
+        "database": {
+          "type": "object",
+          "required": ["primary"],
+          "properties": {
+            "primary": { "type": "string" },
+            "reason": { "type": "string", "minLength": 4 }
+          }
+        },
+        "cache": {
+          "type": "object",
+          "required": ["enabled"],
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "technology": { "type": ["string", "null"] },
+            "purpose": { "type": ["string", "null"] }
+          }
+        },
+        "messaging": {
+          "type": "object",
+          "required": ["enabled"],
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "technology": { "type": ["string", "null"] },
+            "purpose": { "type": ["string", "null"] }
+          }
+        },
+        "search": {
+          "type": "object",
+          "required": ["enabled"],
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "technology": { "type": ["string", "null"] }
+          }
+        },
+        "vector": {
+          "type": "object",
+          "required": ["enabled"],
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "technology": { "type": ["string", "null"] }
+          }
+        },
+        "object_storage": {
+          "type": "object",
+          "required": ["enabled"],
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "technology": { "type": ["string", "null"] }
+          }
+        },
+        "authentication": {
+          "type": "object",
+          "required": ["strategy"],
+          "properties": {
+            "strategy": { "type": "string", "enum": ["None", "Session", "JWT", "OIDC", "OAuth"] }
+          }
+        },
+        "authorization": {
+          "type": "object",
+          "required": ["strategy"],
+          "properties": {
+            "strategy": { "type": "string", "examples": ["RBAC", "RBAC + resource-level", "ABAC"] }
+          }
+        },
+        "observability": {
+          "type": "object",
+          "properties": {
+            "logging": { "type": "boolean" },
+            "metrics": { "type": "boolean" },
+            "tracing": { "type": "boolean" }
+          }
+        },
+        "testing": {
+          "type": "object",
+          "properties": {
+            "unit": { "enum": ["Low", "Medium", "High"] },
+            "integration": { "enum": ["Low", "Medium", "High"] },
+            "e2e": { "enum": ["Low", "Medium", "High"] }
+          }
+        },
+        "deployment": {
+          "type": "object",
+          "properties": { "strategy": { "type": "string" } }
+        },
+        "decision_status": {
+          "description": "每项决策的状态标识（decision-protocol §6）",
+          "type": "object",
+          "additionalProperties": {
+            "enum": ["AUTO", "RECOMMEND", "REQUIRE_CONFIRMATION", "BLOCKED"]
+          }
+        },
+        "complexity": {
+          "description": "架构复杂度预算（decision-protocol §5）",
+          "type": "object",
+          "required": ["score", "budget"],
+          "properties": {
+            "score": { "type": "integer", "minimum": 0 },
+            "budget": { "type": "integer", "minimum": 0 },
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["component", "points"],
+                "properties": {
+                  "component": { "type": "string" },
+                  "points": { "type": "integer", "minimum": 0 }
+                }
+              }
+            }
+          }
+        },
+        "cost": {
+          "description": "Cost 复核（本仓补充，见 decision-protocol §4.1）",
+          "type": "object",
+          "properties": {
+            "recurring": { "type": "string", "description": "持续成本的计费口径，须可量化" },
+            "cap": { "type": "string", "description": "成本上限" },
+            "within_budget": { "type": "boolean" }
+          }
+        },
+        "rejected": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["option", "reason"],
+            "properties": {
+              "option": { "type": "string" },
+              "reason": { "type": "string", "minLength": 4 }
+            }
+          }
+        },
+        "risks": { "type": "array", "items": { "type": "string" } },
+        "assumptions": { "type": "array", "items": { "type": "string" } },
+        "confidence": {
+          "type": "object",
+          "required": ["overall"],
+          "properties": {
+            "overall": { "type": "integer", "minimum": 0, "maximum": 5 }
+          }
+        }
+      }
+    }
+  }
+}

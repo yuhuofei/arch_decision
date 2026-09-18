@@ -1,61 +1,67 @@
 # Decision Tree: Architecture（架构选型）
 
-> 配套知识：`.sdd/knowledge/architecture.md`
+> 配套知识：`.sdd/knowledge/architecture.md`　治理：`.sdd/decision-trees/decision-protocol.md`
 
-## 起点：选 Modular Monolith 还是 Microservices？
-
+## Step 0：项目类型（Matrix §4）
 ```
-是否需要"独立部署"某个模块？
-├─ 否 ─┐
-│      ├── 是否有不同团队负责不同模块？
-│      │     ├─ 否 ─┐
-│      │     │      ├── 是否存在不同语言/runtime 需求？
-│      │     │      │     ├─ 否 ─┐
-│      │     │      │     │      ├── 是否需要独立扩容？
-│      │     │      │     │      │     ├─ 否 ─┐
-│      │     │      │     │      │     │      ├── 是否有强故障隔离需求？
-│      │     │      │     │      │     │      │     ├─ 否 → ✅ Modular Monolith（默认）
-│      │     │      │     │      │     │      │     └─ 是 → ⚠️ 评估 Microservices
-│      │     │      │     │      │     │      └─ ...
-│      │     │      │     │      └─ 是 → ⚠️ 评估 Microservices
-│      │     │      │     └─ 是 → ⚠️ 评估 Microservices
-│      │     └─ 是 → ⚠️ 评估 Microservices
-│      └─ ...
+API+CRUD+Web UI        → SaaS / Business
+AI/LLM/RAG             → AI Application
+数据处理/ETL           → Data Application
+CLI/SDK/Library        → CLI / Library
+高吞吐网络             → High-Concurrency Backend
+内部管理系统           → Internal Tool
+多服务业务平台         → Distributed System
+多类型命中：Primary=业务价值，Secondary=技术特征
 ```
 
-## 判定规则
+## Step 1：规模（`knowledge/architecture.md` §1 / `res.md` §3）
+```
+user_count < 100k AND team_size <= 10 → Small/Medium
+否则 Large
+```
 
-### ✅ 默认选 Modular Monolith（§4.1）
-满足以下任一即默认：
-- MVP / SaaS / CRUD / Admin / Enterprise App / 中小型系统
-- 业务边界尚未稳定
-- 小团队（1-3 人）
-- 单一业务域
+## Step 2：Monolith vs Modular Monolith vs Microservices（Matrix §5）
+```
+IF user_count < 100000 AND team_size <= 10
+   AND independent_scaling = false AND deployment_complexity low
+→ Monolith
 
-### ⚠️ 仅当满足强条件才选 Microservices（§4.2）
-至少满足一个：
-- 独立部署
-- 独立扩缩容
-- 独立 team ownership
-- 故障隔离
-- 明确 bounded context
-- 极高吞吐
-- 不同技术栈
+IF application_complexity >= medium AND service_independence = low AND team_size <= 20
+→ Modular Monolith        # 新企业应用默认 ✅ AUTO
 
-### ❌ 绝对不要优先选 Microservices
-- MVP / 1-3 人团队 / CRUD / 业务边界不明确 / 无独立部署需求
+IF (independent_scaling OR independent_deployment OR team_ownership
+    OR technology_boundary OR failure_isolation OR workload differs)
+   AND microservices_benefit > operational_complexity
+→ Microservices           # ⚠️ REQUIRE_CONFIRMATION
+ELSE → Modular Monolith
+```
 
-## 选中后必答（Microservices 场景）
+**Microservices 检查项**（知识库 §65）：服务边界/团队边界/独立部署/独立扩缩/故障隔离/不同技术栈/单体已成瓶颈——多数为 No → Modular Monolith。
 
-1. 为什么不能 Modular Monolith？
-2. 哪些服务必须独立部署 / 扩容？
-3. 分布式事务如何处理？
-4. observability / service discovery / retry / idempotency 如何处理？
+## Step 3：复杂度预算（Matrix §32）
+按 `decision-protocol.md` **§5.1 计分表**计算 `complexity_score`：
+```
+计入：主数据库 +1 / 缓存 +1 / MQ +1 / 对象存储 +1 / 独立调度器 +1
+      Kafka +2 / ES·OpenSearch +2 / 专用向量库 +2 / K8s +3 / Microservices +3
+不计：语言 / 框架 / ORM / Docker / CI-CD / gRPC / 部署平台
+pgvector 作为 PG 扩展 → 不额外计分（独立向量库才 +2）
+```
+```
+MVP 5 / Internal 6 / Small SaaS 8 / Enterprise SaaS 12 / Distributed 20+
+IF score > budget → 重新评估，降级组件
+```
 
-## 前后端是否分离（§21）
+## Step 4：进阶模式（默认关闭）
+Event-Driven / CQRS / Event Sourcing / DDD — 仅当满足知识库 §66-§69 明确条件。否则不引入。
 
-- 分离：Web + Mobile / API consumers > 1 / 前端复杂度 medium+
-- 不分离：小型内部工具 / 简单 CRUD / 简单 CMS / MVP / server-rendered
+## Step 5：多租户（Matrix §22）
+```
+users belong to orgs AND isolation required → multi_tenant
+默认 Shared DB + tenant_id；强隔离→schema；合规→DB；极端→infra
+```
+
+## Step 6：前后端分离（Matrix §9）
+SaaS/多终端/Mobile+Web/多 client/大型前端 → 分离；简单 CRUD/SEO/MVP/内部工具 → 可合并（Next.js Full Stack）。
 
 ## 输出
-将结论写入 `specs/<id>/technology-selection.md` 的 Architecture 段，复杂必要性用 ADR 记录（`.sdd/templates/adr.md`）。
+写入 `technology-selection.md` 的 Architecture 段；Microservices / K8s / Multi-region 标 `REQUIRE_CONFIRMATION`（decision-protocol §6）。复杂必要性用 ADR 记录。

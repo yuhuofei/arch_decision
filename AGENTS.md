@@ -1,75 +1,81 @@
 # AGENTS.md — General Agent Engineering Rules
 
 > 通用 Agent 软件工程与 Spec-Driven Development 规则。详细知识库见 `.sdd/`。
-> 来源：res.md（AGENT PROJECT ENGINEERING & SPEC-DRIVEN DEVELOPMENT RULES v1.0）
+> 来源：`sources/v1.0/res.md`（120 条）+ `Matrix` + `知识库`。
+> 引用约定见 `.sdd/CONVENTIONS.md`；目录约定见 `.sdd/LAYOUT.md`。
 
-## CORE MISSION（§0）
+## 0. READ ORDER（读什么、什么顺序）
 
-1. 正确理解需求
-2. 识别项目类型和规模
-3. 做出合理的架构决策
-4. 做出可解释的技术选型
-5. 生成结构化 Specification
-6. 将 Spec 转换为 Design / Plan / Tasks
-7. 按 Tasks 实现代码
-8. 验证实现是否符合 Spec
-9. 避免无必要的技术复杂度
-10. 保持代码、架构、Spec 三者一致
+**任何新项目 / 重大特性，实现前必须按序读取：**
 
-默认流程：User Requirement → Project Discovery → Architecture Decision → Technology Selection → Specification → Design → Implementation Plan → Tasks → Implementation → Verification → Convergence。
+1. `.sdd/LAYOUT.md`（目录约定）+ `.sdd/CONVENTIONS.md`（引用约定）
+2. `.sdd/decision-trees/decision-protocol.md`（**约束模型 / 优先级 / 评分 / 复杂度预算 / 决策状态 / 确认门槛 / 决策循环 / 30 条规则**）
+3. `.sdd/workflows/new-project.md`
+4. `.sdd/knowledge/architecture.md` + `.sdd/decision-trees/architecture.md`
+5. `.sdd/decision-trees/backend.md` / `frontend.md` / `database.md` / `infrastructure.md`
+6. **按项目类型追加**：
+   - AI / LLM / RAG / Agent → `.sdd/knowledge/ai-llm.md` + `.sdd/decision-trees/ai-llm.md`
+   - Data / ETL / Pipeline → `.sdd/knowledge/data.md`
+   - 涉及缓存或全文检索 → `.sdd/knowledge/caching.md`
+7. 用 `.sdd/templates/` 生成 `specs/<id>-<name>/` 下的 `project-discovery.md` → `technology-selection.md` → `spec.md` → `plan.md` → `design.md` → `tasks.md`，并在 `adr/` 记录决策
+8. **未解决架构决策前，不得实现代码。**
 
-## GENERAL PRINCIPLES
+其他入口：
+| 场景 | 流程 |
+| --- | --- |
+| 新特性 | `.sdd/workflows/new-feature.md` |
+| 小改动（见阈值） | `.sdd/workflows/small-change.md` |
+| 缺陷修复 | `.sdd/workflows/bugfix.md` |
+| 重构 | `.sdd/workflows/refactor.md` |
+| 存量项目 | 先按 `res.md §102` 生成 `project-discovery.md`，**不要立即写代码** |
 
-### Simple Before Complex（§1.1）
-优先级：Modular Monolith > Monolith > Microservices。
-复杂组件（K8s / Kafka / ES / Redis / GraphQL / gRPC / Event Sourcing / CQRS / Service Mesh / Distributed Tx）仅在存在**明确需求**时引入。
-禁止因"以后可能需要 / 方便扩展 / 大厂架构 / 性能更好 / 比较现代 / 业界流行"而增加组件。
+## CORE MISSION（res.md §0）
+理解需求 → 识别类型/规模 → 架构决策 → 可解释技术选型 → Spec → Design → Plan → Tasks → 实现 → 验证 → 收敛。保持代码/架构/Spec 一致。
 
-### Prefer Boring Technology（§1.2）
-优先：成熟、稳定、社区活跃、文档完整、招聘易、Agent 易理解、运维成本低、迁移路径清晰。
-而非单纯：最新、最热门、Benchmark 最高、Star 最高。
+## 决策治理（decision-protocol.md，核心）
+- **约束优先级**：用户明确/现有系统/安全合规/部署平台 = P0 Hard Constraint，不可自覆盖；流行度仅 P3 Weak Preference。
+- **复杂度预算**：只有"新增需独立部署/运维/故障域的基础设施组件"才计分（组件 +1；Kafka/ES/专用向量库 +2；K8s/Microservices +3；**Docker/框架/ORM/gRPC 不计分**；pgvector 作为 PG 扩展不额外计分）。计分表见 `decision-protocol.md` §5.1；预算：MVP 5 / Internal 6 / Small SaaS 8 / Enterprise SaaS 12 / Distributed 20+。超限重评。
+- **决策状态**：每项 `AUTO`/`RECOMMEND`/`REQUIRE_CONFIRMATION`/`BLOCKED`；重大架构决定必须人确认（清单见 `decision-protocol.md` §6）。
+- **评分（Matrix §36 原始公式，权重不变）**：`Requirement Fit×40 + Maintainability×20 + Team Fit×15 + Operational Simplicity×15 + Ecosystem×10`；每项 0–5；**Hard Constraint 失败 = 直接淘汰，不是降分**。
+- **Cost 复核（本仓补充，源文档未覆盖）**：若方案引入的持续成本（托管费 / GPU / 存储 / 出网流量）超出项目预算档，视为 Soft 否决——必须在 ADR 中写明成本上限与计费方式，或降级方案；**不得静默选择更贵的方案**。个人 / 小预算项目可将 Cost 升为 P1 Strong Constraint。
+- **冲突仲裁顺序**：`decision-protocol` > `decision-trees` > `knowledge` > 默认值（见 `decision-protocol.md` §10）。
 
-### Minimize Technology Diversity（§1.3）
-普通项目默认：1 后端语言 + 1 后端框架 + 1 主数据库 + 0/1 缓存 + 0/1 消息队列 + 1 前端框架 + 1 API 风格 + 1 部署策略。
-禁止无理由并存：PG+MySQL / Redis+Memcached / Kafka+RabbitMQ / REST+GraphQL+gRPC / Vue+React。
-
-### Existing Project Takes Priority（§1.4）
-Brownfield：已有语言/框架/数据库/部署/认证/CI-CD 优先复用，不主动为"升级"重写。
-
-### Explicit User Decisions Highest Priority（§1.5）
-用户明确指定即最高优先级，不得擅自改；可记录风险、必要时请求确认。
-
-## PROJECT DISCOVERY（§2）
-生成 spec 前必须回答：Business / Users（标记 UNKNOWN 不编造）/ Traffic（LOW/MEDIUM/HIGH）/ Data / Non-functional Requirements。
-
-## SCALE（§3）
-- Small：1-3 人 / <10k 用户 / <100 RPS / <10GB → Modular Monolith + PostgreSQL + Docker（Redis 可选）。
-- Medium：3-10 人 / 10k-1M / 100-2000 RPS / 10GB-1TB → Modular Monolith + PG + Redis(按需) + 对象存储 + 后台 Worker。
-- Large：>10 人 / >1M / >2000 RPS / >1TB / 多域 → 考虑服务拆分、读副本、分布式缓存、MQ、搜索集群、K8s，但逐项证明必要性。
-
-## ARCHITECTURE（§4）
-默认 Modular Monolith（§4.1）。Microservices 非默认（§4.2），仅在满足强条件（独立部署/扩缩容/团队 ownership/故障隔离/bounded context/极高吞吐/不同技术栈）时选用。
-
-## DEFAULT TECHNOLOGY MATRIX（§110）
+## 默认技术矩阵（res.md §110 / 知识库 §59,§82）
 | Category | Default | Alternatives |
 | --- | --- | --- |
 | Architecture | Modular Monolith | Microservices |
-| Backend | Python | Go / TS / Java |
+| Backend | Python（AI/Data/CRUD/API）| Go（高并发/Infra）/ TS / Java |
 | Python API | FastAPI | Django / Flask |
-| DB | PostgreSQL | MySQL / MongoDB |
+| Go API | net/http（小服务）/ Gin | Echo |
+| Frontend | Vue 3 + TS + Vite | React / Next.js |
+| DB | PostgreSQL | MySQL / SQLite / MongoDB |
 | Cache | None | Redis |
-| Queue | None | RabbitMQ |
-| Search | PostgreSQL FTS | OpenSearch / Elasticsearch |
-| API | REST | GraphQL / gRPC |
-| Auth | OIDC / Session | JWT |
-| Container | Docker | — |
+| Vector | pgvector | Qdrant/Milvus |
+| API | REST + OpenAPI | GraphQL / gRPC |
+| Auth | Session / OIDC | JWT |
 | CI/CD | GitHub Actions | GitLab CI |
 | Observability | OpenTelemetry | Vendor SDK |
+| LLM | 单供应商 direct SDK | 多供应商 → Provider Abstraction |
+| 数据编排 | 无依赖 → cron | 有 DAG/回填 → Airflow/Dagster/Prefect |
 
-## SPEC-DRIVEN（§91-100）
-- Spec 是 Source of Truth，不是 README 附属。
-- 实现前必须读：Project Rules / Technology Selection / Relevant Spec / Design / Tasks（§100）。
-- 发现 Spec 错误：更新 Spec → Design → Tasks → 继续实现，不直接绕过（§101）。
+## 最重要的规则（知识库 §85，节选）
+1. 不因技术流行而选技术。
+2. 不为未来假设需求增加复杂度。
+3. 存量项目优先保持已有技术栈。
+4. 新项目优先 Modular Monolith。
+5. PostgreSQL 是新关系型项目默认。
+6. Redis 非默认数据库。
+7. REST 是默认 API 风格。
+8. TypeScript 是新 Web 前端默认语言。
+9. Python 优先 AI/Data/CRUD/API；Go 优先高并发/Infra/Network。
+10. 技术选型必须记录理由。
+11. 架构决策追溯到 Requirement；Requirement 追溯到 Test；Code 追溯到 Spec。
 
-## FINAL PRINCIPLE（§120）
-技术/架构/Framework/SDD 都不是目的。目标：Correctness + Maintainability + Simplicity + Testability + Observability + Security + Evolvability。无明确需求选最简单成熟方案；复杂需求必须记录必要性。不要为架构而架构。
+## 禁止（不得静默决定）
+Microservices / Kubernetes / Multi-region / Database migration / Authentication architecture /
+Authorization model / Payment / Data residency / Compliance / 云商 / Event-driven / CQRS /
+Event Sourcing / Distributed transaction / Public API contract / Breaking API changes / 重大技术迁移
+—— 以上一律 `REQUIRE_CONFIRMATION`（`decision-protocol.md` §6）。
+
+## FINAL PRINCIPLE（res.md §120）
+技术/架构/Framework/SDD 都不是目的。目标：Correctness + Maintainability + Simplicity + Testability + Observability + Security + Evolvability。无明确需求选最简单成熟方案；复杂需求记录必要性。不要为架构而架构。

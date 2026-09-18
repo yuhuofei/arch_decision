@@ -21,5 +21,5 @@
 
 ## 注意
 - 不必生成完整 spec.md / design.md，但 Root Cause 与 Fix Design 必须记录。
-- 若修复暴露 Spec/设计错误，按 §101 回流更新。
-- 涉及 Money/Inventory/Permission/关键状态（§67）须保证事务一致性。
+- 若修复暴露 Spec/设计错误，按 res.md §101 回流更新。
+- 涉及 Money/Inventory/Permission/关键状态（res.md §67）须保证事务一致性。

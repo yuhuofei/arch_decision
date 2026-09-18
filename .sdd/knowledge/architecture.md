@@ -1,88 +1,89 @@
 # Knowledge: Architecture（架构）
 
-> 来源：res.md §1.1, §3, §4, §21, §77
-> 决策树：`.sdd/decision-trees/architecture.md`
+> 来源：res.md §1.1,§3,§4,§21,§77；Matrix §3-§5,§22,§32,§65-§69；知识库 §3,§65-§70
+> 决策树：`.sdd/decision-trees/architecture.md`　治理：`.sdd/decision-trees/decision-protocol.md`
 
-## 1. Simple Before Complex（§1.1）
+## 0. 决策治理（先看）
+- 约束优先级 P0–P3、Hard/Soft Constraint、复杂度预算、决策状态见 `decision-protocol.md`。
+- **默认优先 Modular Monolith**（知识库 Rule 4）。
 
-默认优先级：
+## 1. 项目类型矩阵（Matrix §4 / 知识库 §4）
+| 条件 | Project Type |
+| --- | --- |
+| API + CRUD + Web UI | SaaS / Business Application |
+| AI / LLM / RAG | AI Application |
+| 数据处理 / ETL | Data Application |
+| CLI / SDK / Library | CLI / Library |
+| 高吞吐网络服务 | High-Concurrency Backend |
+| 内部管理系统 | Internal Tool |
+| Mobile / Realtime / IoT / Infra / Automation / 多服务 | 对应类型 |
 
+多类型命中：`Primary = 主要业务价值`，`Secondary = 技术特征`（如 AI SaaS：Primary=SaaS，Secondary=AI/RAG）。
+
+**类型 → 知识文件落点**：
+| Project Type | 必读知识文件 |
+| --- | --- |
+| AI Application（AI/LLM/RAG/Agent） | `knowledge/ai-llm.md` + `decision-trees/ai-llm.md` |
+| Data Application（ETL/Data Pipeline/Analytics） | `knowledge/data.md` |
+| 需要缓存或搜索 | `knowledge/caching.md` |
+| 其余类型 | `knowledge/{backend,frontend,database,api,...}.md` 对应部分 |
+
+## 2. Architecture Decision Matrix（Matrix §5，正式条件）
+
+### 2.1 Monolith（默认）
 ```
-Modular Monolith  >  Monolith  >  Microservices
+IF user_count < 100000 AND team_size <= 10
+   AND independent_scaling = false AND deployment_complexity must_be_low
+THEN architecture = Monolith
 ```
+适用：MVP / 内部系统 / 普通 CRUD / 早期 SaaS / 管理后台 / 简单 API。
 
-仅在存在**明确需求**时引入复杂组件：
-
-- Microservices、Kubernetes、Kafka、Elasticsearch、Redis、GraphQL、gRPC、Event Sourcing、CQRS、Service Mesh、Distributed Transactions。
-
-**禁止**因以下理由增加技术组件：
-
-- "以后可能需要" / "方便扩展" / "这是大厂架构" / "性能更好" / "比较现代" / "业界流行"。
-
-## 2. Project Scale Classification（§3）
-
-| 规模 | 典型特征 | 默认架构 |
-| --- | --- | --- |
-| Small | 1-3 人 / <10k 用户 / <100 RPS / <10GB 主库 / 单一业务域 | Modular Monolith + PostgreSQL + Docker（Redis 可选） |
-| Medium | 3-10 人 / 10k-1M 用户 / 100-2000 RPS / 10GB-1TB | Modular Monolith + PG + Redis(按需) + 对象存储 + 后台 Worker |
-| Large | >10 人 / >1M 用户 / >2000 RPS / >1TB / 多业务域 | 考虑服务拆分、读副本、分布式缓存、MQ、搜索集群、K8s（逐项证明必要性） |
-
-## 3. Modular Monolith（§4.1, DEFAULT）
-
-新项目默认。推荐结构：
-
+### 2.2 Modular Monolith（新企业应用默认）
 ```
-src/
-├── modules/
-│   ├── users/
-│   ├── orders/
-│   ├── payments/
-│   └── notifications/
-├── shared/
-├── infrastructure/
-└── main/
+IF application_complexity >= medium AND service_independence = low AND team_size <= 20
+THEN architecture = Modular Monolith
 ```
+部署：1 application + 1 database + multiple modules。模块示例：Auth/Users/Billing/Orders/Notifications/Reporting。
+结构见 `backend.md` 的 Modular Monolith 推荐布局。
 
-每个 Module：
-
+### 2.3 Microservices（非默认）
 ```
-module/
-├── domain/
-├── application/
-├── infrastructure/
-├── api/
-└── tests/
+IF (independent_scaling OR independent_deployment OR team_ownership_boundary
+    OR technology_boundary OR failure_isolation OR workload_profile differs)
+   AND microservices_benefit > operational_complexity
+THEN Microservices
+ELSE → Modular Monolith（REJECT）
 ```
+**不得**因"未来可能扩展"直接选 Microservices（知识库 Rule 2）。检查项：服务边界/团队边界/独立部署/独立扩缩/故障隔离/不同技术栈/单体已成实际瓶颈——多数为 No 则 Modular Monolith（知识库 §65）。
 
-**什么时候选**：MVP / SaaS / CRUD / Admin / Enterprise App / 中小型系统 / 业务边界尚未稳定 / 小团队。
-**什么时候不要选**：存在明确独立扩容、独立部署、独立团队、强故障隔离、极高吞吐、不同运行时需求。
+## 3. 复杂度预算（Matrix §32）
+**计分口径见 `decision-protocol.md` §5.1（唯一权威）**：只有"新增需独立部署/运维/故障域的基础设施组件"才 +1（Kafka/ES/专用向量库 +2；K8s/Microservices +3）。
+**不计分**：语言、框架、ORM、Docker/Docker Compose、CI/CD、gRPC、部署平台。
+**pgvector 作为 PG 扩展不额外计分**；独立向量库才 +2。
+预算：MVP 5 / Internal 6 / Small SaaS 8 / Enterprise SaaS 12 / Distributed 20+。超限必须重评。
 
-**Agent 提问**：是否有必须独立部署的模块？不同团队负责不同模块？不同语言/runtime？是否需要独立扩容？
+## 4. 进阶架构模式（知识库 §66-§69，默认关闭）
+- **Event-Driven**：仅业务天然存在 Domain Event 时（订单→库存→支付→物流→通知）；否则不为"先进"引入 Event Bus。
+- **CQRS**：仅读写模型差异巨大 / 复杂查询 / 高读写不对称 / 事件驱动 / 审计需求。
+- **Event Sourcing**：仅需完整不可变历史 + 状态可重建 + 审计。
+- **DDD**：建模方法而非默认架构；仅复杂业务/领域模型/大量业务规则。简单 CRUD 不需要 Aggregate/Domain Event 等。
+- 默认不要使用（知识库 §83）：Kubernetes / Kafka / ES / Service Mesh / CQRS / Event Sourcing / Microservices / GraphQL / gRPC / 专用 Vector DB / 多数据库 / 多缓存。
 
-## 4. Microservices（§4.2）
+## 5. 多租户（Matrix §22）
+`users belong to organizations AND data isolation required → multi_tenant = true`。
+| 需求 | 策略 |
+| --- | --- |
+| Small/Medium SaaS | Shared DB + tenant_id（默认） |
+| 强隔离 | Separate schema |
+| 合规隔离 | Separate database |
+| 极端隔离 | Separate infrastructure |
 
-**不是默认架构。** 至少满足一个强条件才选：独立部署 / 独立扩缩容 / 独立 team ownership / 故障隔离 / 明确 bounded context / 极高吞吐 / 不同技术栈。
+## 6. 前后端分离（res.md §21 / Matrix §9）
+- 分离：SaaS / 多终端 / Mobile+Web / 多 client / 大型前端 / AI API+Web。
+- 合并（可接受）：简单 CRUD / SEO 网站 / MVP / 内部工具 / Next.js Full Stack。
 
-**绝对不要优先选**：MVP / 1-3 人团队 / CRUD / 业务边界不明确 / 无独立部署需求。
+## 7. Monorepo（res.md §77 / 知识库 §54）
+适用 frontend+backend / shared packages；工具 pnpm workspace / Turborepo / Nx。**不要为两个目录引入复杂 Monorepo 工具**。
 
-**Agent 提问**：为什么不能 Modular Monolith？哪些服务必须独立部署/扩容？如何做分布式事务？observability？service discovery？retry？idempotency？
-
-## 5. Frontend/Backend Coupling（§21）
-
-- 需要前后端分离：Web + Mobile / API consumers > 1 / 前端复杂度 medium+。
-- 不需要分离：小型内部工具 / 简单 CRUD / 简单 CMS / MVP / server-rendered app。不要为"架构标准"强行分离。
-
-## 6. Monorepo（§77）
-
-什么时候选：Frontend + Backend / 共享类型 / 多应用 / 共享包。
-
-```
-apps/
-├── web
-├── api
-└── worker
-packages/
-├── types
-├── ui
-└── config
-```
+## 8. Agent 不得自行做的决定（知识库 §71）
+未授权不得自行改变：Database / Architecture / Authentication / Deployment Platform / Cloud Provider / Message Broker / Public API / Programming Language。

@@ -1,53 +1,76 @@
-# Decision Tree: Infrastructure（基础设施选型：Cache / Queue / Search / API / Auth / Deploy / CI-CD）
+# Decision Tree: Infrastructure（基础设施：Auth / MQ / Search / API / Deploy / CI-CD / Observability）
 
-> 配套知识：`.sdd/knowledge/messaging.md` · `api.md` · `security.md` · `deployment.md` · `observability.md`
+> 配套知识：`.sdd/knowledge/{messaging,api,security,deployment,observability}.md`
+> 治理：`.sdd/decision-trees/decision-protocol.md`
 
-## Message Queue（§34, 默认 NONE）
+## 1. Authentication（Matrix §20，含 No Auth）
 ```
-是否需要 Async processing / Retry / Event-driven / Decoupling / High throughput / Background jobs？
-├─ 否 ──→ 不引入消息队列
-├─ 是 ──→ 简单任务队列 / 业务事件 / 中等规模 / 传统企业集成 → RabbitMQ（§35）
-│         └─ Event streaming / 高吞吐 / Event replay / 数据管道 / 多 consumer → Kafka（§36）
-后台任务（§37）：Python→Celery；轻量→FastAPI BackgroundTasks（注意≠分布式可靠队列）
-```
+IF public_readonly AND user_identity_not_required
+→ No Auth                         # 仅此场景
 
-## Search（§38, 默认 PostgreSQL FTS）
-```
-是否需要 Fuzzy / Faceted / 复杂排序 / 大索引？
-├─ 否 ──→ PostgreSQL Full Text Search
-└─ 是 ──→ Elasticsearch / OpenSearch / Meilisearch / Typesense（禁止无需求引入 ES）
-```
+IF traditional_web AND browser_only
+→ Session (Cookie + Server-side)  # AUTO
 
-## API Style（§29, 默认 REST）
-```
-Public API / Web / Mobile / CRUD / 标准 HTTP → REST + OpenAPI（§30,§33）
-多 client / 高度可变数据 / Client-driven → GraphQL（§31，默认 REST>GraphQL）
-Internal 高性能 / Streaming / 强类型 / Polyglot → gRPC（§32）
-```
+IF multiple_clients OR stateless_api OR mobile
+→ JWT / token-based               # RECOMMEND（勿因流行默认）
 
-## Authentication（§41, 优先成熟方案）
+IF enterprise_sso OR social_login OR external_idp
+→ OAuth / OIDC                    # RECOMMEND
 ```
-传统 Web → Cookie + Server-side Session（§42）
-API / Mobile / 分布式 / 无状态 → JWT（须考虑 expiration/refresh/revocation，§43，勿因流行而默认）
-第三方登录 → OIDC（企业可能 SAML+OIDC，§44）
-禁止自研密码加密 / OAuth / JWT 算法 / session crypto
+**禁止**自研密码加密/OAuth Server/JWT 算法/session crypto。
+Authentication architecture 变更 = `REQUIRE_CONFIRMATION`（decision-protocol §6）。
+
+## 2. Authorization（Matrix §21）
+```
+admin/user 两级            → RBAC
+权限含 resource/org/tenant/ownership/attribute → RBAC + resource-level
+仅复杂策略                → ABAC / Policy Engine
 ```
 
-## Deployment（§60, 默认 Docker）
+## 3. Message Queue（Matrix §16）
 ```
-Local dev / 集成测试 / 小部署 → Docker Compose（§61）
-多服务 / Autoscaling / 高可用 / 大型组织 / 已有 K8s → Kubernetes（§62，默认 Docker>K8s）
-CI/CD → GitHub Actions（§63，Push→Lint→TypeCheck→Unit→Integration→Security→Build→Deploy）
-```
-
-## Observability（§47, 默认结构化日志+Metrics+Health+Error）
-```
-中大型 → OpenTelemetry 统一 Logs/Metrics/Traces（§49）
-日志禁止记录 Password/Token/Secret/PII（§48）
+request_response 足够 AND background_work 低 → MQ = false
+task_queue / business_event / routing → RabbitMQ
+event_streaming AND (高吞吐 OR replay OR 多consumer OR stream) → Kafka
+queue 简单 AND 已用 Redis → Redis Queue
 ```
 
-## 技术规范引入检查表（§115）
-引入任何新技术前回答：解决什么问题？问题是否真实？现有能否解决？运维/开发成本？失败模式？如何监控/测试/备份/升级？能否移除？无法回答则不引入。
+## 4. Search（Matrix §17 → 细则见 `knowledge/caching.md` §5）
+```
+复杂全文/fuzzy/faceting/大规模/相关性关键 → OpenSearch/Elasticsearch   # +2，需实测证据
+否则 → PostgreSQL Full Text Search        # 默认
+```
+> 不要因"以后可能搜索很多"提前引入搜索集群（Matrix §17）。
+
+## 4b. Cache（Matrix §23 → 细则见 `knowledge/caching.md`）
+```
+read_heavy AND data_changes_less_frequently AND cache_hit_benefit_significant → cache = true   # +1
+ELSE → cache = false
+```
+> Redis 不是默认组件；引入时必须在 ADR 中说明存在理由。
+
+## 5. API Style（Matrix §15）
+```
+public/business/CRUD → REST + OpenAPI     # 默认
+前端数据形状复杂 AND 多视图 → GraphQL（candidate）
+service-to-service AND 低延迟/强类型 → gRPC
+```
+
+## 6. Deployment（Matrix §24-§25）
+```
+Local/MVP     → Docker Compose
+Small Prod    → Docker + Managed DB + Managed Redis
+Large Prod    → 仅 multiple_services/autoscaling/HA/multi_region/org K8s 标准 → K8s
+否则 Docker / Managed Container Platform
+K8s = REQUIRE_CONFIRMATION
+```
+
+## 7. CI/CD / Observability
+- CI/CD → GitHub Actions（企业已有则 GitLab/Jenkins/Azure DevOps）。
+- Observability → 生产默认 Logs+Metrics+Tracing；多服务/分布式 → OpenTelemetry。
+
+## 8. 复杂度预算联动（Matrix §32）
+每个引入的组件计入 `complexity_score`；超限必须重评（见 architecture.md §3）。
 
 ## 输出
-写入 `technology-selection.md` 的 Cache / Queue / Search / API / Authentication / Observability / Deployment / CI-CD 段。
+写入 `technology-selection.md` 的 Authentication / Authorization / Queue / Search / API / Deployment / CI-CD / Observability 段。

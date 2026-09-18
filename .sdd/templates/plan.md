@@ -1,31 +1,65 @@
-# Template: Plan（实施计划）
+# Template: Plan（实施计划 / 技术架构）
 
-> 用途：Implementation Plan，衔接 Design 与 Tasks（res.md §99, §100）。
-> 实现前必须读取：Project Rules / Technology Selection / Relevant Spec / Design / Tasks（§100）。
+> 用途：plan.md 描述 HOW、架构与技术选择（res.md §99,§100；知识库 §77,§80）。
+> 实现前必须读：Project Rules / Technology Selection / Relevant Spec / Design / Tasks（res.md §100）。
+> 技术栈类决定建议先 `Human Confirmation` 再固化（decision-protocol §9）。
 
-# Implementation Plan: <feature-name>
+# Implementation Plan: <Feature Name>
 
-## Pre-Implementation Checklist（§100）
-- [ ] 已读 Project Rules（CLAUDE.md / AGENTS.md）
-- [ ] 已读 Technology Selection
-- [ ] 已读 Relevant Spec
-- [ ] 已读 Design
-- [ ] 已读 Tasks
+## 1. Architecture
+### Architecture Style
+### Component Diagram
+### Data Flow
 
-## Phase 1 — Foundation
-- 仓库结构 / 依赖 / CI 基础 / 配置（§86）
+## 2. Technology Stack
+### Language / Backend Framework / Frontend Framework
+### Database / Cache / Message Queue / Search / Object Storage
+> 取自 technology-selection.md（含 Decision Status 与复杂度预算）
 
-## Phase 2 — Core Domain
-- 领域模型 / ORM / Migration（§64）
+## 3. Project Structure
+```
+...（见 knowledge/{backend,frontend}.md 的 Repository Structure）
+```
 
-## Phase 3 — API & Integration
-- 端点 / 认证 / 错误格式 / 外部集成
+## 4. Backend Design
+### Modules / Services / Repositories / Middleware
 
-## Phase 4 — Cross-cutting
-- 日志 / 观测 / 安全 / 缓存 / 队列
+## 5. Frontend Design
+### Pages / Components / State Management / API Client
 
-## Phase 5 — Verification
-- Unit / Integration / E2E（§50-§53）
+## 6. Database
+### Tables / Indexes / Constraints / Migration Strategy
 
-## Change Management（§101）
+## 7. API
+### REST / GraphQL / gRPC / Authentication / Authorization / Error Model
+
+## 8. Async Processing
+### Jobs / Queue / Retry / Idempotency
+
+## 9. Cache
+### Cache Keys / TTL / Invalidation
+
+## 10. Security
+### Auth / Authz / API Security / Secrets
+
+## 11. Testing
+### Unit / Integration / E2E（参考 testing.md 的 Test Strategy Matrix）
+
+## 12. Observability
+### Logs / Metrics / Tracing
+
+## 13. Deployment
+### Strategy / Container / CI-CD
+
+## 14. Architecture Decisions
+### ADR-001
+Decision: / Reason: / Alternatives: / Rejected: / Status: / Confidence:
+
+## 15. Risks
+
+## 16. Migration
+
+---
+
+## Change Management（res.md §101）
 发现 Spec 错误 → 更新 Spec → Design → Tasks → 继续实现，不直接绕过。

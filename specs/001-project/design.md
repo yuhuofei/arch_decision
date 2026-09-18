@@ -1,27 +1,31 @@
 # Design — 001-project（示例实例）
 
-> 按 `.sdd/templates/design.md` 填写（§98）。
+> 按 `.sdd/templates/design.md` 与 `.sdd/templates/plan.md` 填写（§98, 知识库 §80）。
+> Design 描述 HOW（plan.md 亦承载技术栈/设计）。
 
 ## Component
-<模块划分：参考 Modular Monolith 结构（knowledge/architecture.md §3）>
+Modular Monolith 模块：users / orders / payments / notifications（见 architecture.md §2.2）。
 
 ## Data Flow
-<请求入口 → 领域 → 基础设施 → 落库；含 async 分支（§74）>
+创建订单：API → orders module (domain) → repository → PostgreSQL；事件发往 notifications module。
 
 ## API
-<端点 / Request-Response schema（OpenAPI §33）/ 错误格式（§70）/ 分页（§71）>
+REST + OpenAPI（res.md §33）；错误格式（res.md §70）；分页 cursor-based（res.md §71）。
 
 ## Database
-<表设计，第三范式优先（§66）；事务边界（§67）；ID 策略（§68）>
+orders / order_items 表；第三范式（res.md §66）；事务覆盖支付/库存（res.md §67）；ID UUIDv7（res.md §68）。
 
 ## Authentication
-<Cookie Session / JWT / OIDC（§41-§44）>
+Session（Cookie + Server-side，res.md §42）；多 client 时改 JWT/OIDC（res.md §43）。
+
+## Authorization
+RBAC（res.md §46）。
 
 ## Error Handling
-<统一错误格式（§70）；业务错误不暴露 DB exception>
+统一错误格式（res.md §70）；业务错误不暴露 DB exception。
 
 ## Async Processing
-<仅明确需求（§74）：HTTP → Job → Queue → Worker → DB>
+仅明确需求时（res.md §74）：订单创建 → Queue → Worker → 通知。
 
 ## Failure Handling
-<重试 / 幂等 / 降级 / Redis failure 行为（§73）>
+重试 / 幂等 / 降级；Redis failure 行为（res.md §73）。

@@ -1,61 +1,54 @@
 # Knowledge: Database（数据库）
 
-> 来源：res.md §22-§27, §39, §40, §66-§69
-> 决策树：`.sdd/decision-trees/database.md`
+> 来源：res.md §22-§27,§39,§40,§66-§69；Matrix §10-§13,§18,§22；知识库 §20-§24,§31,§32
+> 决策树：`.sdd/decision-trees/database.md`　治理：`.sdd/decision-trees/decision-protocol.md`
 
-## 1. Database Decision（§22）
+## 1. 数据库分类（知识库 §20）
+先按 关系型 / 文档型 / KV / 搜索 / 向量 / 时序 分类。
 
-候选：PostgreSQL / MySQL / SQLite / MongoDB / Redis / Specialized DB。
+## 2. PostgreSQL（res.md §23 / Matrix §10，默认主数据库）
+```
+IF relational_data = true AND no_specific_constraint THEN PostgreSQL
+```
+适合 SaaS/ERP/CRM/订单/财务/工作流/多租户/复杂查询/JSON/地理/AI。新关系型项目默认（知识库 Rule 5）。优势：SQL 强/事务完整/JSONB/丰富类型/扩展强。
 
-## 2. PostgreSQL（§23, DEFAULT Primary Database）
+## 3. MySQL（res.md §24 / Matrix §11）
+```
+IF existing_mysql OR organization_standard = MySQL OR ecosystem_dependency = MySQL THEN MySQL
+```
+不要因"数据库都差不多"在已有 PG 项目切换（Greenfield→PG 优先；Existing→保持原库优先）。
 
-新项目默认 PostgreSQL。
-选：SaaS / ERP / CRM / E-commerce / Enterprise / 金融类事务系统 / 复杂关系数据 / JSONB 需求。
-不选：仅当存在明确理由（已有 MySQL 基础设施 / Vendor 要求 / 特殊负载）。
-优势：ACID / Relational / JSONB / Full-text search / Extensions / 成熟生态。
+## 4. SQLite（res.md §25 / Matrix §12）
+```
+IF single_instance AND low_concurrency AND database_scale = small THEN SQLite
+```
+典型 CLI/Prototype/Local/Desktop/Small Internal/Tests。不选：多实例生产 API / 高写并发 / 分布式后端。
 
-**Agent 提问**：数据是否复杂关系？是否需要事务？JSON？全文搜索？强一致性？
+## 5. Redis（res.md §27 / Matrix §13）
+**不是默认数据库**，也不是"第二数据库"。
+```
+Redis = true 仅当 cache/session/rate_limit/distributed_lock/queue/stream/hot_data/temporary_state
+IF none_of_above THEN Redis = false
+```
+原则：PostgreSQL/MySQL = Source of Truth；Redis = Performance/Temporary State。重要业务数据不要只放 Redis。
 
-## 3. MySQL（§24）
+## 6. Vector Search（res.md §39 / Matrix §18 / 知识库 §31）
+```
+IF vector_search AND relational_data AND vector_scale = moderate THEN PostgreSQL + pgvector   # 默认
+IF vector_scale = large OR vector_workload = dominant OR specialized_vector_features THEN Qdrant/Weaviate/Milvus
+```
+不要默认同时部署 PG+Redis+ES+Milvus（知识库 §31）。
 
-选：已有 MySQL 生态 / 已有 DBA 专长 / 已有应用迁移 / Vendor 要求。新项目无约束 → PostgreSQL 优先。
+## 7. Object Storage（res.md §40 / Matrix §19 / 知识库 §32）
+文件/图片/视频/附件不直存 DB；默认 S3-compatible（AWS S3 / MinIO / Cloudflare R2 / 阿里云 OSS / 腾讯云 COS）。DB 只存 object_key/url/metadata/mime_type/size。小型本地文件可用 local filesystem。
 
-## 4. SQLite（§25）
+## 8. 多租户（Matrix §22，详见 architecture.md §5）
+Shared DB + tenant_id（默认）→ Separate schema → Separate DB → Separate infra。
 
-选：CLI / Desktop / Local-first / Prototype / Test / Embedded。
-不选：多实例生产 API / 高写并发 / 分布式后端。
+## 9. DB Design Rules（res.md §66）
+默认第三范式优先；为读性能合理反规范化。禁止为"灵活"把所有字段塞 JSON。
 
-## 5. MongoDB（§26）
-
-选：Document-oriented / Dynamic schema / Nested document / Event·document 存储 / 特定 Mongo 生态。
-不选：强关系数据 / 金融事务 / 复杂 join / 强一致性为核心。默认 PostgreSQL > MongoDB，除非 domain 明确适合 document model。
-
-## 6. Redis（§27）
-
-**不是 Primary Database。** 用途：Cache / Session / Rate limit / Distributed lock / Pub-Sub / Temporary state。
-选：Hot data / 频繁读 / Rate limiting / 分布式锁 / Session / Temporary state。
-不选：如果只是"以后可能缓存"。必须定义 TTL / invalidation / cache miss strategy / Redis failure 行为 / 是否允许 stale data。
-
-## 7. Vector Search（§39）
-
-AI/RAG 默认优先 `PostgreSQL + pgvector`。仅当规模与查询特征明确需要时引入 Qdrant / Weaviate / Milvus / Pinecone。
-
-## 8. Object Storage（§40）
-
-文件默认对象存储（S3-compatible）。不要把大文件直接存 PostgreSQL。数据库保存 object_key / filename / mime_type / size / metadata。
-
-## 9. DB Design Rules（§66）
-
-默认第三范式优先；为读性能可合理反规范化。**禁止**为"灵活"把所有字段塞进 JSON。
-
-## 10. Transaction Rules（§67）
-
-涉及 Money / Inventory / Permission / 关键状态转移 → 必须考虑 transaction。
-
-## 11. ID Strategy（§68）
-
-默认 UUID / UUIDv7 / DB-generated ID（按分布式生成/排序/安全/存储选择）。不要暴露敏感业务序号作为安全边界。
-
-## 12. Time（§69）
-
-所有后端 UTC 存储；API 用 ISO 8601；用户显示用 local timezone。
+## 10. Transaction / ID / Time（res.md §67,§68,§69）
+- 事务覆盖 Money/Inventory/Permission/关键状态。
+- ID 默认 UUID/UUIDv7/DB-generated。
+- 时间 UTC 存储；API ISO 8601；显示 local timezone。

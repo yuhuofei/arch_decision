@@ -34,7 +34,7 @@ Implement authentication system
 | T3 | | | |
 
 ## Verification Mapping
-每个 Task 对应测试类型（§50-§53）：
+每个 Task 对应测试类型（res.md §50-§53）：
 - Unit：Domain logic / Business rules / Validation
 - Integration：DB / API / Auth / MQ
 - E2E：仅关键业务流程

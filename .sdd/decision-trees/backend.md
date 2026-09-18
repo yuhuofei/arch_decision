@@ -1,49 +1,69 @@
 # Decision Tree: Backend（后端语言与框架选型）
 
-> 配套知识：`.sdd/knowledge/backend.md`
+> 配套知识：`.sdd/knowledge/backend.md`　治理：`.sdd/decision-trees/decision-protocol.md`
 
-## 起点：选哪种语言？
+## 1. 语言（Matrix §6，正式条件）
 
 ```
-工作负载主要是 AI / Data / LLM / RAG / 数据处理 / 快速 MVP？
-├─ 是 ──→ Python
-│         └─ API 服务？ → FastAPI（默认）
-│             ├─ 强依赖 Django Admin / CMS / ORM-heavy / server-rendered → Django
-│             └─ 已有 Flask 且极简/高度定制 → Flask（新项目仍优先 FastAPI）
-├─ 否 ──→ 高并发 / 网络服务 / Gateway / Proxy / Infrastructure / Cloud Native / CLI？
-│         └─ 是 ──→ Go（Chi 默认 / Gin / Echo）
-├─ 否 ──→ 全栈 TypeScript / Web-first / BFF / Realtime / 团队偏好 TS？
-│         └─ 是 ──→ TypeScript + NestJS（Enterprise/模块化/DI）
-├─ 否 ──→ Enterprise / Banking / ERP / 大型组织 / 已有 JVM 生态 / 复杂事务？
-│         └─ 是 ──→ Java 或 Kotlin + Spring Boot
-└─ 否 ──→ 微软生态？ → C#
+IF AI OR ML OR Data Processing OR Automation OR CRUD/API
+   AND extreme_performance = false
+→ Python                         # AUTO
+
+IF concurrency = high OR network_service OR infrastructure
+   OR latency_requirement = strict OR CPU_efficiency = important
+→ Go                             # AUTO（普通 CRUD 先评估 Python/TS）
+
+IF fullstack_web OR frontend OR node_backend
+→ TypeScript                    # AUTO
+
+IF enterprise_java_ecosystem OR organization_standard = Java
+   OR existing = Spring OR enterprise_integration = high
+→ Java/Kotlin                   # AUTO（组织标准=Hard Constraint）
+
+IF memory_safety = critical AND performance = critical
+   AND team_has_rust_expertise = true
+→ Rust = candidate              # RECOMMEND
 ```
 
-## 关键判定
+## 2. Python 框架（Matrix §7）
+```
+General/Async/AI API        → FastAPI        # 默认 AUTO
+CRUD-heavy admin            → Django
+Existing Flask              → Preserve Flask  # Hard Constraint
+Very small service          → Flask / FastAPI
+```
 
-### Python（§6）
-- 选：AI / LLM / RAG / Data / Automation / API / SaaS / Internal Tool / MVP / CRUD
-- 不选（考虑 Go/Java/Rust）：极端低延迟 / 极端高并发 / CPU-heavy / 网络基础设施
+## 3. Go 框架（Matrix §7 关键修正）
+```
+Simple HTTP / std-lib-first / 极简 → net/http     # 默认优先
+REST API                    → net/http / Gin
+Advanced middleware/routing → Gin
+Existing Gin                → Preserve Gin
+```
+> Go 标准库 `net/http` 已能构建完整 HTTP 服务，Agent 不应默认引入第三方 framework。
 
-### FastAPI vs Django vs Flask（§7-§9）
-- 新 Python API → **FastAPI** 默认
-- Admin-heavy / CMS / Enterprise CRUD / server-rendered → Django
-- 已有 Flask / 极简 / 高度定制 → Flask
+## 4. TypeScript 框架（Matrix §7）
+```
+Fullstack Web               → Next.js
+React frontend only         → React + Vite
+Vue application             → Vue + Vite
+Existing Next.js / Vue      → Preserve
+```
 
-### Go framework（§11）
-- Lightweight / 标准库优先 / 最小抽象 → Chi（默认）
-- REST / 快速开发 / 成熟生态 → Gin
-- Lightweight service → Echo
+## 5. Java/Kotlin 框架
+```
+Enterprise/复杂业务/大团队 → Spring Boot       # AUTO
+```
 
-### TS backend（§13）
-- Enterprise TS / 模块化 / DI / 大团队 → NestJS
-- 极简 API / 极轻量 serverless → 不引入框架
+## 6. Worker / 后台任务（知识库 §4.5）
+```
+Python + 异步任务 → Celery / RQ / Arq + Redis/RabbitMQ
+Go + 异步任务    → Asynq + Redis
+需 Retry/Persistence/分布式/Scheduling → 真正 task queue（非 BackgroundTasks）
+```
 
-### Java/Kotlin（§15）
-- Enterprise / 复杂业务 / 大团队 / 长生命周期 → Spring Boot
-
-## 用户显式指定（§1.5）
-用户指定 `Python + FastAPI + PostgreSQL` → 最高优先级，不得擅自改。`Go + Gin + MySQL` 即使 Agent 认为更好也照做，可记录风险。
+## 用户显式指定
+用户指定 `Python+FastAPI+PostgreSQL` 等 = Hard Constraint（P0），不得擅自改（decision-protocol §3）。
 
 ## 输出
-写入 `technology-selection.md` 的 Backend 段：Candidates / Selected / Reason / Alternatives / Rejected Because。
+写入 `technology-selection.md` 的 Backend 段：Candidates / Selected / Reason / Alternatives / Rejected Because / Decision Status。
