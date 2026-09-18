@@ -1,6 +1,7 @@
 # Technology Selection — 001-project（示例实例）
 
-> 按 `.sdd/templates/technology-selection.md` 填写。生成前读 `.sdd/decision-trees/*.md` 与 `.sdd/knowledge/*.md`。
+> 按 `.sdd/templates/technology-selection.md` 填写。生成前读 `.sdd/decision-trees/*.md`、`.sdd/knowledge/*.md`、`.sdd/knowledge/versioning.md`。
+> **机器可读契约：同目录 `decision.json`**（真 Schema 校验由 `scripts/validate_rules.py` 执行）。
 
 ## Project Type
 SaaS / Business Application（示例：订单管理系统）
@@ -95,7 +96,17 @@ architecture_decision:
 ## 决策状态
 - Architecture=Modular Monolith → `AUTO`
 - Backend=Python+FastAPI → `AUTO`
+- Frontend=Vue 3 + Vite → `AUTO`
+- Database=PostgreSQL → `AUTO`
 - Auth=Session → `AUTO`（若改 JWT/OIDC 或涉及 Auth architecture 变更 → `REQUIRE_CONFIRMATION`）
+- 本实例**无 `REQUIRE_CONFIRMATION` 项** → 无需人工确认门槛（decision-protocol §6）
+
+## Versions（见 knowledge/versioning.md）
+| Technology | Selected | Support Status | Reason |
+| --- | --- | --- | --- |
+| Python | UNKNOWN | UNKNOWN | 本示例未联网核对上游，按 versioning.md §4 不编造版本号；实现前补齐 |
+| PostgreSQL | UNKNOWN | UNKNOWN | 同上：取目标平台可用的 supported stable major |
+> 与 `decision.json` 的 `versions` 数组保持一致。
 
 ## 复杂度预算（口径见 decision-protocol §5.1）
 ```
@@ -103,6 +114,8 @@ PostgreSQL(1) + 对象存储(1) = 2  ≤ Small SaaS 预算 8   ✅
 Docker / Docker Compose 属打包方式，不计分。
 ```
 
-## 决策记录（ADR 索引）
-- [ ] PostgreSQL → adr-001-postgres.md
-- [ ] FastAPI → adr-002-fastapi.md
+## 决策记录（ADR 索引；按需，见 LAYOUT.md §1.2）
+- [x] PostgreSQL → `specs/001-project/adr/ADR-001-postgres.md`
+- [x] FastAPI → `specs/001-project/adr/ADR-002-fastapi.md`
+- [x] Session Auth → `specs/001-project/adr/ADR-003-session-auth.md`
+> 只记录进入 `decision.json` 的重要决策，不为凑目录制造 ADR。

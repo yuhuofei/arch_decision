@@ -1,10 +1,10 @@
 # Knowledge: Architecture（架构）
 
-> 来源：res.md §1.1,§3,§4,§4.1,§21,§77；Matrix §3-§5,§22,§32；知识库 §3,§4.1-§4.2,§12.1,§65-§70
+> 来源：res.md §1.1,§3,§4,§4.1,§21,§77；Matrix §3-§5（含 §5.1-§5.3）,§22,§32；知识库 §3,§4.1-§4.2,§12.1,§65-§70
 > 决策树：`.sdd/decision-trees/architecture.md`　治理：`.sdd/decision-trees/decision-protocol.md`
 
 ## 0. 决策治理（先看）
-- 约束优先级 P0–P3、Hard/Soft Constraint、复杂度预算、决策状态见 `decision-protocol.md`。
+- 约束优先级 **P0A / P0B / P1–P3**、Hard/Soft Constraint、复杂度预算、决策状态、默认值语义（Default = Candidate Prior）见 `decision-protocol.md`。
 - **默认优先 Modular Monolith**（知识库 Rule 4）。
 
 ## 1. 项目类型矩阵（Matrix §4 / 知识库 §4）

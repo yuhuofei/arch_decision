@@ -19,6 +19,8 @@
   * `§12.3` → `(12, 3)`   「子条目」
 用同一命名空间可让排序自然，也便于区分「引用了 §6」与「引用了 §6.1」。
 
+来源（4 份）与各自的条目识别方式不同，见 `_title_lines` 的分派说明。
+
 用法：
     from sdd_refs import iter_refs, parse_source_items, parse_titles, fmt_ref, SOURCES
 """
@@ -35,6 +37,7 @@ SOURCES: dict[str, Path] = {
     "res.md": SRC / "res.md",
     "Matrix": SRC / "AI Architecture Decision Matrix.md",
     "知识库": SRC / "AI Coding SDD 项目技术架构与框架选择知识库.md",
+    "mod_gpt.md": SRC / "mod_gpt.md",
 }
 SOURCE_NAMES = tuple(SOURCES)
 
@@ -45,7 +48,32 @@ SKIP_FILES = {"TRACEABILITY.md", "REVIEW-2026-09-19.md"}
 
 Key = tuple[int, int]  # (major, minor)，minor == 0 表示顶层条目
 
-_SOURCE_RE = re.compile(r"res\.md|Matrix|知识库")
+# 引用标签白名单（`gen_traceability.py` 与 `validate_rules.py` 共用，只有一处定义）。
+# 用途有二：(1) 判定一个 `§N` 是否"裸写"；(2) 判定 `§N` 归属哪一份来源。
+LABELS: tuple[str, ...] = (
+    "res.md", "res:", "Matrix", "知识库", "mod_gpt.md",
+    "decision-protocol",
+    "architecture.md", "backend.md", "frontend.md", "database.md", "caching.md",
+    "messaging.md", "api.md", "security.md", "testing.md", "deployment.md",
+    "observability.md", "ai-llm.md", "data.md", "versioning.md",
+    "project-discovery.md", "technology-selection.md", "spec.md", "plan.md",
+    "design.md", "tasks.md", "verification.md", "adr.md",
+    "new-project.md", "new-feature.md", "small-change.md", "bugfix.md", "refactor.md",
+    "CLAUDE.md", "AGENTS.md", "README.md", "LAYOUT.md", "CONVENTIONS.md",
+    "TRACEABILITY.md", "CHANGELOG.md",
+    "本文件", "本模板", "本节", "该文件", "本文档",
+)
+
+# 来源名别名：`res: §N` 与 `res.md §N` 同义（迁移期的历史写法）
+_ALIAS = {"res:": "res.md"}
+
+# 来源名：新增来源必须同时登记到 .sdd/CONVENTIONS.md §1
+_SOURCE_RE = re.compile(r"res\.md|Matrix|知识库|mod_gpt\.md|res:")
+# 本地标签（来源名之外的 LABELS）—— 用于「最近的标签胜出」归属判定
+_LOCAL_LABELS = tuple(
+    lb for lb in LABELS if lb not in SOURCE_NAMES and lb not in _ALIAS
+)
+_LOCAL_RE = re.compile("|".join(re.escape(lb) for lb in _LOCAL_LABELS))
 _NUM_RE = re.compile(r"§\s*(\d+)(?:\.(\d+))?")
 # 区间必须两侧都带 §（如 `§50-§58`、`§1.2-§1.4`）。裸 `§1-2` 全库不存在，若支持会与
 # 「§1 的 2 项」这类叙述冲突，故不识别。
@@ -102,24 +130,37 @@ def expand_ranges(line: str) -> str:
 def iter_refs(text: str):
     """逐行产出 `(来源名, (major, minor))`。
 
-    归属规则：每个 `§N` 归属于**其前方最近的一个来源名**。这样一行内的
-    `res.md §60-§65,§86；Matrix §24,§25；知识库 §44-§46` 三组引用各自归位，
-    无需按标点切分（`；`、`。` 分隔符在源文档里并不统一）。
+    归属规则：**最近的标签胜出**。每个 `§N` 归属于其前方最近的标签；该标签若是
+    本地规则文件名（`decision-protocol`、`LAYOUT.md`、`本文件`…），则视为**本地引用**，
+    不计入源索引。
+
+    这条规则比"归属前方最近的来源名"更严格也更正确：旧规则下，
+    同一行里的本地引用会被前面的来源名吞掉，例如
+
+        ### Python（Matrix §6.1；句式按 decision-protocol §3.4 修正）
+                                                      ↑ 被误判成 Matrix §3.4（不存在）
+
+    而本地文件本来就允许引用自己的小节号（`CONVENTIONS.md` §1 的"本地引用带文件名"）。
+    分号/句号不必切分：`res.md §60-§65,§86；Matrix §24,§25` 两组仍各自归位。
     """
     for line in text.split("\n"):
         line = expand_ranges(line)
-        tokens: list[tuple[int, int, object]] = []
+        tokens: list[tuple[int, int, str, object]] = []
         for m in _SOURCE_RE.finditer(line):
-            tokens.append((m.start(), 0, m.group(0)))
+            tokens.append((m.start(), 0, "src", _ALIAS.get(m.group(0), m.group(0))))
+        for m in _LOCAL_RE.finditer(line):
+            tokens.append((m.start(), 0, "local", m.group(0)))
         for m in _NUM_RE.finditer(line):
             minor = int(m.group(2)) if m.group(2) else 0
-            tokens.append((m.start(), 1, (int(m.group(1)), minor)))
-        tokens.sort()
+            tokens.append((m.start(), 1, "num", (int(m.group(1)), minor)))
+        tokens.sort(key=lambda t: (t[0], t[1]))
 
         current: str | None = None
-        for _, kind, val in tokens:
-            if kind == 0:
+        for _, _, kind, val in tokens:
+            if kind == "src":
                 current = str(val)
+            elif kind == "local":
+                current = None  # 本地引用，后面的 §N 不属于任何源文档
             elif current is not None:
                 yield current, val  # type: ignore[misc]
 
@@ -127,13 +168,35 @@ def iter_refs(text: str):
 def _title_lines(name: str, path: Path):
     """产出源文档中形如 `N. TITLE` / `N.M TITLE` 的条目。
 
-    源文档格式不统一，需分别处理：
+    源文档格式不统一，需按来源分别处理：
+
     * `res.md`：部分条目写作 `# N. TITLE`，部分写作裸 `N. TITLE`（全大写英文）；
       `§0` / `§117` / `§118` 内部含中文编号列表，借「无 CJK」排除。
     * `Matrix` / `知识库`：条目均为 Markdown 标题（`#` 开头），标题可为中文。
-    子条目（`N.M`）恒为 `#` 标题，不受上述排除规则影响。
+    * `mod_gpt.md`：**散文式评审**，不是标题编号规范文档 —— 它的 9 条建议写作
+      `N. P0：…`，而正文里还嵌着多处**重新从 1 开始**的子枚举（如 "A default: 1. …"、
+      "Default priority: 1. …"）。因此只接受**严格递增**的行首编号，
+      编号回退（重启）的一律视作子枚举忽略。
+      若不这样做，`§1`/`§2` 会被重复登记 3 次，条号集合与标题都会张冠李戴。
+
+    子条目（`N.M`）恒为 `#` 标题，不受上述差异影响。
     """
-    for line in path.read_text(encoding="utf-8").split("\n"):
+    lines = path.read_text(encoding="utf-8").split("\n")
+
+    if name == "mod_gpt.md":
+        last = 0
+        for line in lines:
+            m = _TOP_RE.match(line)
+            if not m:
+                continue
+            n = int(m.group(1))
+            if n <= last:  # 子枚举重启，忽略
+                continue
+            last = n
+            yield (n, 0), m.group(2).strip()
+        return
+
+    for line in lines:
         m = _SUB_RE.match(line)
         if m:
             yield (
@@ -188,3 +251,6 @@ if __name__ == "__main__":  # 自检：解析规则的可视化验证
         refs = list(iter_refs(src_path.read_text(encoding="utf-8")))
         if refs:
             print(f"{rel}: {len(refs)} 处引用")
+    for name, path in SOURCES.items():
+        keys = parse_titles(name, path)
+        print(f"{name}: {len(keys)} 条（最大 {max(keys)[0] if keys else 0}）")

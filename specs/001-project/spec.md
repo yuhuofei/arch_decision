@@ -1,6 +1,7 @@
 # Spec — 001-project（示例实例）
 
 > 按 `.sdd/templates/spec.md` 填写。Spec 是 Source of Truth（res.md §91），描述 WHAT/WHY。
+> **Status: `Accepted`**（技术决策确认后由 `Draft` 升级；Draft 阶段不写技术实现，见 `CLAUDE.md` §2）。
 
 ## 1. Overview
 ### Problem

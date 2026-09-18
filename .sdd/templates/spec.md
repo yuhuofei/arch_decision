@@ -4,8 +4,12 @@
 > 落点：`specs/<id>-<name>/spec.md`（目录约定见 `.sdd/LAYOUT.md`；引用约定见 `.sdd/CONVENTIONS.md`）。
 > 不要把大量 implementation detail 放进需求 Spec（知识库 §76）。
 > **节数以本模板的 14 节为准**；与 res.md §117 的 23 项差异见文末「节数取舍」。
+> **Status: `Draft` → `Accepted`**（枚举见 `.sdd/CONVENTIONS.md` §3）。
+> **Draft 阶段只写 WHAT / WHY**，禁止写语言 / 框架 / 数据库 / 部署方案 —— 技术决策发生在本 Spec 之后（`CLAUDE.md` §2）。
 
 # Specification: <Feature Name>
+
+> **Status: `Draft`** ｜ 技术决策确认后改为 `Accepted`
 
 ## 1. Overview
 ### Problem

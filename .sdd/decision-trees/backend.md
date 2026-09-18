@@ -1,24 +1,26 @@
 # Decision Tree: Backend（后端语言与框架选型）
 
 > 配套知识：`.sdd/knowledge/backend.md`　治理：`.sdd/decision-trees/decision-protocol.md`
+> **读法**：下文 `→` 是**候选先验（candidate prior）**，不是最终决策 —— 默认值只进入候选集，
+> 仍须走 Hard Constraint 淘汰，必要时才评分（decision-protocol §3.3/§3.4）。
 
 ## 1. 语言（Matrix §6，正式条件）
 
 ```
 IF AI OR ML OR Data Processing OR Automation OR CRUD/API
    AND extreme_performance = false
-→ Python                         # AUTO
+→ Python 应进入候选集（优先）    # 候选先验（无区分度时 AUTO）
 
 IF concurrency = high OR network_service OR infrastructure
    OR latency_requirement = strict OR CPU_efficiency = important
-→ Go                             # AUTO（普通 CRUD 先评估 Python/TS）
+→ Go 应获得强偏好（作为候选）    # 候选先验（普通 CRUD 先评估 Python/TS）
 
 IF fullstack_web OR frontend OR node_backend
-→ TypeScript                    # AUTO
+→ TypeScript 应进入候选集        # 候选先验
 
 IF enterprise_java_ecosystem OR organization_standard = Java
    OR existing = Spring OR enterprise_integration = high
-→ Java/Kotlin                   # AUTO（组织标准=Hard Constraint）
+→ Java/Kotlin 应进入候选集       # 候选先验（组织标准 P0B 时为 Hard Constraint）
 
 IF memory_safety = critical AND performance = critical
    AND team_has_rust_expertise = true
@@ -27,7 +29,7 @@ IF memory_safety = critical AND performance = critical
 
 ## 2. Python 框架（Matrix §7）
 ```
-General/Async/AI API        → FastAPI        # 默认 AUTO
+General/Async/AI API        → FastAPI        # 候选先验（无区分度时 AUTO）
 CRUD-heavy admin            → Django
 Existing Flask              → Preserve Flask  # Hard Constraint
 Very small service          → Flask / FastAPI
@@ -35,7 +37,7 @@ Very small service          → Flask / FastAPI
 
 ## 3. Go 框架（Matrix §7 关键修正）
 ```
-Simple HTTP / std-lib-first / 极简 → net/http     # 默认优先
+Simple HTTP / std-lib-first / 极简 → net/http     # 候选先验（优先）
 REST API                    → net/http / Gin
 Advanced middleware/routing → Gin
 Existing Gin                → Preserve Gin
@@ -45,7 +47,7 @@ Existing Gin                → Preserve Gin
 ## 4. TypeScript 框架（Matrix §7 / res.md §13,§81）
 **纯 TS 后端服务**（API-only / BFF，无前端）：
 ```
-default                     → NestJS      # 默认 AUTO（模块化 + DI + Guard/Interceptor）
+default                     → NestJS      # 候选先验（无区分度时 AUTO；模块化 + DI + Guard/Interceptor）
 轻量 / 低开销 / schema-first → Fastify     # 备选
 Edge / Serverless / 极小体积 → Hono        # 备选
 存量 Express                → Preserve    # 仅当已用且无迁移诉求
@@ -61,7 +63,7 @@ Existing Next.js / Vue      → Preserve
 
 ## 5. Java/Kotlin 框架
 ```
-Enterprise/复杂业务/大团队 → Spring Boot       # AUTO
+Enterprise/复杂业务/大团队 → Spring Boot       # 候选先验（无区分度时 AUTO）
 ```
 
 ## 6. Worker / 后台任务（知识库 §4.5）
@@ -72,7 +74,10 @@ Go + 异步任务    → Asynq + Redis
 ```
 
 ## 用户显式指定
-用户指定 `Python+FastAPI+PostgreSQL` 等 = Hard Constraint（P0），不得擅自改（decision-protocol §3）。
+用户**明确「必须 / 不得 / 组织标准 / 不可改变」**时，指定 `Python+FastAPI+PostgreSQL` 等 = Hard Constraint（P0B），不得擅自改（decision-protocol §3.1）。
+用户只说「偏好 / 熟悉 / 最好用」时只是候选先验（decision-protocol §3.4），不构成约束。
+若指定撞 P0A（EOL / 安全不可行），必须标 `BLOCKED` 提出异议，不得照做。
 
 ## 输出
-写入 `technology-selection.md` 的 Backend 段：Candidates / Selected / Reason / Alternatives / Rejected Because / Decision Status。
+写入 `technology-selection.md` 的 Backend 段：Candidates / Selected / Reason / Alternatives / Rejected Because / Decision Status；
+机器可读部分写 `decision.json` 的 `backend`；版本写进 `versions` 数组（策略见 `knowledge/versioning.md`）。

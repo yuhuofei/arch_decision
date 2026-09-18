@@ -5,24 +5,25 @@
 
 ## 1. Backend Language Matrix（Matrix §6，正式条件）
 
-### Python（Matrix §6.1）
+### Python（Matrix §6.1；句式按 decision-protocol §3.4 修正为候选先验）
 ```
 IF AI OR ML OR Data Processing OR Automation OR CRUD/API
    AND extreme_performance = false
-THEN language = Python
+THEN Python SHOULD be included as a candidate
 ```
 优先：AI / RAG / LLM / ETL / Automation / Admin API / Business API / Data Science。默认栈：Python 3.x + uv + FastAPI + Pydantic + SQLAlchemy + Alembic + pytest。
 
 ### Go（Matrix §6.2）
 ```
 IF concurrency = high OR network_service OR infrastructure OR latency_requirement = strict OR CPU_efficiency = important
-THEN language = Go
+THEN Go SHOULD receive strong preference as a candidate
 ```
 适合 Gateway/Proxy/Infra/Network/High-Concurrency API/Distributed。普通 CRUD：Go 可选，先评估 Python/TS。
 
 ### TypeScript（Matrix §6.3）
 ```
-IF fullstack_web OR frontend OR node_backend THEN language = TypeScript
+IF fullstack_web OR frontend OR node_backend
+THEN TypeScript SHOULD be included as a candidate
 ```
 适合 Web/BFF/Fullstack/Frontend-heavy。
 **框架默认**（res.md §110 / §81）：纯 TS 后端服务 → **NestJS**，备选 Fastify / Hono；含前端的 fullstack → Next.js。判定逻辑见 `decision-trees/backend.md` §4。
@@ -30,7 +31,7 @@ IF fullstack_web OR frontend OR node_backend THEN language = TypeScript
 ### Java / Kotlin（Matrix §6.4）
 ```
 IF enterprise_java_ecosystem OR organization_standard = Java OR existing = Spring OR enterprise_integration = high
-THEN language = Java/Kotlin
+THEN Java/Kotlin SHOULD be included as a candidate
 ```
 
 ### Rust（Matrix §6.5，仅候选）
@@ -86,12 +87,15 @@ Django 选：Admin-heavy/CMS/Enterprise CRUD/ORM-heavy/server-rendered。新项�
 - **BackgroundTasks ≠ 分布式可靠队列**；需 Retry/Persistence/分布式/Scheduling 用真正 task queue。
 
 ## 5. Package Management / Migration / Version（res.md §59,§64,§88,§89）
+**版本选择策略只有一处实现**：`.sdd/knowledge/versioning.md`（本文件不写死版本号）。
 见 deployment.md 与 backend 工具链。默认工具链（知识库 §47-§48）：
 - Python：uv + FastAPI + Pydantic + SQLAlchemy + Alembic + pytest + Ruff + mypy/pyright
 - Go：Go Modules + Gin/net/http + sqlc/GORM + golangci-lint + testing + Docker
 
 ## 6. 用户显式指定（res.md §1.5）
-用户指定即 Hard Constraint，不得擅自改（decision-protocol §3）。
+用户**明确表达「必须 / 不得 / 组织标准 / 不可改变」**时 = Hard Constraint（P0B），不得擅自改（decision-protocol §3.1）。
+用户只说「偏好 / 熟悉 / 倾向 / 最好用」时只是候选先验，不构成约束（decision-protocol §3.4）。
+若用户指定撞 P0A（EOL 运行时 / 明文存 token / 不可行架构），必须标 `BLOCKED` 提出异议，不得照做。
 
 ## 7. Repository Structure（res.md §78-§82 / 知识库 §55-§56）
 - Python：`backend/app/{api,core,models,schemas,services,repositories}/main.py` + tests + migrations + pyproject.toml + Dockerfile

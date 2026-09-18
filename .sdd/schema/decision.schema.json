@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://arch-decision/.sdd/schema/decision.schema.json",
   "title": "Architecture Decision Output",
-  "description": "technology-selection.md 中 Decision Output Schema（YAML 代码块）的机器可校验形式。对应 .sdd/templates/technology-selection.md 与 Matrix §40。",
+  "description": "Architecture Decision 的机器可读契约（Machine-readable Decision Contract）。权威实例为 specs/<id>/decision.json，由 scripts/mini_schema.py 做真 JSON Schema 校验；technology-selection.md 里的同名 YAML 代码块仅供人阅读，只做 structural validation（YAML 无标准库解析器）。对应 .sdd/templates/technology-selection.md 与 Matrix §40。",
   "type": "object",
   "required": ["architecture_decision"],
   "additionalProperties": false,
@@ -140,8 +140,26 @@
           "type": "object",
           "properties": { "strategy": { "type": "string" } }
         },
+        "versions": {
+          "description": "版本选择记录（策略见 knowledge/versioning.md；版本号必须核对上游官方文档，未知写 UNKNOWN，禁止编造）",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["technology", "selected", "support_status", "reason"],
+            "properties": {
+              "technology": { "type": "string" },
+              "selected": { "type": "string" },
+              "support_status": {
+                "type": "string",
+                "enum": ["supported", "LTS", "maintenance", "EOL", "UNKNOWN"]
+              },
+              "verified_at": { "type": ["string", "null"] },
+              "reason": { "type": "string", "minLength": 4 }
+            }
+          }
+        },
         "decision_status": {
-          "description": "每项决策的状态标识（decision-protocol §6）",
+          "description": "每项决策的状态标识（decision-protocol §6）：AUTO/RECOMMEND 不阻塞，REQUIRE_CONFIRMATION 必须人确认",
           "type": "object",
           "additionalProperties": {
             "enum": ["AUTO", "RECOMMEND", "REQUIRE_CONFIRMATION", "BLOCKED"]
@@ -168,7 +186,7 @@
           }
         },
         "cost": {
-          "description": "Cost 复核（本仓补充，见 decision-protocol §4.1）",
+          "description": "Cost 复核（本仓补充，见 decision-protocol §4.2）",
           "type": "object",
           "properties": {
             "recurring": { "type": "string", "description": "持续成本的计费口径，须可量化" },

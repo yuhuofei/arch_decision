@@ -1,18 +1,19 @@
 # Decision Tree: Frontend（前端框架选型）
 
 > 配套知识：`.sdd/knowledge/frontend.md`　治理：`.sdd/decision-trees/decision-protocol.md`
+> **读法**：下文 `→` 是**候选先验（candidate prior）**，不是最终决策（decision-protocol §3.4）。
 
 ## 1. 语言（知识库 Rule 8）
-新 Web Frontend 默认 **TypeScript**。
+新 Web Frontend 默认 **TypeScript**（候选先验；版本见 `.sdd/knowledge/versioning.md`）。
 
 ## 2. 框架（Matrix §8，正式条件）
 
 ```
 IF business_app = true AND frontend_complexity = medium
-→ Vue 3 + TypeScript + Vite        # 默认 AUTO（Admin/Dashboard/Enterprise/CRUD/Internal/SaaS）
+→ Vue 3 + TypeScript + Vite        # 候选先验（Admin/Dashboard/Enterprise/CRUD/Internal/SaaS）
 
 IF react_ecosystem_required OR existing_react OR component_ecosystem = important
-→ React + TypeScript              # AUTO
+→ React + TypeScript              # 候选先验
 
 IF React = true AND (SSR OR SEO OR fullstack_web OR server_components)
 → Next.js + TypeScript           # RECOMMEND（新项目优先 App Router）

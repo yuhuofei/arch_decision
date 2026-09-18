@@ -17,27 +17,27 @@
 | 源规则 | 标题 | 落点文件 |
 | --- | --- | --- |
 | `res.md §0` | CORE MISSION | `.sdd/workflows/new-project.md`<br>`AGENTS.md`<br>`specs/001-project/verification.md` |
-| `res.md §1` | GENERAL ENGINEERING PRINCIPLES | `.sdd/LAYOUT.md`<br>`AGENTS.md` |
+| `res.md §1` | GENERAL ENGINEERING PRINCIPLES | **（未直接引用；见子条目）** |
 | `res.md §1.1` | 　Simple Before Complex | `.sdd/knowledge/architecture.md` |
-| `res.md §1.2` | 　Prefer Boring Technology | `.sdd/CONVENTIONS.md`<br>`AGENTS.md` |
-| `res.md §1.3` | 　Minimize Technology Diversity | `.sdd/CONVENTIONS.md`<br>`AGENTS.md` |
-| `res.md §1.4` | 　Existing Project Takes Priority | `.sdd/CONVENTIONS.md`<br>`AGENTS.md` |
+| `res.md §1.2` | 　Prefer Boring Technology | `.sdd/CONVENTIONS.md`<br>`AGENTS.md`<br>`CHANGELOG.md` |
+| `res.md §1.3` | 　Minimize Technology Diversity | `.sdd/CONVENTIONS.md`<br>`AGENTS.md`<br>`CHANGELOG.md` |
+| `res.md §1.4` | 　Existing Project Takes Priority | `.sdd/CONVENTIONS.md`<br>`AGENTS.md`<br>`CHANGELOG.md` |
 | `res.md §1.5` | 　Explicit User Decisions Have Highest Priority | `.sdd/decision-trees/decision-protocol.md`<br>`.sdd/knowledge/backend.md` |
-| `res.md §2` | PROJECT DISCOVERY | `.sdd/LAYOUT.md`<br>`.sdd/templates/project-discovery.md` |
+| `res.md §2` | PROJECT DISCOVERY | `.sdd/templates/project-discovery.md` |
 | `res.md §2.1` | 　Business | `.sdd/CONVENTIONS.md`<br>`.sdd/templates/project-discovery.md` |
 | `res.md §2.2` | 　Users | `.sdd/templates/project-discovery.md` |
 | `res.md §2.3` | 　Traffic | `.sdd/templates/project-discovery.md` |
 | `res.md §2.4` | 　Data | `.sdd/templates/project-discovery.md` |
 | `res.md §2.5` | 　Non-functional Requirements | `.sdd/templates/project-discovery.md` |
-| `res.md §3` | PROJECT SCALE CLASSIFICATION | `.sdd/LAYOUT.md`<br>`.sdd/decision-trees/architecture.md`<br>`.sdd/knowledge/architecture.md`<br>`.sdd/templates/project-discovery.md`<br>`.sdd/workflows/bugfix.md`<br>`.sdd/workflows/new-feature.md`<br>`.sdd/workflows/refactor.md` |
-| `res.md §4` | ARCHITECTURE STYLE | `.sdd/LAYOUT.md`<br>`.sdd/knowledge/architecture.md`<br>`.sdd/knowledge/backend.md` |
-| `res.md §4.1` | 　Modular Monolith | `.sdd/knowledge/architecture.md` |
-| `res.md §5` | BACKEND LANGUAGE DECISION | `.sdd/LAYOUT.md`<br>`.sdd/knowledge/backend.md` |
+| `res.md §3` | PROJECT SCALE CLASSIFICATION | `.sdd/decision-trees/architecture.md`<br>`.sdd/knowledge/architecture.md`<br>`.sdd/templates/project-discovery.md` |
+| `res.md §4` | ARCHITECTURE STYLE | `.sdd/knowledge/architecture.md` |
+| `res.md §4.1` | 　Modular Monolith | `.sdd/knowledge/architecture.md`<br>`CHANGELOG.md` |
+| `res.md §5` | BACKEND LANGUAGE DECISION | `.sdd/knowledge/backend.md` |
 | `res.md §6` | PYTHON | `.sdd/knowledge/backend.md` |
 | `res.md §7` | FASTAPI | `.sdd/knowledge/backend.md` |
 | `res.md §8` | DJANGO | `.sdd/knowledge/backend.md` |
 | `res.md §9` | FLASK | `.sdd/knowledge/backend.md` |
-| `res.md §10` | GO | `.sdd/CONVENTIONS.md`<br>`.sdd/LAYOUT.md`<br>`.sdd/knowledge/backend.md` |
+| `res.md §10` | GO | `.sdd/knowledge/backend.md` |
 | `res.md §11` | GO FRAMEWORK | `.sdd/knowledge/backend.md` |
 | `res.md §12` | TYPESCRIPT BACKEND | `.sdd/knowledge/backend.md` |
 | `res.md §13` | NESTJS | `.sdd/decision-trees/backend.md`<br>`.sdd/knowledge/backend.md`<br>`AGENTS.md` |
@@ -60,63 +60,63 @@
 | `res.md §30` | REST | `.sdd/knowledge/api.md` |
 | `res.md §31` | GRAPHQL | `.sdd/knowledge/api.md` |
 | `res.md §32` | GRPC | `.sdd/knowledge/api.md` |
-| `res.md §33` | OPENAPI | `.sdd/knowledge/api.md`<br>`.sdd/templates/design.md`<br>`specs/001-project/adr/ADR-002-fastapi.md`<br>`specs/001-project/design.md`<br>`specs/001-project/plan.md`<br>`specs/001-project/tasks.md` |
+| `res.md §33` | OPENAPI | `.sdd/knowledge/api.md`<br>`specs/001-project/adr/ADR-002-fastapi.md`<br>`specs/001-project/design.md`<br>`specs/001-project/plan.md`<br>`specs/001-project/tasks.md` |
 | `res.md §34` | MESSAGE QUEUE | `.sdd/knowledge/messaging.md` |
 | `res.md §35` | RABBITMQ | `.sdd/knowledge/messaging.md` |
 | `res.md §36` | KAFKA | `.sdd/knowledge/messaging.md` |
 | `res.md §37` | BACKGROUND JOBS | `.sdd/knowledge/backend.md`<br>`.sdd/knowledge/messaging.md` |
-| `res.md §38` | SEARCH | `.sdd/knowledge/caching.md` |
+| `res.md §38` | SEARCH | `.sdd/knowledge/caching.md`<br>`CHANGELOG.md` |
 | `res.md §39` | VECTOR SEARCH | `.sdd/knowledge/database.md` |
 | `res.md §40` | OBJECT STORAGE | `.sdd/knowledge/database.md` |
-| `res.md §41` | AUTHENTICATION | `.sdd/knowledge/security.md`<br>`.sdd/templates/design.md` |
-| `res.md §42` | SESSION | `.sdd/knowledge/security.md`<br>`.sdd/templates/design.md`<br>`specs/001-project/design.md` |
-| `res.md §43` | JWT | `.sdd/knowledge/security.md`<br>`.sdd/templates/design.md`<br>`specs/001-project/design.md` |
-| `res.md §44` | OIDC / OAuth | `.sdd/decision-trees/decision-protocol.md`<br>`.sdd/knowledge/security.md`<br>`.sdd/templates/design.md` |
+| `res.md §41` | AUTHENTICATION | `.sdd/knowledge/security.md` |
+| `res.md §42` | SESSION | `.sdd/knowledge/security.md`<br>`specs/001-project/design.md` |
+| `res.md §43` | JWT | `.sdd/knowledge/security.md`<br>`specs/001-project/design.md` |
+| `res.md §44` | OIDC / OAuth | `.sdd/decision-trees/decision-protocol.md`<br>`.sdd/knowledge/security.md` |
 | `res.md §45` | SECURITY | `.sdd/knowledge/security.md`<br>`specs/001-project/plan.md`<br>`specs/001-project/verification.md` |
 | `res.md §46` | AUTHORIZATION | `.sdd/knowledge/security.md`<br>`specs/001-project/design.md` |
 | `res.md §47` | OBSERVABILITY | `.sdd/knowledge/observability.md`<br>`specs/001-project/tasks.md` |
 | `res.md §48` | LOGGING | `.sdd/knowledge/observability.md`<br>`.sdd/workflows/small-change.md`<br>`specs/001-project/plan.md`<br>`specs/001-project/tasks.md`<br>`specs/001-project/verification.md` |
 | `res.md §49` | DISTRIBUTED TRACING | `.sdd/knowledge/observability.md`<br>`specs/001-project/plan.md`<br>`specs/001-project/tasks.md` |
-| `res.md §50` | TESTING STRATEGY | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/testing.md`<br>`.sdd/templates/tasks.md`<br>`.sdd/workflows/refactor.md` |
-| `res.md §51` | UNIT TEST | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/testing.md`<br>`.sdd/templates/tasks.md`<br>`.sdd/workflows/refactor.md`<br>`specs/001-project/tasks.md`<br>`specs/001-project/verification.md` |
-| `res.md §52` | INTEGRATION TEST | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/testing.md`<br>`.sdd/templates/tasks.md`<br>`.sdd/workflows/refactor.md`<br>`specs/001-project/tasks.md`<br>`specs/001-project/verification.md` |
-| `res.md §53` | E2E TEST | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/testing.md`<br>`.sdd/templates/tasks.md`<br>`.sdd/workflows/refactor.md`<br>`specs/001-project/tasks.md`<br>`specs/001-project/verification.md` |
-| `res.md §54` | PYTHON TESTING | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/backend.md`<br>`.sdd/knowledge/testing.md` |
-| `res.md §55` | FRONTEND TESTING | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/testing.md` |
-| `res.md §56` | GO TESTING | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/backend.md`<br>`.sdd/knowledge/testing.md` |
-| `res.md §57` | JAVA TESTING | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/backend.md`<br>`.sdd/knowledge/testing.md` |
-| `res.md §58` | CODE QUALITY | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/backend.md`<br>`.sdd/knowledge/testing.md` |
+| `res.md §50` | TESTING STRATEGY | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/testing.md`<br>`.sdd/templates/tasks.md`<br>`.sdd/workflows/refactor.md`<br>`CHANGELOG.md` |
+| `res.md §51` | UNIT TEST | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/testing.md`<br>`.sdd/templates/tasks.md`<br>`.sdd/workflows/refactor.md`<br>`CHANGELOG.md`<br>`specs/001-project/tasks.md`<br>`specs/001-project/verification.md` |
+| `res.md §52` | INTEGRATION TEST | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/testing.md`<br>`.sdd/templates/tasks.md`<br>`.sdd/workflows/refactor.md`<br>`CHANGELOG.md`<br>`specs/001-project/tasks.md`<br>`specs/001-project/verification.md` |
+| `res.md §53` | E2E TEST | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/testing.md`<br>`.sdd/templates/tasks.md`<br>`.sdd/workflows/refactor.md`<br>`CHANGELOG.md`<br>`specs/001-project/tasks.md`<br>`specs/001-project/verification.md` |
+| `res.md §54` | PYTHON TESTING | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/backend.md`<br>`.sdd/knowledge/testing.md`<br>`CHANGELOG.md` |
+| `res.md §55` | FRONTEND TESTING | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/testing.md`<br>`CHANGELOG.md` |
+| `res.md §56` | GO TESTING | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/backend.md`<br>`.sdd/knowledge/testing.md`<br>`CHANGELOG.md` |
+| `res.md §57` | JAVA TESTING | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/backend.md`<br>`.sdd/knowledge/testing.md`<br>`CHANGELOG.md` |
+| `res.md §58` | CODE QUALITY | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/backend.md`<br>`.sdd/knowledge/testing.md`<br>`CHANGELOG.md` |
 | `res.md §59` | PACKAGE MANAGEMENT | `.sdd/knowledge/backend.md` |
-| `res.md §60` | CONTAINERIZATION | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/deployment.md`<br>`specs/001-project/plan.md` |
-| `res.md §61` | DOCKER COMPOSE | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/deployment.md` |
-| `res.md §62` | KUBERNETES | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/deployment.md` |
-| `res.md §63` | CI/CD | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/deployment.md`<br>`specs/001-project/plan.md`<br>`specs/001-project/verification.md` |
-| `res.md §64` | DATABASE MIGRATION | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/backend.md`<br>`.sdd/knowledge/deployment.md`<br>`.sdd/workflows/small-change.md`<br>`specs/001-project/plan.md`<br>`specs/001-project/tasks.md` |
-| `res.md §65` | BACKUP | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/deployment.md` |
-| `res.md §66` | DATABASE DESIGN RULES | `.sdd/decision-trees/database.md`<br>`.sdd/knowledge/database.md`<br>`.sdd/templates/design.md`<br>`specs/001-project/design.md`<br>`specs/001-project/plan.md` |
-| `res.md §67` | TRANSACTION RULES | `.sdd/CONVENTIONS.md`<br>`.sdd/decision-trees/database.md`<br>`.sdd/knowledge/database.md`<br>`.sdd/templates/design.md`<br>`.sdd/workflows/bugfix.md`<br>`.sdd/workflows/small-change.md`<br>`specs/001-project/adr/ADR-001-postgres.md`<br>`specs/001-project/design.md`<br>`specs/001-project/plan.md` |
-| `res.md §68` | ID STRATEGY | `.sdd/decision-trees/database.md`<br>`.sdd/knowledge/database.md`<br>`.sdd/templates/design.md`<br>`specs/001-project/design.md`<br>`specs/001-project/plan.md` |
+| `res.md §60` | CONTAINERIZATION | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/deployment.md`<br>`.sdd/knowledge/versioning.md`<br>`specs/001-project/plan.md` |
+| `res.md §61` | DOCKER COMPOSE | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/deployment.md`<br>`.sdd/knowledge/versioning.md` |
+| `res.md §62` | KUBERNETES | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/deployment.md`<br>`.sdd/knowledge/versioning.md` |
+| `res.md §63` | CI/CD | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/deployment.md`<br>`.sdd/knowledge/versioning.md`<br>`specs/001-project/plan.md`<br>`specs/001-project/verification.md` |
+| `res.md §64` | DATABASE MIGRATION | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/backend.md`<br>`.sdd/knowledge/deployment.md`<br>`.sdd/knowledge/versioning.md`<br>`.sdd/workflows/small-change.md`<br>`specs/001-project/plan.md`<br>`specs/001-project/tasks.md` |
+| `res.md §65` | BACKUP | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/deployment.md`<br>`.sdd/knowledge/versioning.md` |
+| `res.md §66` | DATABASE DESIGN RULES | `.sdd/decision-trees/database.md`<br>`.sdd/knowledge/database.md`<br>`specs/001-project/design.md`<br>`specs/001-project/plan.md` |
+| `res.md §67` | TRANSACTION RULES | `.sdd/CONVENTIONS.md`<br>`.sdd/decision-trees/database.md`<br>`.sdd/knowledge/database.md`<br>`.sdd/workflows/bugfix.md`<br>`.sdd/workflows/small-change.md`<br>`specs/001-project/adr/ADR-001-postgres.md`<br>`specs/001-project/design.md`<br>`specs/001-project/plan.md` |
+| `res.md §68` | ID STRATEGY | `.sdd/decision-trees/database.md`<br>`.sdd/knowledge/database.md`<br>`specs/001-project/design.md`<br>`specs/001-project/plan.md` |
 | `res.md §69` | TIME | `.sdd/decision-trees/database.md`<br>`.sdd/knowledge/database.md`<br>`specs/001-project/plan.md` |
-| `res.md §70` | API ERROR FORMAT | `.sdd/knowledge/api.md`<br>`.sdd/templates/design.md`<br>`specs/001-project/design.md`<br>`specs/001-project/plan.md` |
-| `res.md §71` | PAGINATION | `.sdd/knowledge/api.md`<br>`.sdd/knowledge/caching.md`<br>`.sdd/templates/design.md`<br>`specs/001-project/design.md`<br>`specs/001-project/plan.md` |
+| `res.md §70` | API ERROR FORMAT | `.sdd/knowledge/api.md`<br>`specs/001-project/design.md`<br>`specs/001-project/plan.md` |
+| `res.md §71` | PAGINATION | `.sdd/knowledge/api.md`<br>`.sdd/knowledge/caching.md`<br>`specs/001-project/design.md`<br>`specs/001-project/plan.md` |
 | `res.md §72` | RATE LIMITING | `.sdd/knowledge/api.md`<br>`.sdd/knowledge/caching.md`<br>`specs/001-project/plan.md` |
-| `res.md §73` | CACHING | `.sdd/knowledge/api.md`<br>`.sdd/knowledge/caching.md`<br>`.sdd/templates/design.md`<br>`specs/001-project/design.md`<br>`specs/001-project/plan.md` |
-| `res.md §74` | ASYNC ARCHITECTURE | `.sdd/knowledge/messaging.md`<br>`.sdd/templates/design.md`<br>`specs/001-project/design.md`<br>`specs/001-project/plan.md` |
+| `res.md §73` | CACHING | `.sdd/knowledge/api.md`<br>`.sdd/knowledge/caching.md`<br>`specs/001-project/design.md`<br>`specs/001-project/plan.md` |
+| `res.md §74` | ASYNC ARCHITECTURE | `.sdd/knowledge/messaging.md`<br>`specs/001-project/design.md`<br>`specs/001-project/plan.md` |
 | `res.md §75` | FRONTEND STATE MANAGEMENT | `.sdd/knowledge/frontend.md`<br>`specs/001-project/plan.md` |
 | `res.md §76` | UI COMPONENT LIBRARY | `.sdd/knowledge/frontend.md` |
 | `res.md §77` | MONOREPO | `.sdd/knowledge/architecture.md` |
-| `res.md §78` | REPOSITORY STRUCTURE | `.sdd/knowledge/backend.md`<br>`specs/001-project/plan.md` |
-| `res.md §79` | Django | `.sdd/knowledge/backend.md` |
-| `res.md §80` | Go | `.sdd/knowledge/backend.md` |
-| `res.md §81` | NestJS | `.sdd/decision-trees/backend.md`<br>`.sdd/knowledge/backend.md`<br>`AGENTS.md` |
-| `res.md §82` | Spring Boot | `.sdd/knowledge/backend.md` |
+| `res.md §78` | REPOSITORY STRUCTURE | `.sdd/knowledge/backend.md`<br>`CHANGELOG.md`<br>`specs/001-project/plan.md` |
+| `res.md §79` | Django | `.sdd/knowledge/backend.md`<br>`CHANGELOG.md` |
+| `res.md §80` | Go | `.sdd/knowledge/backend.md`<br>`CHANGELOG.md` |
+| `res.md §81` | NestJS | `.sdd/decision-trees/backend.md`<br>`.sdd/knowledge/backend.md`<br>`AGENTS.md`<br>`CHANGELOG.md` |
+| `res.md §82` | Spring Boot | `.sdd/knowledge/backend.md`<br>`CHANGELOG.md` |
 | `res.md §83` | VUE | `.sdd/knowledge/frontend.md` |
 | `res.md §84` | REACT | `.sdd/knowledge/frontend.md` |
 | `res.md §85` | NEXT.JS | `.sdd/knowledge/frontend.md` |
 | `res.md §86` | CONFIGURATION | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/deployment.md`<br>`specs/001-project/tasks.md` |
 | `res.md §87` | SECRET MANAGEMENT | `.sdd/knowledge/deployment.md`<br>`.sdd/knowledge/security.md`<br>`specs/001-project/plan.md` |
-| `res.md §88` | VERSION STRATEGY | `.sdd/knowledge/backend.md`<br>`.sdd/knowledge/deployment.md` |
-| `res.md §89` | VERSION PINNING | `.sdd/knowledge/backend.md`<br>`.sdd/knowledge/deployment.md` |
+| `res.md §88` | VERSION STRATEGY | `.sdd/knowledge/backend.md`<br>`.sdd/knowledge/deployment.md`<br>`.sdd/knowledge/versioning.md` |
+| `res.md §89` | VERSION PINNING | `.sdd/knowledge/backend.md`<br>`.sdd/knowledge/deployment.md`<br>`.sdd/knowledge/versioning.md` |
 | `res.md §90` | DEPENDENCY DECISION | `.sdd/workflows/small-change.md` |
 | `res.md §91` | SPEC-DRIVEN DEVELOPMENT | `.sdd/templates/spec.md`<br>`.sdd/workflows/new-project.md`<br>`specs/001-project/spec.md` |
 | `res.md §92` | SPEC ARTIFACTS | `.sdd/workflows/new-project.md`<br>`CHANGELOG.md` |
@@ -125,7 +125,7 @@
 | `res.md §95` | DECISION RECORD FORMAT | `.sdd/templates/adr.md`<br>`.sdd/workflows/new-project.md` |
 | `res.md §96` | REQUIREMENTS | `.sdd/workflows/new-project.md` |
 | `res.md §97` | ACCEPTANCE CRITERIA | `.sdd/workflows/new-project.md`<br>`specs/001-project/verification.md` |
-| `res.md §98` | DESIGN | `.sdd/templates/design.md`<br>`.sdd/workflows/new-project.md` |
+| `res.md §98` | DESIGN | `.sdd/workflows/new-project.md`<br>`CHANGELOG.md`<br>`specs/001-project/design.md` |
 | `res.md §99` | TASKS | `.sdd/templates/plan.md`<br>`.sdd/templates/tasks.md`<br>`.sdd/workflows/new-project.md`<br>`specs/001-project/plan.md` |
 | `res.md §100` | IMPLEMENTATION RULE | `.sdd/templates/plan.md`<br>`.sdd/workflows/new-project.md`<br>`specs/001-project/plan.md` |
 | `res.md §101` | CHANGE MANAGEMENT | `.sdd/templates/plan.md`<br>`.sdd/workflows/bugfix.md`<br>`.sdd/workflows/new-feature.md`<br>`.sdd/workflows/new-project.md`<br>`specs/001-project/plan.md`<br>`specs/001-project/verification.md` |
@@ -137,7 +137,7 @@
 | `res.md §107` | AGENT QUESTION POLICY | `.sdd/workflows/new-project.md` |
 | `res.md §108` | QUESTIONS CLASSIFICATION | `.sdd/decision-trees/decision-protocol.md`<br>`.sdd/workflows/new-feature.md`<br>`.sdd/workflows/new-project.md`<br>`CLAUDE.md` |
 | `res.md §109` | TECHNOLOGY DECISION OUTPUT | `.sdd/templates/technology-selection.md`<br>`.sdd/workflows/new-project.md` |
-| `res.md §110` | DEFAULT TECHNOLOGY MATRIX | `.sdd/knowledge/backend.md`<br>`.sdd/workflows/new-project.md`<br>`AGENTS.md` |
+| `res.md §110` | DEFAULT TECHNOLOGY MATRIX | `.sdd/knowledge/backend.md`<br>`.sdd/workflows/new-project.md`<br>`AGENTS.md`<br>`CHANGELOG.md` |
 | `res.md §111` | DEFAULT FULL STACK | `.sdd/workflows/new-project.md` |
 | `res.md §112` | DEFAULT AI APPLICATION STACK | `.sdd/workflows/new-project.md` |
 | `res.md §113` | DEFAULT ENTERPRISE STACK | `.sdd/workflows/new-project.md` |
@@ -158,16 +158,16 @@
 
 | 源规则 | 标题 | 落点文件 |
 | --- | --- | --- |
-| `Matrix §1` | Agent 总决策协议 | `.sdd/decision-trees/decision-protocol.md`<br>`.sdd/knowledge/data.md`<br>`.sdd/templates/adr.md` |
+| `Matrix §1` | Agent 总决策协议 | `.sdd/decision-trees/decision-protocol.md`<br>`.sdd/templates/adr.md` |
 | `Matrix §2` | 决策优先级 | `.sdd/decision-trees/decision-protocol.md` |
 | `Matrix §3` | Hard Constraint / Soft Constraint | `.sdd/decision-trees/decision-protocol.md`<br>`.sdd/knowledge/architecture.md` |
-| `Matrix §3.1` | 　Hard Constraint | `.sdd/decision-trees/decision-protocol.md` |
-| `Matrix §3.2` | 　Soft Constraint | `.sdd/decision-trees/decision-protocol.md` |
-| `Matrix §4` | 项目类型矩阵 | `.sdd/decision-trees/architecture.md`<br>`.sdd/knowledge/ai-llm.md`<br>`.sdd/knowledge/architecture.md` |
-| `Matrix §5` | Architecture Decision Matrix | `.sdd/decision-trees/architecture.md`<br>`.sdd/decision-trees/infrastructure.md`<br>`.sdd/knowledge/architecture.md`<br>`.sdd/knowledge/caching.md`<br>`.sdd/knowledge/database.md` |
-| `Matrix §5.1` | 　Monolith | `.sdd/templates/technology-selection.md` |
-| `Matrix §5.2` | 　Modular Monolith | `specs/001-project/plan.md` |
-| `Matrix §5.3` | 　Microservices | `specs/001-project/plan.md`<br>`specs/001-project/technology-selection.md` |
+| `Matrix §3.1` | 　Hard Constraint | `.sdd/decision-trees/decision-protocol.md`<br>`CHANGELOG.md` |
+| `Matrix §3.2` | 　Soft Constraint | `.sdd/decision-trees/decision-protocol.md`<br>`CHANGELOG.md` |
+| `Matrix §4` | 项目类型矩阵 | `.sdd/decision-trees/architecture.md`<br>`.sdd/knowledge/architecture.md` |
+| `Matrix §5` | Architecture Decision Matrix | `.sdd/decision-trees/architecture.md`<br>`.sdd/knowledge/architecture.md` |
+| `Matrix §5.1` | 　Monolith | `.sdd/knowledge/architecture.md` |
+| `Matrix §5.2` | 　Modular Monolith | `.sdd/knowledge/architecture.md`<br>`specs/001-project/plan.md` |
+| `Matrix §5.3` | 　Microservices | `.sdd/knowledge/architecture.md`<br>`specs/001-project/plan.md`<br>`specs/001-project/technology-selection.md` |
 | `Matrix §6` | Backend Language Matrix | `.sdd/decision-trees/backend.md`<br>`.sdd/knowledge/backend.md` |
 | `Matrix §6.1` | 　Python | `.sdd/CONVENTIONS.md`<br>`.sdd/knowledge/backend.md`<br>`specs/001-project/adr/ADR-002-fastapi.md`<br>`specs/001-project/plan.md`<br>`specs/001-project/technology-selection.md` |
 | `Matrix §6.2` | 　Go | `.sdd/examples/high-concurrency.md`<br>`.sdd/knowledge/backend.md`<br>`specs/001-project/adr/ADR-002-fastapi.md` |
@@ -195,8 +195,8 @@
 | `Matrix §21` | Authorization Matrix | `.sdd/decision-trees/infrastructure.md`<br>`.sdd/knowledge/security.md` |
 | `Matrix §22` | Multi-Tenant Matrix | `.sdd/decision-trees/architecture.md`<br>`.sdd/decision-trees/database.md`<br>`.sdd/knowledge/architecture.md`<br>`.sdd/knowledge/database.md` |
 | `Matrix §23` | Caching Matrix | `.sdd/decision-trees/infrastructure.md`<br>`.sdd/knowledge/ai-llm.md`<br>`.sdd/knowledge/caching.md`<br>`CHANGELOG.md` |
-| `Matrix §24` | Deployment Matrix | `.sdd/CONVENTIONS.md`<br>`.sdd/decision-trees/infrastructure.md`<br>`.sdd/knowledge/deployment.md`<br>`specs/001-project/plan.md` |
-| `Matrix §25` | Kubernetes Decision Rule | `.sdd/CONVENTIONS.md`<br>`.sdd/decision-trees/infrastructure.md`<br>`.sdd/knowledge/deployment.md`<br>`specs/001-project/plan.md` |
+| `Matrix §24` | Deployment Matrix | `.sdd/CONVENTIONS.md`<br>`.sdd/decision-trees/infrastructure.md`<br>`.sdd/knowledge/deployment.md`<br>`CHANGELOG.md`<br>`specs/001-project/plan.md` |
+| `Matrix §25` | Kubernetes Decision Rule | `.sdd/CONVENTIONS.md`<br>`.sdd/decision-trees/infrastructure.md`<br>`.sdd/knowledge/deployment.md`<br>`CHANGELOG.md`<br>`specs/001-project/plan.md` |
 | `Matrix §26` | Observability Matrix | `.sdd/knowledge/observability.md`<br>`specs/001-project/plan.md` |
 | `Matrix §27` | Testing Matrix | `.sdd/knowledge/testing.md` |
 | `Matrix §28` | Test Strategy Matrix | `.sdd/knowledge/data.md`<br>`.sdd/knowledge/testing.md`<br>`specs/001-project/plan.md` |
@@ -227,32 +227,32 @@
 
 | 源规则 | 标题 | 落点文件 |
 | --- | --- | --- |
-| `知识库 §1` | 文档目标 | `.sdd/LAYOUT.md` |
-| `知识库 §2` | 总体原则 | `.sdd/README.md` |
-| `知识库 §2.1` | 　默认原则 | `.sdd/README.md` |
+| `知识库 §1` | 文档目标 | `.sdd/README.md` |
+| `知识库 §2` | 总体原则 | `.sdd/README.md`<br>`CHANGELOG.md` |
+| `知识库 §2.1` | 　默认原则 | `.sdd/README.md`<br>`CHANGELOG.md` |
 | `知识库 §3` | 架构选择总决策树 | `.sdd/knowledge/architecture.md` |
 | `知识库 §4` | 项目类型分类 | `.sdd/knowledge/architecture.md` |
-| `知识库 §4.1` | 　Web Application | `.sdd/knowledge/architecture.md` |
-| `知识库 §4.2` | 　API / Backend Service | `.sdd/knowledge/architecture.md` |
+| `知识库 §4.1` | 　Web Application | `.sdd/knowledge/architecture.md`<br>`CHANGELOG.md` |
+| `知识库 §4.2` | 　API / Backend Service | `.sdd/knowledge/architecture.md`<br>`CHANGELOG.md` |
 | `知识库 §4.3` | 　Data / AI Application | `.sdd/knowledge/ai-llm.md`<br>`.sdd/knowledge/data.md` |
 | `知识库 §4.4` | 　CLI / Automation | `.sdd/knowledge/data.md` |
 | `知识库 §4.5` | 　Worker / Background Job | `.sdd/CONVENTIONS.md`<br>`.sdd/decision-trees/backend.md`<br>`.sdd/knowledge/backend.md`<br>`.sdd/knowledge/data.md`<br>`.sdd/knowledge/messaging.md` |
 | `知识库 §5` | 编程语言选择 | `.sdd/knowledge/backend.md` |
-| `知识库 §5.1` | 　Python | `.sdd/knowledge/backend.md` |
+| `知识库 §5.1` | 　Python | `.sdd/knowledge/backend.md`<br>`CHANGELOG.md` |
 | `知识库 §6` | Python Web Framework | `.sdd/knowledge/backend.md` |
-| `知识库 §6.1` | 　FastAPI —— 默认 API 首选 | `.sdd/knowledge/backend.md` |
-| `知识库 §6.2` | 　Flask | `.sdd/knowledge/backend.md` |
-| `知识库 §6.3` | 　Django | `.sdd/knowledge/backend.md` |
+| `知识库 §6.1` | 　FastAPI —— 默认 API 首选 | `.sdd/knowledge/backend.md`<br>`CHANGELOG.md` |
+| `知识库 §6.2` | 　Flask | `.sdd/knowledge/backend.md`<br>`CHANGELOG.md` |
+| `知识库 §6.3` | 　Django | `.sdd/knowledge/backend.md`<br>`CHANGELOG.md` |
 | `知识库 §7` | Go | `.sdd/knowledge/backend.md` |
 | `知识库 §8` | Go Web Framework | `.sdd/knowledge/backend.md` |
-| `知识库 §8.1` | 　Gin | `.sdd/knowledge/backend.md` |
-| `知识库 §8.2` | 　Echo | `.sdd/knowledge/backend.md` |
-| `知识库 §8.3` | 　net/http | `.sdd/knowledge/backend.md` |
+| `知识库 §8.1` | 　Gin | `.sdd/knowledge/backend.md`<br>`CHANGELOG.md` |
+| `知识库 §8.2` | 　Echo | `.sdd/knowledge/backend.md`<br>`CHANGELOG.md` |
+| `知识库 §8.3` | 　net/http | `.sdd/knowledge/backend.md`<br>`CHANGELOG.md` |
 | `知识库 §9` | TypeScript / Node.js | `.sdd/knowledge/backend.md` |
 | `知识库 §10` | Java / Kotlin | `.sdd/knowledge/backend.md` |
 | `知识库 §11` | Rust | `.sdd/knowledge/backend.md` |
 | `知识库 §12` | 前后端架构 | `.sdd/knowledge/frontend.md` |
-| `知识库 §12.1` | 　前后端分离 | `.sdd/knowledge/architecture.md` |
+| `知识库 §12.1` | 　前后端分离 | `.sdd/knowledge/architecture.md`<br>`CHANGELOG.md` |
 | `知识库 §13` | 前后端合并 | `.sdd/knowledge/frontend.md` |
 | `知识库 §14` | Vue | `.sdd/knowledge/frontend.md` |
 | `知识库 §15` | React | `.sdd/knowledge/frontend.md` |
@@ -270,7 +270,7 @@
 | `知识库 §27` | GraphQL | `.sdd/knowledge/api.md` |
 | `知识库 §28` | gRPC | `.sdd/knowledge/api.md` |
 | `知识库 §29` | Message Queue | `.sdd/knowledge/messaging.md` |
-| `知识库 §30` | 搜索 | `.sdd/knowledge/caching.md` |
+| `知识库 §30` | 搜索 | `.sdd/knowledge/caching.md`<br>`CHANGELOG.md` |
 | `知识库 §31` | Vector Database | `.sdd/knowledge/database.md` |
 | `知识库 §32` | Object Storage | `.sdd/knowledge/database.md` |
 | `知识库 §33` | Authentication | `.sdd/knowledge/security.md`<br>`specs/001-project/adr/ADR-003-session-auth.md`<br>`specs/001-project/plan.md` |
@@ -304,17 +304,17 @@
 | `知识库 §61` | 高并发 API | `.sdd/examples/high-concurrency.md`<br>`.sdd/workflows/new-project.md`<br>`CHANGELOG.md` |
 | `知识库 §62` | 企业 Java 系统 | `.sdd/workflows/new-project.md`<br>`CHANGELOG.md` |
 | `知识库 §63` | 小型内部工具 | `.sdd/examples/internal-tool.md` |
-| `知识库 §64` | MVP | `.sdd/decision-trees/decision-protocol.md` |
-| `知识库 §65` | 微服务决策 | `.sdd/decision-trees/architecture.md`<br>`.sdd/knowledge/architecture.md` |
-| `知识库 §66` | Event-Driven Architecture | `.sdd/decision-trees/architecture.md`<br>`.sdd/knowledge/architecture.md`<br>`.sdd/knowledge/messaging.md` |
-| `知识库 §67` | CQRS | `.sdd/decision-trees/architecture.md`<br>`.sdd/knowledge/architecture.md` |
-| `知识库 §68` | Event Sourcing | `.sdd/decision-trees/architecture.md`<br>`.sdd/knowledge/architecture.md` |
-| `知识库 §69` | DDD | `.sdd/decision-trees/architecture.md`<br>`.sdd/knowledge/architecture.md` |
-| `知识库 §70` | AI Coding 特殊要求 | `.sdd/knowledge/architecture.md` |
+| `知识库 §64` | MVP | `.sdd/decision-trees/decision-protocol.md`<br>`CHANGELOG.md` |
+| `知识库 §65` | 微服务决策 | `.sdd/decision-trees/architecture.md`<br>`.sdd/knowledge/architecture.md`<br>`CHANGELOG.md` |
+| `知识库 §66` | Event-Driven Architecture | `.sdd/decision-trees/architecture.md`<br>`.sdd/knowledge/architecture.md`<br>`.sdd/knowledge/messaging.md`<br>`CHANGELOG.md` |
+| `知识库 §67` | CQRS | `.sdd/decision-trees/architecture.md`<br>`.sdd/knowledge/architecture.md`<br>`CHANGELOG.md` |
+| `知识库 §68` | Event Sourcing | `.sdd/decision-trees/architecture.md`<br>`.sdd/knowledge/architecture.md`<br>`CHANGELOG.md` |
+| `知识库 §69` | DDD | `.sdd/decision-trees/architecture.md`<br>`.sdd/knowledge/architecture.md`<br>`CHANGELOG.md` |
+| `知识库 §70` | AI Coding 特殊要求 | `.sdd/knowledge/architecture.md`<br>`CHANGELOG.md` |
 | `知识库 §71` | Agent 不得自行做的决定 | `.sdd/CONVENTIONS.md`<br>`.sdd/decision-trees/decision-protocol.md`<br>`.sdd/examples/brownfield.md`<br>`.sdd/knowledge/ai-llm.md`<br>`.sdd/knowledge/architecture.md`<br>`.sdd/knowledge/security.md`<br>`CLAUDE.md` |
 | `知识库 §72` | 技术选型评分模型 | `.sdd/decision-trees/decision-protocol.md`<br>`.sdd/templates/technology-selection.md` |
 | `知识库 §73` | 技术选择必须记录理由 | `.sdd/decision-trees/decision-protocol.md`<br>`.sdd/templates/adr.md` |
-| `知识库 §74` | Agent 技术选型规则 | `.sdd/decision-trees/decision-protocol.md` |
+| `知识库 §74` | Agent 技术选型规则 | `.sdd/decision-trees/decision-protocol.md`<br>`CHANGELOG.md` |
 | `知识库 §75` | Existing Project 特殊规则 | `.sdd/examples/brownfield.md`<br>`.sdd/workflows/new-project.md` |
 | `知识库 §76` | Agent 生成 spec.md 时必须包含的架构上下文 | `.sdd/templates/spec.md` |
 | `知识库 §77` | plan.md 必须包含 | `.sdd/templates/plan.md`<br>`.sdd/templates/spec.md` |
@@ -326,10 +326,29 @@
 | `知识库 §83` | 默认不要使用的复杂技术 | `.sdd/decision-trees/decision-protocol.md`<br>`.sdd/knowledge/architecture.md` |
 | `知识库 §84` | AI Agent 的最终输出格式 | `.sdd/templates/technology-selection.md` |
 | `知识库 §85` | 最重要的规则 | `.sdd/decision-trees/decision-protocol.md`<br>`AGENTS.md` |
-| `知识库 §86` | 最终 SDD Traceability | `.sdd/README.md` |
-| `知识库 §87` | 给 AI Agent 的总指令 | `AGENTS.md`<br>`CLAUDE.md` |
+| `知识库 §86` | 最终 SDD Traceability | `.sdd/README.md`<br>`CHANGELOG.md` |
+| `知识库 §87` | 给 AI Agent 的总指令 | `AGENTS.md`<br>`CHANGELOG.md`<br>`CLAUDE.md` |
 | `知识库 §88` | 与 Spec Kit / OpenSpec 的结合方式 | `.sdd/decision-trees/decision-protocol.md`<br>`.sdd/templates/spec.md`<br>`.sdd/workflows/new-project.md` |
-| `知识库 §89` | 推荐最终目录 | `.sdd/LAYOUT.md` |
+| `知识库 §89` | 推荐最终目录 | `.sdd/LAYOUT.md`<br>`CHANGELOG.md` |
+
+**未被引用（顶层 自身及子条目均未出现 / 子条目 未出现）：0 条**
+
+（无）
+
+
+## mod_gpt.md（条目 9 条，含子条目）
+
+| 源规则 | 标题 | 落点文件 |
+| --- | --- | --- |
+| `mod_gpt.md §1` | P0：SDD 主流程顺序仍然自相矛盾 | `.sdd/CONVENTIONS.md`<br>`.sdd/README.md`<br>`.sdd/workflows/new-project.md`<br>`AGENTS.md`<br>`CHANGELOG.md`<br>`CLAUDE.md` |
+| `mod_gpt.md §2` | SDD REQUIRED（新项目 / 重大特性） | `.sdd/README.md`<br>`.sdd/decision-trees/decision-protocol.md`<br>`.sdd/workflows/new-project.md`<br>`AGENTS.md`<br>`CHANGELOG.md`<br>`CLAUDE.md` |
+| `mod_gpt.md §3` | P0：用户明确要求 = 最高 Hard Constraint 太绝对 | `.sdd/decision-trees/decision-protocol.md`<br>`CHANGELOG.md`<br>`CLAUDE.md` |
+| `mod_gpt.md §4` | P1：plan.md 和 design.md 职责高度重复 | `.sdd/CONVENTIONS.md`<br>`.sdd/LAYOUT.md`<br>`.sdd/templates/design.md`<br>`CHANGELOG.md` |
+| `mod_gpt.md §5` | P1：现在所谓的 JSON Schema 校验实际上没有真正执行 Schema | `CHANGELOG.md` |
+| `mod_gpt.md §6` | P1：评分公式有权重，但没有评分标尺，Agent 会产生“伪精确评分” | `.sdd/decision-trees/decision-protocol.md`<br>`CHANGELOG.md` |
+| `mod_gpt.md §7` | P1：默认技术矩阵仍然偏“答案库”，而不是“决策系统” | `.sdd/README.md`<br>`.sdd/decision-trees/decision-protocol.md`<br>`.sdd/workflows/new-project.md`<br>`CHANGELOG.md`<br>`CLAUDE.md` |
+| `mod_gpt.md §8` | P1：你最初要求的“默认版本策略”目前还没有真正形成规则 | `.sdd/knowledge/versioning.md`<br>`CHANGELOG.md` |
+| `mod_gpt.md §9` | 我建议顺手调整 AGENTS.md | `AGENTS.md`<br>`CHANGELOG.md` |
 
 **未被引用（顶层 自身及子条目均未出现 / 子条目 未出现）：0 条**
 

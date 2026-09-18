@@ -1,7 +1,8 @@
 # Template: ADR（Architecture Decision Record）
 
 > 用途：固化每一个重要技术决策（res.md §95；Matrix §1,§18；知识库 §73）。
-> 文件名建议 `adr-NNN-<topic>.md`；可集中放 `specs/<id>/adr/`。
+> 文件名建议 `ADR-NNN-<topic>.md`；放 `specs/<id>/adr/`。
+> **按需**：没有重要 Architecture Decision 就不建，不要为了满足目录规范制造 ADR（`.sdd/LAYOUT.md` §1.2）。
 
 ## Decision: <技术/方案名>
 
@@ -21,7 +22,7 @@
 <!-- 为什么做这个决定；系统/项目背景约束 -->
 
 ### Constraints
-<!-- Hard / Soft Constraint（P0-P3） -->
+<!-- Hard / Soft Constraint（P0A / P0B / P1-P3，见 CONVENTIONS.md §3） -->
 
 ### Alternatives
 - <备选 A>

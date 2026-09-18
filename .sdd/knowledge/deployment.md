@@ -22,6 +22,7 @@ Pipeline：Lint → Type Check → Unit Test → Integration Test → Build → 
 
 ## 4. Containerization（res.md §60，默认 Docker）
 生产 Multi-stage build；必须 non-root / small base / pinned deps / healthcheck / graceful shutdown。
+镜像**禁止 `latest`**，必须 pin 运行时版本；依赖锁定规则见 `.sdd/knowledge/versioning.md` §5（本文件不另写一份）。
 
 ## 5. Database Migration（res.md §64）
 必须用 migration（Python Alembic / Django migrations / Java Flyway·Liquibase / Node Prisma·Drizzle）。禁止手工改 production schema。

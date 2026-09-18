@@ -1,7 +1,9 @@
 # Design — 001-project（示例实例）
 
-> 按 `.sdd/templates/design.md` 与 `.sdd/templates/plan.md` 填写（§98, 知识库 §80）。
-> Design 描述 HOW（plan.md 亦承载技术栈/设计）。
+> 按 `.sdd/templates/design.md` 填写（`res.md §98`、`知识库 §80`）。
+> **按需产物**：本实例命中「复杂接口契约 + 安全敏感流程（支付）+ 异步流程」，故保留（`.sdd/LAYOUT.md` §1.2）。
+> **本文件只写 `plan.md` 装不下的细节**，不得重述 plan 已写的架构 / 技术栈 / 模块划分 / 缓存 TTL。
+> 与 `plan.md` 冲突时以 `plan.md` 为准 —— 需要改 plan 的内容就改 `plan.md` 本身。
 
 ## Component
 Modular Monolith 模块：users / orders / payments / notifications（见 architecture.md §2.2）。

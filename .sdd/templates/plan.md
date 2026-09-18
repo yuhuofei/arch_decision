@@ -2,7 +2,8 @@
 
 > 用途：plan.md 描述 HOW、架构与技术选择（res.md §99,§100；知识库 §77,§80）。
 > 实现前必须读：Project Rules / Technology Selection / Relevant Spec / Design / Tasks（res.md §100）。
-> 技术栈类决定建议先 `Human Confirmation` 再固化（decision-protocol §9）。
+> 只有 `REQUIRE_CONFIRMATION` 的技术决策需先 `Human Confirmation` 再固化（decision-protocol §6）。
+> **`design.md` 只写本文件装不下的细节**，两边不得重述同一件事（缓存 TTL、模块划分等只写一处），判据见 `.sdd/LAYOUT.md` §1.2。
 
 # Implementation Plan: <Feature Name>
 

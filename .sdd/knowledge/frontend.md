@@ -5,21 +5,24 @@
 
 ## 1. Frontend Matrix（Matrix §8，正式条件）
 
-### Vue 3 + TypeScript（Matrix §8.1，默认）
+### Vue 3 + TypeScript（Matrix §8.1，默认候选先验）
 ```
-IF business_app = true AND frontend_complexity = medium THEN Vue 3 + TypeScript
+IF business_app = true AND frontend_complexity = medium
+THEN Vue 3 + TypeScript SHOULD be considered (candidate prior, not a decision)
 ```
 适合 Admin/Dashboard/Enterprise CRUD/Internal Tool/SaaS。默认栈：Vue 3 + TS + Vite + Pinia + Vue Router + Vitest + Playwright。
 
 ### React（Matrix §8.2）
 ```
-IF react_ecosystem_required OR existing_react OR component_ecosystem = important THEN React
+IF react_ecosystem_required OR existing_react OR component_ecosystem = important
+THEN React SHOULD be included as a candidate
 ```
 默认 React + TypeScript + Vite（普通 SPA：React Router + TanStack Query）。
 
 ### Next.js（Matrix §8.3 / 知识库 §16）
 ```
-IF React = true AND (SSR OR SEO OR fullstack_web OR server_components useful) THEN Next.js
+IF React = true AND (SSR OR SEO OR fullstack_web OR server_components useful)
+THEN Next.js SHOULD receive strong preference as a candidate
 ELSE React + Vite
 ```
 新项目优先 App Router（知识库 §16）。
@@ -27,12 +30,13 @@ ELSE React + Vite
 ### Angular（Matrix §8.4）
 ```
 IF enterprise_frontend_standard = Angular OR existing_angular OR large_enterprise_team AND Angular_expertise = strong
-THEN Angular
+THEN Angular SHOULD be included as a candidate
 ```
 无 Angular 专长不作为默认（知识库 §17）。
 
 ## 2. 新 Web Frontend 默认语言（知识库 Rule 8）
 TypeScript 是新 Web 前端的默认语言。
+> 版本（Node Active LTS / Vue major / Next.js 主版本）一律查 `.sdd/knowledge/versioning.md`，本文件不写死版本号。
 
 ## 3. 前后端分离（Matrix §9 / 知识库 §12）
 - 分离：SaaS / 多终端 / Mobile+Web / API 对外开放 / 多个前端共享 API。

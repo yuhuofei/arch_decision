@@ -6,7 +6,8 @@
 ## 1. 数据库分类（知识库 §20）
 先按 关系型 / 文档型 / KV / 搜索 / 向量 / 时序 分类。
 
-## 2. PostgreSQL（res.md §23 / Matrix §10，默认主数据库）
+## 2. PostgreSQL（res.md §23 / Matrix §10，默认候选先验）
+> 版本（major 选择）查 `.sdd/knowledge/versioning.md`，本文件不写死版本号。
 ```
 IF relational_data = true AND no_specific_constraint THEN PostgreSQL
 ```

@@ -1,0 +1,138 @@
+{
+  "architecture_decision": {
+    "_note": "本文件是 Machine-readable Decision Contract，权威可校验实例（见 .sdd/LAYOUT.md §1）。technology-selection.md 里的 YAML 块是其人读镜像。",
+    "project": {
+      "type": "SaaS",
+      "scale": "Small/Medium",
+      "team_size": 6,
+      "deployment": "Docker"
+    },
+    "architecture": {
+      "style": "Modular Monolith",
+      "reason": "no independent scaling/deployment/ownership need; complexity budget not justified"
+    },
+    "backend": {
+      "language": "Python",
+      "framework": "FastAPI",
+      "reason": "CRUD/API workload, non-extreme-performance; FastAPI preferred over Flask for new APIs"
+    },
+    "frontend": {
+      "language": "TypeScript",
+      "framework": "Vue 3 + Vite",
+      "reason": "business admin app, medium frontend complexity"
+    },
+    "database": {
+      "primary": "PostgreSQL",
+      "reason": "greenfield relational data, no specific constraint favoring another engine"
+    },
+    "cache": {
+      "enabled": false,
+      "technology": null,
+      "purpose": "introduce only if cache/session/rate-limit need appears"
+    },
+    "messaging": {
+      "enabled": false,
+      "technology": null,
+      "purpose": "introduce only if async/event-driven need appears"
+    },
+    "search": {
+      "enabled": false,
+      "technology": "PostgreSQL FTS"
+    },
+    "vector": {
+      "enabled": false,
+      "technology": null
+    },
+    "object_storage": {
+      "enabled": true,
+      "technology": "S3-compatible"
+    },
+    "authentication": {
+      "strategy": "Session"
+    },
+    "authorization": {
+      "strategy": "RBAC"
+    },
+    "observability": {
+      "logging": true,
+      "metrics": true,
+      "tracing": false
+    },
+    "testing": {
+      "unit": "High",
+      "integration": "High",
+      "e2e": "Medium"
+    },
+    "deployment": {
+      "strategy": "Docker Compose"
+    },
+    "versions": [
+      {
+        "technology": "Python",
+        "selected": "UNKNOWN",
+        "support_status": "UNKNOWN",
+        "verified_at": null,
+        "reason": "本示例未联网核对上游版本，按 knowledge/versioning.md 不得编造精确版本号；实现前须补齐"
+      },
+      {
+        "technology": "PostgreSQL",
+        "selected": "UNKNOWN",
+        "support_status": "UNKNOWN",
+        "verified_at": null,
+        "reason": "同上：以目标部署平台可用的 supported stable major 为准"
+      },
+      {
+        "technology": "Node.js",
+        "selected": "UNKNOWN",
+        "support_status": "UNKNOWN",
+        "verified_at": null,
+        "reason": "仅构建前端工具链需要；取 Active LTS"
+      }
+    ],
+    "decision_status": {
+      "architecture": "AUTO",
+      "backend": "AUTO",
+      "frontend": "AUTO",
+      "database": "AUTO",
+      "authentication": "AUTO"
+    },
+    "complexity": {
+      "score": 2,
+      "budget": 8,
+      "items": [
+        { "component": "PostgreSQL", "points": 1 },
+        { "component": "Object storage (S3-compatible)", "points": 1 }
+      ]
+    },
+    "cost": {
+      "recurring": "1 VM + managed PostgreSQL（可选）+ 对象存储按 GB 计",
+      "cap": "UNKNOWN",
+      "within_budget": true
+    },
+    "rejected": [
+      {
+        "option": "Microservices",
+        "reason": "no strong condition satisfied (no independent scaling/deployment/ownership need)"
+      },
+      {
+        "option": "MySQL",
+        "reason": "greenfield project without MySQL constraint; PostgreSQL is the relational default"
+      },
+      {
+        "option": "Redis",
+        "reason": "no cache/session/rate-limit requirement yet; introducing it adds +1 complexity for nothing"
+      }
+    ],
+    "risks": [
+      "Redis may be needed later for session store; revisit before scaling out",
+      "unverified runtime versions must be checked against upstream before implementation"
+    ],
+    "assumptions": [
+      "single-region deployment",
+      "no compliance/data-residency requirement yet"
+    ],
+    "confidence": {
+      "overall": 4
+    }
+  }
+}

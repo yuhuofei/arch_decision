@@ -78,5 +78,6 @@ THEN 标记 REQUIRE_CONFIRMATION，并在 technology-selection.md 记录数据�
 
 - 写入 `technology-selection.md` 的 AI 段（含 `decision-protocol §6` 的 Decision Status）
 - 写入 `plan.md` 的 §2 Technology Stack 与 §10 Security
-- 全部 `REQUIRE_CONFIRMATION` 项先 `Architecture Proposal → Human Confirmation` 再固化（`decision-protocol §9`）
-- 每个决策配 ADR（`.sdd/templates/adr.md`）
+- 只有 `REQUIRE_CONFIRMATION` 项先 `Architecture Proposal → Human Confirmation` 再固化（`decision-protocol §9`）；
+  其余按 `AUTO`/`RECOMMEND` 直接执行并记录，不阻塞
+- ADR **按需**（`.sdd/templates/adr.md`）：只记录重要 Architecture Decision，不为凑目录制造 ADR

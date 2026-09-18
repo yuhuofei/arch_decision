@@ -4,6 +4,117 @@
 
 ---
 
+## [v1.3] — 2026-09-19
+
+**主题：Agent 可执行性优化**（不新增技术知识文件，只修执行语义）。
+来源：`sources/v1.0/mod_gpt.md`（9 项评审意见），逐项落点见 `REVIEW-2026-09-19.md` 的三审章节。
+
+### 修复（P0 — 流程与决策语义自相矛盾）
+
+1. **Spec 前置，修正 canonical workflow**（`mod_gpt.md §1`）
+   - 旧流程 `Discovery → Decision Protocol → Architecture → Backend/Frontend/Database → Technology Selection → Spec`
+     把技术选型排在 Spec 之前，实际退化成 `Prompt → Tech Stack → Spec`，与 `spec.md` 声明的
+     "Spec 是 Source of Truth" 冲突。
+   - 新顺序：`Requirement → Discovery → **Draft Spec** → 决策材料 → Technology Selection →
+     Human Confirmation（仅 CONFIRMATION）→ Final Spec（Accepted）→ plan → design(按需) → tasks`。
+   - 落点：`CLAUDE.md` §2/§7、`.sdd/workflows/new-project.md`、`.sdd/templates/spec.md`
+     （新增 `Status: Draft → Accepted` 与"不写具体技术实现"约束）、`decision-protocol §1/§9`、
+     `AGENTS.md` READ ORDER、`CONVENTIONS.md` §3 新增 Spec Status 枚举。
+
+2. **AUTO/RECOMMEND 不再阻塞**（`mod_gpt.md §2`）
+   - 旧文同时写着"只有重大架构决定属 REQUIRE_CONFIRMATION"和"技术栈类决定有长期锁定成本 → 必须 Human Confirmation"，
+     于是语言/框架/数据库/Docker 都要问用户，`AUTO` 失去意义。
+   - 现明确：`AUTO` 直接执行并记录；`RECOMMEND` **采用推荐方案继续执行**并记录
+     alternatives / assumptions / reversibility，**不阻塞**；`BLOCKED` 仅在"缺失信息会导致重大、不可逆或
+     高风险决策且无安全可逆默认值"时才停止。反向也禁止：不得把 AUTO/RECOMMEND 升格为"要人确认"以求免责。
+   - 删除"技术栈类决定有长期锁定成本 → Human Confirmation"共 6 处：
+     `decision-protocol §6/§9`、`CLAUDE.md` §5、`workflows/new-project.md`、`.sdd/README.md`、
+     `templates/technology-selection.md`、`templates/plan.md`。
+
+3. **约束优先级分级 P0A / P0B**（`mod_gpt.md §3`）
+   - 旧规则"Explicit user requirement = P0 Hard Constraint"+"用户显式要求高于以上全部"过于绝对：
+     用户要求 EOL 框架 / SQLite 承担高并发写 / 明文存 token / 禁止备份时，Agent 按旧规则都应照做。
+   - 新分级：**P0A**（Safety·Legal·Compliance；Technical feasibility·Platform impossibility）**高于 P0B**
+     （显式不可协商的用户约束；现有系统硬兼容）；P0A 不可被用户偏好覆盖，冲突时标 `BLOCKED` 并按模板澄清。
+   - 新增**用户表达分级**：说"偏好 / 熟悉 / 倾向 / 最好用" → Preference（P3/P2）；
+     只有"必须 / 不得 / 组织标准 / 不可改变"才升级为 Hard Constraint。
+   - 落点：`decision-protocol §2/§3.1/§8`、`CLAUDE.md` §5、`AGENTS.md`、
+     `decision-trees/backend.md`、`knowledge/backend.md`、`CONVENTIONS.md` §3 枚举。
+
+### 修复（P1 — 结构与工程化）
+
+4. **`design.md` 与 `adr/` 改为按需**（`mod_gpt.md §4`）
+   - `plan.md`（16 节）与 `design.md` 覆盖内容高度重叠，且两份都在写"缓存 TTL"这类数值时
+     Agent 无法判断 Source of Truth。
+   - 现规定：`design.md` **只写 plan 装不下的细节**（复杂领域模型 / 状态机 / 并发 / 异步 /
+     多外部集成 / 分布式一致性 / 复杂契约 / 安全敏感流程 / 需显式设计的算法），否则 plan 足够；
+     `adr/` 无重要 Architecture Decision 就不建。并给出**文档职责边界表**（who answers what）。
+   - 落点：`.sdd/LAYOUT.md` §1.1/§1.2/§2（含 mod_gpt.md 映射行）、`templates/design.md`（重写）、
+     `templates/plan.md`、`templates/technology-selection.md`、`templates/adr.md`、
+     `workflows/new-project.md`、`CLAUDE.md` §2。
+
+5. **Schema 校验从"名义"变为"真校验"**（`mod_gpt.md §5`）
+   - 旧实现只用正则检查"键名在不在"，`backend: 123` / `database: []` / `confidence: foo` 都能通过。
+   - 现新增 `specs/<id>/decision.json`（**机器可读 Decision Contract**）+
+     `scripts/mini_schema.py`（纯标准库 JSON Schema **子集**校验器，支持 type/enum/required/
+     properties/additionalProperties/items/数值与长度边界/oneOf 等）；
+     `validate_rules.py` 对它做**真校验**。
+   - 保留 Markdown 里的 YAML 块，但**明确降级为 structural validation**（YAML 无标准库解析器，
+     无法类型校验）——文档中"机器可校验 Schema"的说法全部改为
+     "机器可读 Decision Contract + 真 Schema validation"，不再混称。
+   - 子集校验器遇到不认识的 Schema 关键字**报错而非静默跳过**，防止再次退化为名义校验。
+   - 反例验证：`mod_gpt.md §5` 给出的坏数据现已能被抓出 6 处违规。
+
+6. **评分标尺（0–5 rubric）与适用门槛**（`mod_gpt.md §6`）
+   - 公式有权重但无标尺，两个 Agent 会对同一对候选给出无法复核的分数（"伪精确评分"）。
+   - 现给出 0–5 的统一标尺 + **各维度 3/4/5 的判定锚点**，并明确
+     **Scoring is a tie-break / comparison tool, not the decision itself**；
+     仅在"消除后仍 ≥2 候选且规则无法区分"时才评分，不为用公式而制造候选。
+   - 落点：`decision-protocol §3.3/§4.1`、`templates/technology-selection.md`、`AGENTS.md`、`CLAUDE.md` §5。
+
+7. **默认值语义：Default = Candidate Prior**（`mod_gpt.md §7`）
+   - 旧句式 `IF … THEN language = Python` / `THEN Vue 3 + TypeScript` 是**断言结论**，
+     等于跳过候选淘汰；叠加"几乎任何 Web 后端都满足 CRUD/API"，任何 SaaS 都收敛到
+     `Vue + FastAPI + PostgreSQL` —— 正是本仓要避免的"答案库"效果。
+   - 现统一改为候选句式：`THEN Python SHOULD be included as a candidate` /
+     `THEN Vue 3 + TypeScript SHOULD be considered`，并新增四条统一规则
+     （进入候选集 / 无区分度时才可为 AUTO / 让位于现有栈与团队专长 / 不得绕过淘汰）。
+   - 落点：`decision-protocol §3.4`、`knowledge/{backend,frontend}.md`、
+     `decision-trees/{backend,frontend}.md`、`workflows/new-project.md`、`AGENTS.md` 默认矩阵。
+
+8. **新增 `knowledge/versioning.md`（版本选择策略唯一实现）**（`mod_gpt.md §8`）
+   - 此前只有 `Python 3.x` / `Vue 3` / `pinned deps`，回答不了 Agent 最实际的问题
+     （3.12 还是 3.13？PG 17 还是 18？Node 哪个 LTS？），且把具体版本号写死必然过期。
+   - 新增：原则（生命周期决策，不是流行度决策）/ 存量项目保持版本的 5 个例外 /
+     新项目 6 级默认优先级 / 明确避免 alpha·beta·RC·EOL·平台不可用 / **强制核对上游官方文档**
+     （未核实写 `UNKNOWN`，禁止编造）/ 锁定规则（lockfile、pin major·minor、镜像禁 `latest`）。
+   - backend / frontend / database / deployment 只**引用**它，不各自维护版本策略；
+     `decision.json` 新增 `versions` 字段（Schema 同步扩展）。
+
+9. **`AGENTS.md` 新增 DEFINITION OF DONE**（`mod_gpt.md §9`）
+   - 明确改本规则库的"完成"标准：先 `gen_traceability.py` 再 `validate_rules.py`，
+     必须 0 错误 0 警告 / 无失效文件引用 / 无互相冲突的 canonical rules；
+     并给出"改了 A 就要同步 B"的对照表（Layout / Decision semantics / Technology rule /
+     User-facing behavior / Rule source mapping / Public rule behavior / 版本策略 / 新增来源）。
+   - `CLAUDE.md` §9 指向该节。
+
+### 溯源与工程化
+
+10. **接入第 4 份来源 `mod_gpt.md`**
+    - `.sdd/CONVENTIONS.md`：§1 登记 `mod_gpt.md §N` 前缀，并新增 `CONVENTIONS.md` §1.1「各来源的条号从哪来」。
+    - `scripts/sdd_refs.py` 增加该来源与**专用条目模型**：它是散文式评审，正文含 3 处
+      **从 1 重新开始**的子枚举，故只认严格递增的行首编号（得到 9 条）。
+    - `sources/README.md` 补文件清单、引用前缀与"更新源文档时"的步骤（含登记条目识别方式）。
+
+### 已知限制（未解决，勿误读）
+
+- **引用率 ≠ 内容覆盖率**：`TRACEABILITY.md` 全绿只说明"每条源规则都至少被一处声明为来源"。
+- **裸 `§N` 检查是"按分句回看标签"实现的**：若同一分句里出现任何白名单标签
+  （如文件名 `design.md`），该分句内的裸 `§N` 会被放过（本次已顺手修掉一处实例：
+  `specs/001-project/design.md` 的 `§98` → `res.md §98`）。收紧该规则会牵连全仓，留待下次评估。
+
+---
+
 ## [v1.2] — 2026-09-19
 
 二审：追踪矩阵本身失准，且 TS 后端线存在选型死胡同。
@@ -21,8 +132,8 @@
    - **后果二**：校验脚本同样漏检压缩写法中的越界条号——**已抓到 1 处**（见下）。
 
 2. **修正越界引用**
-   - `.sdd/knowledge/architecture.md`：`Matrix §65-§69` → 该区间实属 `知识库`（微服务/EDA/CQRS/ES/DDD），
-     且下一组 `知识库 §65-§70` 已正确覆盖。`Matrix` 最大条号为 §45。**已删除误并项**。
+   - `.sdd/knowledge/architecture.md`：原先误引了 `Matrix` 的第 65–69 条（该区间实属 `知识库` 的
+     微服务/EDA/CQRS/ES/DDD），且下一组 `知识库 §65-§70` 已正确覆盖。`Matrix` 最大条号为 §45。**已删除误并项**。
 
 3. **扫描范围统一**
    - `gen_traceability.py` 原先只扫 `.sdd/` 与 `specs/`，漏掉根目录的 `README.md` / `AGENTS.md` / `CLAUDE.md` / `CHANGELOG.md`；
@@ -40,9 +151,9 @@
 
 6. **补齐 TS 后端判定**
    - `.sdd/decision-trees/backend.md` §4：原先只列 Next.js / React+Vite / Vue+Vite 三个**前端**框架，
-     而 §1 的语言判定可以输出 `TypeScript` → **API-only 服务无框架可依**。现拆为两组：
+     而 `decision-trees/backend.md` 的语言判定可以输出 `TypeScript` → **API-only 服务无框架可依**。现拆为两组：
      纯 TS 后端 → NestJS（默认）/ Fastify / Hono；含前端的 fullstack → Next.js。并写明"不要把 Next.js 当纯后端框架"。
-   - `.sdd/knowledge/backend.md`：TypeScript 段补框架默认；§7 Repository Structure 补 `res.md §78-§82`。
+   - `.sdd/knowledge/backend.md`：TypeScript 段补框架默认；`knowledge/backend.md` 的 Repository Structure 补 `res.md §78-§82`。
 
 ### 改进（引用完整性）
 
