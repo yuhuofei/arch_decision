@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(.sdd/**)",
+      "Read(specs/**)",
+      "Read(AGENTS.md)",
+      "Read(CLAUDE.md)"
+    ]
+  }
+}

@@ -1,5 +1,5 @@
-arch_decision 与 Spec Kit / OpenSpec 集成使用指南
-1. 定位：三个框架分别解决什么问题
+# arch_decision 与 Spec Kit / OpenSpec 集成使用指南
+## 1. 定位：三个框架分别解决什么问题
 
 arch_decision、Spec Kit、OpenSpec 都属于 AI Agent 驱动开发体系的一部分，但职责不同。
 
@@ -7,14 +7,17 @@ arch_decision、Spec Kit、OpenSpec 都属于 AI Agent 驱动开发体系的一�
 
 推荐职责划分：
 
-工具	核心职责	解决的问题
-arch_decision	Architecture Decision Governance	为什么这么设计？为什么选择这些技术？
-Spec Kit	Specification Driven Development	需求是什么？如何拆解成 Spec/Plan/Task？
-OpenSpec	Change/Spec Proposal Workflow	如何管理需求变化、变更提案和实现过程？
-Claude Code / Cursor / Codex	Agent Runtime	执行代码、修改文件、运行测试
+| 工具 | 核心职责 | 解决的问题 |
+| --- | --- | --- |
+| arch_decision | Architecture Decision Governance | 为什么这么设计？为什么选择这些技术？ |
+| Spec Kit | Specification Driven Development | 需求是什么？如何拆解成 Spec/Plan/Task？ |
+| OpenSpec | Change/Spec Proposal Workflow | 如何管理需求变化、变更提案和实现过程？ |
+| Claude Code / Cursor / Codex | Agent Runtime | 执行代码、修改文件、运行测试 |
+
 
 整体关系：
 
+```text
                  User Requirement
                          |
                          v
@@ -48,8 +51,11 @@ Claude Code / Cursor / Codex	Agent Runtime	执行代码、修改文件、运行�
               Implementation Agent
 
        Claude Code / Cursor / Codex
-2. arch_decision 在整个流程中的位置
+```
+
+## 2. arch_decision 在整个流程中的位置
 推荐流程
+```text
 Discovery
     |
     v
@@ -90,7 +96,9 @@ Coding Agent
     v
 
 Verification
-3. 新项目初始化方式
+```
+
+## 3. 新项目初始化方式
 
 假设创建项目：
 
@@ -109,50 +117,55 @@ RAG 查询
 Web UI
 20~100 用户
 企业内部部署
-3.1 初始化项目
+### 3.1 初始化项目
 
 创建目录：
 
+```bash
 mkdir enterprise-ai-kb
-
 cd enterprise-ai-kb
-
 git init
-3.2 引入 arch_decision
+```
+
+### 3.2 引入 arch_decision
 
 推荐作为项目级治理规则：
 
 enterprise-ai-kb/
 
+```text
 ├── .sdd/
-│
 ├── scripts/
-│
 ├── AGENTS.md
-│
 ├── CLAUDE.md
-│
 └── README.md
+```
 
 来源：
 
+```text
 arch_decision
         |
         |
         v
 
 new project
+```
 
 例如：
 
+```bash
 cp -r ../arch_decision/.sdd .
 cp -r ../arch_decision/scripts .
 cp ../arch_decision/AGENTS.md .
 cp ../arch_decision/CLAUDE.md .
-4. 引入 Spec Kit
+```
+
+## 4. 引入 Spec Kit
 
 Spec Kit 负责：
 
+```text
 Requirement
       |
       v
@@ -166,21 +179,21 @@ Tasks
       |
       v
 Implementation
+```
 
 目录：
 
 enterprise-ai-kb/
 
+```text
 ├── .sdd/
-│
 ├── .specify/
-│
 ├── specs/
-│
 ├── src/
-│
 └── tests/
-5. 引入 OpenSpec
+```
+
+## 5. 引入 OpenSpec
 
 OpenSpec 更适合处理：
 
@@ -205,6 +218,7 @@ AI Knowledge Base v1
 
 openspec/
 
+```text
 └── changes/
 
     └── add-wechat-login/
@@ -216,11 +230,13 @@ openspec/
         ├── design.md
 
         └── tasks.md
+```
 
 流程：
 
 Change Request
 
+```text
       |
       v
 
@@ -235,11 +251,14 @@ Review
       v
 
 Implementation
-6. 三者组合推荐模式
+```
+
+## 6. 三者组合推荐模式
 新项目
 
 推荐：
 
+```text
 arch_decision
         |
         |
@@ -253,9 +272,11 @@ Spec Kit
 
 Implementation
 已存在项目增加功能
+```
 
 推荐：
 
+```text
 arch_decision
         |
         |
@@ -269,11 +290,13 @@ OpenSpec
 
 Implementation
 大型长期项目
+```
 
 推荐：
 
                  Requirement
 
+```text
                       |
                       v
 
@@ -299,7 +322,9 @@ Implementation
                       |
 
               Verification
-7. 实际完整案例
+```
+
+## 7. 实际完整案例
 项目：
 
 企业 AI 知识库
@@ -496,6 +521,7 @@ AUTO
 
 specs/
 
+```text
 └── 001-project/
 
     ├── decision.json
@@ -506,6 +532,7 @@ specs/
 
     └── verification.md
 Phase 3：进入 Spec Kit
+```
 
 此时：
 
@@ -527,8 +554,9 @@ specs/001-project/decision.json
 
 执行：
 
+```bash
 /speckit-specify
-
+```
 
 目标：
 
@@ -552,6 +580,7 @@ specs/001-project/decision.json
 
 specs/
 
+```text
 ├── feature-auth.md
 
 ├── feature-document.md
@@ -560,13 +589,15 @@ specs/
 
 └── feature-search.md
 Phase 4：Spec Kit Plan
+```
 
 Prompt：
 
 执行：
 
+```bash
 /speckit-plan
-
+```
 
 必须遵守：
 
@@ -598,8 +629,9 @@ Prompt：
 
 执行：
 
+```bash
 /speckit-tasks
-
+```
 
 要求：
 
@@ -607,6 +639,7 @@ Prompt：
 
 Requirement
 
+```text
 ↓
 
 Spec
@@ -618,6 +651,7 @@ Architecture Decision
 ↓
 
 Task
+```
 
 输出：
 
@@ -750,7 +784,7 @@ Changed
 arch_decision
 
 Authentication Decision Update
-8. Agent 使用规则（建议加入 AGENTS.md）
+## 8. Agent 使用规则（建议加入 AGENTS.md）
 
 可以加入：
 
@@ -767,7 +801,9 @@ Authentication Decision Update
 直接生成代码。
 
 
+```text
 ---
+```
 
 ## Rule 2
 
@@ -784,7 +820,9 @@ Spec Kit / OpenSpec:
 - Infrastructure
 
 
+```text
 ---
+```
 
 ## Rule 3
 
@@ -808,7 +846,9 @@ ARCHITECTURE_CHANGE_REQUEST
 不得自行修改。
 
 
+```text
 ---
+```
 
 ## Rule 4
 
@@ -816,6 +856,7 @@ ARCHITECTURE_CHANGE_REQUEST
 
 Requirement
 
+```text
 ↓
 
 Spec
@@ -835,8 +876,11 @@ Code
 ↓
 
 Test
-9. 最终推荐组合
+```
+
+## 9. 最终推荐组合
 小项目
+```text
 arch_decision
         |
         v
@@ -861,7 +905,9 @@ Coding Agent
        |
 
 CI/CD Verification
-10. 对 arch_decision 下一步演进建议
+```
+
+## 10. 对 arch_decision 下一步演进建议
 
 如果继续发展，我认为最有价值的是增加：
 
@@ -873,11 +919,14 @@ arch decision check
 
 返回：
 
+```json
 {
  "status":"ACCEPTED",
  "architecture":"fastapi-postgresql",
  "allow_implementation":true
 }
+```
+
 
 然后：
 
@@ -894,6 +943,7 @@ arch_decision gate
 
 No Architecture Decision
 
+```text
         ↓
 
 No Plan
@@ -901,6 +951,7 @@ No Plan
         ↓
 
 No Code
+```
 
 这样 arch_decision 就从一个规则仓库升级为：
 

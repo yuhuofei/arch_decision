@@ -1,3 +1,5 @@
+# arch_decision 与 Spec Kit / OpenCode 等集成使用指南（v0 讨论稿）
+
 可以，而且我认为 arch_decision 最适合和 Spec Kit、OpenCode、Claude Code、Codex 组合，而不是和它们竞争。
 
 从你现在 v1.5 的设计来看，它实际上更像一个**“架构决策治理层”**：负责在 Agent 真正进入 Plan/Implementation 之前，把「到底该选什么架构、语言、框架、数据库、缓存、部署方式」这类容易被 Agent 凭经验拍板的问题约束下来。仓库当前的核心链路也是 Discovery → Draft Spec → 约束提取 → 候选淘汰 → 决策状态 → 人工确认 → Final Spec → Plan → Tasks → Implementation → Verification。
@@ -6,10 +8,10 @@
 
 所以我建议把三者定位成：
 
+```text
                     ┌──────────────────────────┐
                     │       用户需求             │
                     └────────────┬─────────────┘
-                                 │
                                  ▼
                  ┌──────────────────────────────┐
                  │       arch_decision           │
@@ -22,9 +24,7 @@
                  │ Complexity Budget             │
                  │ Human Confirmation Gate      │
                  └──────────────┬───────────────┘
-                                │
                          Accepted Decision
-                                │
                                 ▼
                  ┌──────────────────────────────┐
                  │         Spec Kit             │
@@ -36,7 +36,6 @@
                  │ Implement                    │
                  │ Converge                     │
                  └──────────────┬───────────────┘
-                                │
                                 ▼
                  ┌──────────────────────────────┐
                  │         OpenCode             │
@@ -46,6 +45,7 @@
                  │ Tool execution               │
                  │ Code / Test / Shell          │
                  └──────────────────────────────┘
+```
 
 一句话：
 
@@ -53,17 +53,19 @@ arch_decision 决定“为什么这么选”；Spec Kit 负责“把需求变成
 
 这会是一个非常自然的组合。
 
-一、先说结论：可以怎么组合
+## 一、先说结论：可以怎么组合
 
 我建议采用下面这个模式：
 
-工具	职责	是否应该决定技术栈
-arch_decision	架构与技术决策治理	是
-Spec Kit	Spec → Plan → Tasks → Implement	否/受决策约束
-OpenCode	Agent Runtime	否
-Claude Code	Agent Runtime	否
-Codex	Agent Runtime	否
-Cursor	Agent Runtime	否
+| 工具 | 职责 | 是否应该决定技术栈 |
+| --- | --- | --- |
+| arch_decision | 架构与技术决策治理 | 是 |
+| Spec Kit | Spec → Plan → Tasks → Implement | 否/受决策约束 |
+| OpenCode | Agent Runtime | 否 |
+| Claude Code | Agent Runtime | 否 |
+| Codex | Agent Runtime | 否 |
+| Cursor | Agent Runtime | 否 |
+
 
 特别重要的是：
 
@@ -85,7 +87,7 @@ Agent:
 
 这正好违背你 v1.5 里正在强化的 Canonical Ownership。
 
-二、一个新项目应该长什么样
+## 二、一个新项目应该长什么样
 
 假设我们现在创建一个真实项目：
 
@@ -104,13 +106,12 @@ Web UI
 
 最终项目可以是：
 
+```text
 ai-knowledge-base/
-│
 ├── AGENTS.md
 ├── CLAUDE.md
 ├── README.md
 ├── opencode.json
-│
 ├── .sdd/
 │   ├── VERSION
 │   ├── LAYOUT.md
@@ -122,10 +123,8 @@ ai-knowledge-base/
 │   ├── decision-trees/
 │   ├── templates/
 │   └── workflows/
-│
 ├── scripts/
 │   └── validate_rules.py
-│
 ├── specs/
 │   └── 001-project/
 │       ├── project-discovery.md
@@ -136,13 +135,12 @@ ai-knowledge-base/
 │       ├── tasks.md
 │       ├── verification.md
 │       └── adr/
-│
 ├── .specify/                  # 如果采用 Spec Kit
 │   └── ...
-│
 ├── backend/
 ├── frontend/
 └── tests/
+```
 
 这里有一个很重要的设计：
 
@@ -163,7 +161,7 @@ specs/<feature>/
 
 不要让两个系统同时维护同一份语义。
 
-三、第一步：把 arch_decision 放进新项目
+## 三、第一步：把 arch_decision 放进新项目
 
 最简单的方式不是安装 Python package。
 
@@ -175,26 +173,32 @@ Repository-level Agent Governance Framework
 
 例如：
 
+```bash
 git clone <your-new-project>
-
 cd your-new-project
+```
 
 # 将 arch_decision 的规则体系复制/同步进项目
+```bash
 cp -R ../arch_decision/.sdd .
 cp -R ../arch_decision/scripts .
 cp ../arch_decision/AGENTS.md .
 cp ../arch_decision/CLAUDE.md .
+```
 
 实际长期使用，我反而建议做成：
 
+```text
 architecture-rules/
         ↓
    version 1.5
         ↓
 多个业务项目
+```
 
 例如：
 
+```text
 project-A
  └── .sdd/  ← v1.5
 
@@ -203,9 +207,11 @@ project-B
 
 project-C
  └── .sdd/  ← v1.5
+```
 
 以后：
 
+```text
 arch_decision v1.6
         ↓
 review
@@ -213,10 +219,11 @@ review
 project A update
 project B update
 project C update
+```
 
 而不是每个项目自己魔改一套。
 
-四、第二步：让 Agent 知道 arch_decision
+## 四、第二步：让 Agent 知道 arch_decision
 
 这一点其实你现在 v1.5 的 AGENTS.md 已经基本完成了。
 
@@ -239,13 +246,14 @@ OpenCode 对 AGENTS.md 是原生支持的，并且项目根目录的 AGENTS.md �
 
 所以 OpenCode 基本不需要特殊改造。
 
-五、第三步：启动 OpenCode
+## 五、第三步：启动 OpenCode
 
 进入项目：
 
+```bash
 cd ai-knowledge-base
-
 opencode
+```
 
 然后不要直接说：
 
@@ -282,7 +290,7 @@ opencode
 - 需要我确认的问题
 
 不要进入 Plan 和 Implementation。
-六、然后用户开始回答 Discovery
+## 六、然后用户开始回答 Discovery
 
 假设 Agent 问：
 
@@ -338,7 +346,7 @@ Q9:
 - 如果存在 REQUIRE_CONFIRMATION，明确指出原因
 
 输出更新后的 Draft Spec。
-七、进入最重要的一步：Architecture Decision
+## 七、进入最重要的一步：Architecture Decision
 
 此时 Agent 才开始做：
 
@@ -362,6 +370,7 @@ Python + FastAPI + PostgreSQL + Redis
 
 而是：
 
+```text
 Requirement
      ↓
 Constraints
@@ -375,6 +384,7 @@ Score if necessary
 Complexity Budget
      ↓
 Decision
+```
 
 例如数据库：
 
@@ -425,7 +435,7 @@ Not required
 
 这才是你这个仓库真正有价值的地方。
 
-八、但是如果碰到 REQUIRE_CONFIRMATION 呢？
+## 八、但是如果碰到 REQUIRE_CONFIRMATION 呢？
 
 比如 Agent 判断：
 
@@ -491,12 +501,13 @@ BLOCKED
 
 真正落地后的效果。
 
-九、然后才进入 Spec Kit
+## 九、然后才进入 Spec Kit
 
 这时候就可以把 Spec Kit 接进来了。
 
 官方 Spec Kit 的流程目前是：
 
+```bash
 /speckit-constitution
 /speckit-specify
 /speckit-clarify
@@ -506,24 +517,26 @@ BLOCKED
 /speckit-analyze
 /speckit-implement
 /speckit-converge
+```
 
 其中官方明确把 specify 定位为 WHAT/WHY，而 plan 才进入技术实现细节。
 
 所以我们的组合方式应该是：
 
+```text
 arch_decision
-      │
       │ Architecture Decision
       ▼
 Spec Kit
-      │
       ├── specify
       ├── clarify
       ├── plan
       ├── tasks
       ├── implement
       └── converge
-十、给 Spec Kit 的 Prompt
+```
+
+## 十、给 Spec Kit 的 Prompt
 
 在架构决策完成以后：
 
@@ -546,7 +559,9 @@ AGENTS.md
 
 现在执行：
 
+```bash
 /speckit-specify
+```
 
 目标：
 
@@ -572,10 +587,12 @@ Spec 阶段只描述 WHAT / WHY。
 如果发现 Spec 与 Architecture Decision 冲突：
 STOP，并指出冲突。
 不要自行修改架构。
-十一、然后 /speckit-clarify
+## 十一、然后 /speckit-clarify
 继续执行：
 
+```bash
 /speckit-clarify
+```
 
 重点检查：
 
@@ -596,7 +613,7 @@ STOP，并指出冲突。
 
 如果发现架构层问题，标记为 ARCHITECTURE_CONFLICT，
 不要直接修改。
-十二、然后 /speckit-plan
+## 十二、然后 /speckit-plan
 
 这里是整个组合最关键的一点。
 
@@ -606,7 +623,9 @@ Spec Kit 官方的 /speckit-plan 会进入技术实现计划。
 
 现在执行：
 
+```bash
 /speckit-plan
+```
 
 但必须遵守：
 
@@ -641,10 +660,12 @@ ARCHITECTURE_CHANGE_REQUEST
 
 这样就解决了 Spec Kit 和 arch_decision 的职责冲突。
 
-十三、然后 /speckit-tasks
+## 十三、然后 /speckit-tasks
 执行：
 
+```bash
 /speckit-tasks
+```
 
 要求：
 
@@ -658,6 +679,7 @@ ARCHITECTURE_CHANGE_REQUEST
 
 最终形成：
 
+```text
 Requirement
      ↓
 Spec
@@ -669,10 +691,14 @@ Plan
 Task
      ↓
 Code
-十四、最后才 /speckit-implement
+```
+
+## 十四、最后才 /speckit-implement
 执行：
 
+```bash
 /speckit-implement
+```
 
 严格遵循：
 
@@ -699,7 +725,7 @@ tasks.md
 backend/
 frontend/
 tests/
-十五、然后 /speckit-converge
+## 十五、然后 /speckit-converge
 
 Spec Kit 当前的 converge 是非常适合接在你这个体系后面的。官方定义就是检查实现与 spec/plan/tasks 的一致性，并在发现缺口时追加任务。
 
@@ -707,7 +733,9 @@ Prompt：
 
 执行：
 
+```bash
 /speckit-converge
+```
 
 同时执行 arch_decision 的 verification 流程。
 
@@ -731,7 +759,7 @@ Prompt：
 - Architecture Decision 与实际实现不一致
 
 不要为了让结果“看起来通过”而修改验收标准。
-十六、OpenCode 在这里到底扮演什么角色？
+## 十六、OpenCode 在这里到底扮演什么角色？
 
 OpenCode 其实只是：
 
@@ -739,6 +767,7 @@ Agent Runtime
 
 它负责：
 
+```text
 读取 AGENTS.md
         ↓
 读取 instructions
@@ -752,6 +781,7 @@ Agent Runtime
 执行 shell
         ↓
 运行测试
+```
 
 而你已经有：
 
@@ -769,6 +799,7 @@ OpenCode 官方现在支持 AGENTS.md，也支持通过 opencode.json 的 instru
 
 例如：
 
+```json
 {
   "$schema": "https://opencode.ai/config.json",
   "instructions": [
@@ -776,6 +807,8 @@ OpenCode 官方现在支持 AGENTS.md，也支持通过 opencode.json 的 instru
     ".sdd/CANONICAL.md"
   ]
 }
+```
+
 
 不过这里我反而建议：
 
@@ -799,7 +832,7 @@ AGENTS.md
 
 更符合你当前的 Canonical 思路。
 
-十七、甚至可以进一步利用 OpenCode Subagent
+## 十七、甚至可以进一步利用 OpenCode Subagent
 
 这是我认为你这个项目下一步非常值得考虑的地方。
 
@@ -807,11 +840,13 @@ OpenCode 支持项目级 subagent。
 
 例如：
 
+```text
 .opencode/
 └── agents/
     ├── architecture-reviewer.md
     ├── security-reviewer.md
     └── verification-reviewer.md
+```
 
 其中：
 
@@ -845,8 +880,8 @@ Use architecture-reviewer to review the current architecture decision.
 
 这样就形成：
 
+```text
                 Main Agent
-                    │
         ┌───────────┼───────────┐
         ↓           ↓           ↓
  Architecture   Security    Verification
@@ -857,10 +892,11 @@ Use architecture-reviewer to review the current architecture decision.
               Main Agent
                     ↓
                Human Gate
+```
 
 这个模式和你 arch_decision 的设计非常契合。
 
-十八、完整的实际 Prompt 交互，我建议最终做成这样
+## 十八、完整的实际 Prompt 交互，我建议最终做成这样
 
 这是一个新项目第一次启动时，我认为比较理想的完整人机交互脚本。
 
@@ -1094,6 +1130,7 @@ Within Budget
 
 已生成：
 
+```text
 specs/001-project/
 ├── project-discovery.md
 ├── technology-selection.md
@@ -1102,13 +1139,17 @@ specs/001-project/
 └── adr/
 Phase 6：交给 Spec Kit
 User
+```
+
 架构决策已经 Accepted。
 
 现在进入 Spec Kit。
 
 请执行：
 
+```bash
 /speckit-specify
+```
 
 Agent：
 
@@ -1119,7 +1160,9 @@ Agent：
 开始生成 feature specification。
 Phase 7：Plan
 User
+```bash
 /speckit-plan
+```
 
 Agent：
 
@@ -1134,7 +1177,9 @@ decision.json
 ARCHITECTURE_CHANGE_REQUEST。
 Phase 8：Tasks
 User
+```bash
 /speckit-tasks
+```
 
 Agent：
 
@@ -1146,7 +1191,9 @@ REQ-001 → SPEC-001 → PLAN-001 → TASK-001
 ...
 Phase 9：Implementation
 User
+```bash
 /speckit-implement
+```
 
 Agent：
 
@@ -1170,7 +1217,9 @@ VALID
 开始实现。
 Phase 10：Converge
 User
+```bash
 /speckit-converge
+```
 
 并执行 arch_decision verification。
 
@@ -1188,14 +1237,14 @@ Complexity budget: PASS
 Result:
 
 CONVERGED
-十九、这样做以后，三个体系其实非常清晰
+## 十九、这样做以后，三个体系其实非常清晰
 
 最终变成：
 
+```text
                    ┌──────────────┐
                    │     User     │
                    └──────┬───────┘
-                          │
                           ▼
                  ┌─────────────────┐
                  │  arch_decision  │
@@ -1206,9 +1255,7 @@ CONVERGED
                  │ Technology      │
                  │ Decision        │
                  └────────┬────────┘
-                          │
                     ACCEPTED
-                          │
                           ▼
                  ┌─────────────────┐
                  │    Spec Kit     │
@@ -1220,7 +1267,6 @@ CONVERGED
                  │ Implement       │
                  │ Converge        │
                  └────────┬────────┘
-                          │
                           ▼
                  ┌─────────────────┐
                  │ Agent Runtime   │
@@ -1230,10 +1276,11 @@ CONVERGED
                  │ Codex           │
                  │ Cursor          │
                  └─────────────────┘
+```
 
 这比把 arch_decision 做成一个“又一个 SDD 框架”要合理得多。
 
-二十、我尤其建议你对 v1.5 做一个定位调整
+## 二十、我尤其建议你对 v1.5 做一个定位调整
 
 你现在 README 中实际上已经很接近这个方向：它强调自己不是把 Python + FastAPI + PostgreSQL 当成最佳实践，而是提供可解释的决策系统。
 
@@ -1255,12 +1302,15 @@ arch_decision
 
 而是：
 
+```text
 Spec Kit
    ↑
 Architecture Governance
    ↑
 arch_decision
-二十一、甚至可以把最终工作流标准化成一个 ARCHITECTURE_GATE
+```
+
+## 二十一、甚至可以把最终工作流标准化成一个 ARCHITECTURE_GATE
 
 如果你下一步继续演进，我认为最值得增加的不是更多技术知识，而是增加一个标准化的 Agent Gate：
 
@@ -1288,7 +1338,9 @@ ARCHITECTURE_ACCEPTED
 
 以后才能进入：
 
+```bash
 /speckit-plan
+```
 
 甚至可以形成非常机器化的协议：
 
@@ -1309,6 +1361,7 @@ if architecture.status != ACCEPTED:
 
 如果让我给你这个项目下一步排优先级，我会建议：
 
+```text
 v1.5  已完成
   ↓
 v1.6
@@ -1330,16 +1383,20 @@ arch_decision init
 Spec Kit init
     ↓
 Agent ready
+```
 
 这样最终用户甚至可以做到：
 
+```bash
 arch-decision init my-project
+```
 
 然后：
 
+```bash
 $ opencode
-
 > 开始项目
+```
 
 Agent 就自动走完整的：
 
